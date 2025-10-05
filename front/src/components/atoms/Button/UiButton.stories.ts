@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { within, userEvent, expect, fn } from '@storybook/test';
 import UiButton from './UiButton.vue';
 
 const meta = {
@@ -30,7 +32,7 @@ const meta = {
     },
   },
   args: {
-    onClick: () => console.log('Button clicked'),
+    onClick: fn(),
   },
 } satisfies Meta<typeof UiButton>;
 
@@ -153,5 +155,96 @@ export const AddItem: Story = {
     label: '+ Add Issue',
     variant: 'secondary',
     size: 'sm',
+  },
+};
+
+// Interaction Tests
+export const ClickInteraction: Story = {
+  args: {
+    label: 'Click Me',
+    variant: 'primary',
+    size: 'md',
+    onClick: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
+
+    // Test button click
+    await userEvent.click(button);
+    await expect(args.onClick).toHaveBeenCalledOnce();
+
+    // Test button is in the document
+    await expect(button).toBeInTheDocument();
+
+    // Test button has correct label
+    await expect(button).toHaveTextContent('Click Me');
+  },
+};
+
+export const KeyboardNavigation: Story = {
+  args: {
+    label: 'Tab to Me',
+    variant: 'primary',
+    size: 'md',
+    onClick: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
+
+    // Test keyboard navigation
+    await userEvent.tab();
+    await expect(button).toHaveFocus();
+
+    // Test Enter key press
+    await userEvent.keyboard('{Enter}');
+    await expect(args.onClick).toHaveBeenCalled();
+  },
+};
+
+export const DisabledNoClick: Story = {
+  args: {
+    label: 'Disabled - No Click',
+    variant: 'primary',
+    size: 'md',
+    disabled: true,
+    onClick: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
+
+    // Test disabled attribute
+    await expect(button).toBeDisabled();
+
+    // Test click does not trigger
+    await userEvent.click(button);
+    await expect(args.onClick).not.toHaveBeenCalled();
+  },
+};
+
+export const LoadingNoClick: Story = {
+  args: {
+    label: 'Loading...',
+    variant: 'primary',
+    size: 'md',
+    loading: true,
+    onClick: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
+
+    // Test loading spinner is present
+    const spinner = canvas.getByRole('button').querySelector('svg');
+    await expect(spinner).toBeInTheDocument();
+
+    // Test button is disabled when loading
+    await expect(button).toBeDisabled();
+
+    // Test click does not trigger when loading
+    await userEvent.click(button);
+    await expect(args.onClick).not.toHaveBeenCalled();
   },
 };
