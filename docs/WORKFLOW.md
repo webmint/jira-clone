@@ -1,974 +1,677 @@
-# GitHub Spec-Kit Workflow for Jira Clone Sub-Agents
+# Development Workflow
+
+**Constitution Version**: 2.7.0
+**Last Updated**: 2025-10-05
+
+This document describes the complete development workflow from feature idea to production merge, including GitHub integration, individual task files, git commit workflow with Husky pre-commit hooks, sequential task enforcement, agent assignment, GitHub project board, and **5 MANDATORY user approval gates**.
+
+---
 
 ## Overview
 
-This document describes how to use GitHub spec-kit methodology with our 7 specialized sub-agents to build the Jira Clone application systematically.
-
-## GitHub Spec-Kit Methodology
-
-### Core Principles
-
-1. **Specification First**: Write detailed specs before implementation
-2. **Issue-Driven Development**: Each feature becomes a GitHub issue
-3. **Structured Workflow**: Clear phases from spec → implementation → review
-4. **Agent Collaboration**: Each agent has specific responsibilities and handoff points
-
-### Spec-Kit Integration
-
-The `.specify/` folder is created by GitHub spec-kit and provides:
-
-- **Templates** (`.specify/templates/`): Reusable specification templates
-- **Memory** (`.specify/memory/`): Context persistence across work sessions
-- **Scripts** (`.specify/scripts/`): Automation and workflow helpers
-
-**How to Use Spec-Kit:**
-
-1. Store feature specifications in `.specify/` or link them from `docs/`
-2. Use `.specify/templates/` for consistent spec formatting
-3. Leverage `.specify/memory/` for maintaining context between sessions
-4. Utilize `.specify/scripts/` for automating repetitive tasks
-
-**Recommended Approach:**
-
-- **Main Project Spec**: Keep in root as `SPECIFICATION.md`
-- **Feature Specs**: Store in `.specify/` (managed by spec-kit)
-- **Design Docs**: Keep in `docs/design/` (easier to browse)
-- **ADRs**: Keep in `docs/decisions/` (version controlled documentation)
-- **Agent Instructions**: Keep in `.claude/agents/` (Claude Code specific prompts)
-
-### Repository Structure
-
 ```
-jira-clone/
-├── .claude/                     # Claude AI configurations
-├── .specify/                    # Spec-kit framework
-│   ├── scripts/                # Spec-kit automation scripts
-│   ├── memory/                 # Context and memory storage
-│   └── templates/              # Spec-kit templates
-├── .github/
-│   ├── ISSUE_TEMPLATE/
-│   │   ├── feature.md
-│   │   ├── bug.md
-│   │   └── design.md
-│   └── workflows/
-│       └── ci.yml
-├── .claude/
-│   └── agents/                 # Agent instruction files
-│       ├── architecture.md
-│       ├── backend.md
-│       ├── frontend.md
-│       ├── common.md
-│       ├── devops.md
-│       ├── testing.md
-│       └── design.md
-├── docs/
-│   ├── design/                 # Design system & mockups
-│   │   ├── DESIGN_SYSTEM.md
-│   │   ├── COMPONENTS.md
-│   │   └── PAGES.md
-│   ├── decisions/              # Architecture Decision Records (ADR)
-│   │   └── 001-monorepo-structure.md
-│   └── PROJECT_CONSTITUTION.md
-├── front/
-├── back/
-├── common/
-├── SPECIFICATION.md            # Main project spec
-└── README.md
-```
-
-**Note on Spec-Kit Integration:**
-
-- `.specify/` folder is managed by GitHub spec-kit
-- Feature specifications can be stored in `.specify/` or `docs/specs/` (your choice)
-- `.specify/templates/` can store reusable spec templates
-- `.specify/memory/` helps maintain context across sessions
-
----
-
-## Workflow Phases
-
-### Phase 0: Project Setup (Week 0)
-
-**Agents Involved**: Architecture → DevOps → Design → Common
-
-```
-1. Architecture Agent
-   ├─ Review SPECIFICATION.md
-   ├─ Create initial ADR documents
-   ├─ Define folder structure
-   └─ Output: Architecture decisions documented
-
-2. DevOps Agent
-   ├─ Setup monorepo structure
-   ├─ Configure build tools
-   ├─ Setup linting/formatting
-   ├─ Create GitHub Actions workflows
-   └─ Output: Working development environment
-
-3. Design Agent
-   ├─ Create DESIGN_SYSTEM.md
-   ├─ Configure Tailwind theme
-   ├─ Define component library
-   └─ Output: Design foundation
-
-4. Common Agent
-   ├─ Setup common package structure
-   ├─ Define base types and enums
-   ├─ Create shared validators
-   └─ Output: Shared contracts ready
-```
-
-**GitHub Issues for Phase 0:**
-
-- #1: Setup monorepo structure (@devops)
-- #2: Create design system (@design)
-- #3: Define common types (@common)
-- #4: Configure CI/CD pipeline (@devops)
-
----
-
-### Phase 1: Feature Development Workflow
-
-Each feature follows this 6-step workflow:
-
-```
-Step 1: Specification (Architecture Agent)
-   ↓
-Step 2: Design (Design Agent)
-   ↓
-Step 3: Types & Validation (Common Agent)
-   ↓
-Step 4: API Implementation (Backend Agent)
-   ↓
-Step 5: UI Implementation (Frontend Agent)
-   ↓
-Step 6: Testing & QA (Testing Agent)
+Feature Idea
+    ↓
+/specify → spec.md + spec branch + GitHub Issue #X (Spec)
+    ↓
+⚠️ APPROVAL GATE 1: User Reviews & Approves Spec (MANDATORY)
+    ↓
+/plan → plan.md, research.md, contracts/, etc. (committed to spec branch)
+    ↓
+⚠️ APPROVAL GATE 2: User Reviews & Approves Plan (MANDATORY)
+    ↓
+/tasks → tasks.md + GitHub Issues #Y1, #Y2, ... (committed to spec branch)
+    ↓
+⚠️ APPROVAL GATE 3: User Reviews & Approves Tasks (MANDATORY)
+    ↓
+Push spec branch (spec + plan + tasks)
+    ↓
+/implement → For Each Task (SEQUENTIAL):
+    ├─ Create Task Branch from Spec Branch
+    ├─ Implement Task (TDD)
+    ├─ Commit (with Husky pre-commit hooks)
+    │   ├─ If hooks FAIL → get user approval for fixes (MANDATORY)
+    │   └─ If hooks PASS → commit succeeds
+    ├─ ⚠️ APPROVAL GATE 4: User Approves Task (MANDATORY)
+    ├─ Create PR (Task Branch → Spec Branch)
+    ├─ Merge PR
+    ├─ Switch to spec branch, pull latest
+    └─ Start Next Task (ONLY after previous merged)
+    ↓
+All Tasks Complete
+    ↓
+⚠️ APPROVAL GATE 5: User Approves Feature (MANDATORY)
+    ↓
+Create PR (Spec Branch → Main, closes Spec Issue #X)
+    ↓
+Merge to Main
 ```
 
 ---
 
-## Detailed Workflow for Each Feature
+## Phase 1: Specification
 
-### Example: Implementing "User Authentication"
+### 1.1 Create Specification
 
-#### **Step 1: Create Feature Specification**
+```bash
+# Run the specify command
+/specify <feature description>
+```
 
-**Agent**: Architecture Agent
+**Output**:
 
-**GitHub Issue**: `#5: Spec - User Authentication`
+- `.specify/specs/###-feature-name/spec.md`
+- **Git commits**:
+  - Creates temporary branch: `spec/###-feature-name`
+  - Commits spec.md to temporary branch
+  - Pushes to origin
+- GitHub Issue created: `[Spec] Feature Name`
+  - Labels: `feature`, `spec`, priority (e.g., `P1-high`)
+  - Assigned to: Architecture Agent
+  - Added to project board: "📐 Spec & Design" column
+  - Status: Open, awaiting review
 
-- Labels: `spec`, `phase-1`, `architecture`
-- Assignee: Architecture Agent
+**Example**:
 
-**Actions**:
+```bash
+/specify Add user authentication with email/password and role-based permissions
+```
 
-1. Create spec file: `docs/specs/auth/authentication.md` or `.specify/specs/auth/authentication.md`
-2. Define:
-   - User stories
-   - Technical requirements
-   - API contracts
-   - Data models
-   - Security considerations
-3. Create sub-issues for other agents
-4. Link all issues together
+Creates:
 
-**Deliverable**: `docs/specs/auth/authentication.md`
+- `.specify/specs/001-user-authentication/spec.md`
+- Temporary branch: `spec/001-user-authentication`
+- GitHub Issue #5: `[Spec] User Authentication System`
+- Project board: Issue added to "📐 Spec & Design" column
 
-```markdown
-# User Authentication Specification
+### 1.2 ⚠️ APPROVAL GATE 1: Review & Approve Specification (MANDATORY)
 
-## User Stories
+**The /specify command STOPS here and WAITS for your approval!**
 
-- As a new user, I want to register...
-- As a registered user, I want to login...
+**User Action Required**:
 
-## Technical Requirements
+1. Review spec file at `.specify/specs/###-feature-name/spec.md`
+2. Review GitHub Issue #X (check project board)
+3. Review temporary branch: `spec/###-feature-name`
+4. Check that:
+   - [ ] Requirements are clear and complete
+   - [ ] Scope is well-defined and bounded
+   - [ ] User scenarios make sense
+   - [ ] No major concerns or missing requirements
 
-### Firebase Authentication
+**To Approve**:
 
-- Email/Password provider
-- JWT token management
-- Session handling
+- ✅ Respond: "Approved, proceed with /plan"
 
-### Frontend ESLint Compliance
+**To Request Changes**:
 
-- All components must pass Airbnb + Vue ESLint rules
-- Zero ESLint errors required
-- TypeScript strict mode
-- Type-based props/emits
+- ❌ Comment with required changes
+- After changes made, review again
 
-## API Endpoints
+**IMPORTANT**: `/plan` command CANNOT run until you explicitly approve the spec!
 
-POST /api/auth/register
-POST /api/auth/login
-POST /api/auth/logout
-GET /api/auth/me
+**After approval**: Stays on spec branch, proceeds to /plan (spec branch NOT merged yet)
 
-## Security
+---
 
-- Password hashing via Firebase
-- JWT token expiration: 24h
-- Refresh token strategy
+## Phase 2: Planning
 
-## Dependencies
+### 2.1 Create Implementation Plan
 
-- Firebase Admin SDK
-- @nestjs/passport
-- Vue Router navigation guards
+**After spec approved**:
 
-## Quality Requirements
+```bash
+/plan
+```
 
-- Backend: >85% test coverage
-- Frontend: >80% test coverage
+**Output** (in `.specify/specs/###-feature-name/`):
+
+- `plan.md` - Implementation strategy
+- `research.md` - Technical research and decisions
+- `data-model.md` - Database schema and entities
+- `contracts/` - API contracts (OpenAPI/GraphQL)
+- `quickstart.md` - Manual testing guide
+- Agent-specific file (e.g., `CLAUDE.md`)
+- **Git commits**:
+  - All plan files committed to spec branch
+  - Commit message: "docs: add implementation plan for [feature-name]"
+  - NOT pushed yet (waiting for tasks approval)
+
+**Example**:
+
+```
+.specify/specs/001-user-authentication/
+├── spec.md
+├── plan.md
+├── research.md
+├── data-model.md
+├── contracts/
+│   ├── auth-register.yaml
+│   ├── auth-login.yaml
+│   └── auth-refresh.yaml
+└── quickstart.md
+```
+
+### 2.2 ⚠️ APPROVAL GATE 2: Review & Approve Plan (MANDATORY)
+
+**The /plan command STOPS here and WAITS for your approval!**
+
+**User Action Required**:
+
+1. Review all deliverables:
+   - `plan.md` - Implementation strategy
+   - `research.md` - Technical decisions
+   - `data-model.md` - Database schema
+   - `contracts/` - API contracts
+   - `quickstart.md` - Testing guide
+
+2. Check that:
+   - [ ] Technical approach makes sense
+   - [ ] Research decisions are sound
+   - [ ] Data model is appropriate
+   - [ ] API contracts are well-defined
+   - [ ] No major concerns about architecture
+
+**To Approve**:
+
+- ✅ Respond: "Approved, proceed with /tasks"
+
+**To Request Changes**:
+
+- ❌ Comment with required changes
+- After changes made, review again
+
+**IMPORTANT**: `/tasks` command CANNOT run until you explicitly approve the plan!
+
+---
+
+## Phase 3: Task Generation
+
+### 3.1 Generate Tasks and Create GitHub Issues
+
+```bash
+/tasks
+```
+
+**Output**:
+
+1. `.specify/specs/###-feature-name/tasks.md` - Summary with all tasks
+2. `.specify/specs/###-feature-name/tasks/` folder created
+3. Individual file for EACH task: `tasks/T###-task-name.md` with:
+   - Task description and files to modify
+   - **Agent assignment** (MANDATORY based on file paths)
+   - Dependencies (blocks/blocked by)
+   - Acceptance criteria checklist
+   - GitHub issue link
+   - Sub-branch name
+   - Approval tracking
+4. **Git commits**:
+   - Tasks committed to spec branch
+   - Commit message: "feat: generate tasks for [feature-name]"
+   - NOT pushed yet (waiting for approval)
+5. GitHub Issues created for EACH task:
+   - Title: `[T###] Task description`
+   - Labels: `feature`, `spec`, agent label (e.g., `agent:backend`), priority
+   - **Assigned to**: Responsible agent role (MANDATORY)
+   - Linked to: Parent spec issue + task file
+   - **Added to project board**: "📋 Backlog" column
+
+**Example**:
+
+```bash
+/tasks
+```
+
+Creates:
+
+- `tasks.md` - Summary of all tasks
+- `tasks/` folder with individual task files:
+  - `tasks/T001-user-entity.md` (Agent: backend)
+  - `tasks/T002-users-service.md` (Agent: backend)
+  - `tasks/T003-backend-dtos.md` (Agent: backend)
+  - ... (20+ task files)
+- Git: All committed to spec branch (NOT pushed yet)
+- GitHub Issues (all added to "📋 Backlog"):
+  - #10: `[T001] Create User entity model` → assigned to backend agent
+  - #11: `[T002] Create UsersService` → assigned to backend agent
+  - #12: `[T003] Backend DTOs` → assigned to backend agent
+  - ... (20+ issues)
+- Project board: All tasks in "📋 Backlog" column
+
+**Agent Assignment Rules**:
+
+- Tasks modifying `back/` → `agent:backend`
+- Tasks modifying `front/` → `agent:frontend`
+- Tasks modifying `common/` → `agent:common`
+- Test-only tasks → `agent:testing`
+- DevOps/CI tasks → `agent:devops`
+- Design/UI tasks → `agent:design`
+- Architecture decisions → `agent:architecture`
+
+### 3.2 ⚠️ APPROVAL GATE 3: Review & Approve Tasks (MANDATORY)
+
+**The /tasks command STOPS here and WAITS for your approval!**
+
+**User Action Required**:
+
+1. Review deliverables:
+   - `tasks.md` - Complete task breakdown (summary)
+   - `tasks/` folder - Individual task files (detailed)
+   - Feature branch: `feature/###-name` (created)
+   - GitHub issues for all tasks (check issue tracker)
+
+2. Check that:
+   - [ ] Task breakdown is complete and logical
+   - [ ] Dependencies are correctly identified
+   - [ ] Parallel tasks are truly independent
+   - [ ] Task ordering makes sense (tests before implementation)
+   - [ ] No tasks are missing or duplicated
+   - [ ] **Agent assignments are correct** (based on file paths)
+   - [ ] GitHub issues created for all tasks
+   - [ ] All issues added to project board "📋 Backlog"
+
+**To Approve**:
+
+- ✅ Respond: "Approved, begin implementation"
+
+**To Request Changes**:
+
+- ❌ Comment with required changes to task breakdown
+- After changes made, review again
+
+**IMPORTANT**: Implementation CANNOT begin until you explicitly approve the task breakdown!
+
+**After approval**:
+
+```bash
+# Push spec branch with ALL changes (spec + plan + tasks)
+git push origin spec/###-feature-name
+```
+
+Spec branch now contains all planning artifacts, ready for implementation.
+
+---
+
+## Phase 4: Implementation (Per Task)
+
+### 4.1 Task Workflow
+
+**IMPORTANT**: Tasks must be completed **SEQUENTIALLY**. Cannot start new task until previous task PR is merged to spec branch.
+
+For **EACH** task, follow this workflow:
+
+#### Step 1: Verify Previous Task Complete
+
+```bash
+# BEFORE starting new task, ensure on spec branch
+git checkout spec/001-user-authentication
+
+# Pull latest (includes previous task if merged)
+git pull origin spec/001-user-authentication
+```
+
+**MANDATORY**: Cannot proceed if previous task PR not merged!
+
+#### Step 2: Create Task Sub-branch
+
+```bash
+# Create sub-branch for task from spec branch
+git checkout -b spec/001-user-authentication/T014-auth-endpoints
+```
+
+#### Step 3: Implement Task
+
+Follow TDD workflow:
+
+1. Write failing tests (if not already created)
+2. Implement code to pass tests
+3. Refactor for quality
+4. Ensure all quality gates pass
+
+```bash
+# Run tests
+npm test
+
+# Run linting
+npm run lint
+
+# Build
+npm run build
+```
+
+#### Step 4: Commit with Husky Pre-commit Hooks
+
+```bash
+# Attempt commit
+git add .
+git commit -m "feat: implement auth controller endpoints"
+```
+
+**If Husky pre-commit hooks FAIL**:
+
+1. **STOP immediately** - display error output
+2. Ask user for approval:
+
+   ```
+   Pre-commit hooks failed with errors:
+   - ESLint: 3 errors in auth.controller.ts
+   - Prettier: 2 files need formatting
+
+   Approve fixes for these errors?
+   ```
+
+3. **WAIT FOR USER APPROVAL** (MANDATORY)
+4. After approval, fix errors
+5. Retry commit
+6. Repeat if hooks fail again
+
+**If hooks PASS**: Commit succeeds, proceed to next step
+
+#### Step 5: ⚠️ **WAIT FOR USER APPROVAL** (MANDATORY)
+
+**DO NOT create PR without user approval!**
+
+**Post message to user**:
+
+```
+Task T014 (Create AuthController endpoints) is complete.
+
+Changes:
+- Created src/auth/auth.controller.ts with 6 endpoints
+- All tests passing (12/12)
 - ESLint: 0 errors
-- Accessibility: WCAG 2.1 AA
+- Coverage: 92%
+- Pre-commit hooks: ✅ PASSED
+
+Waiting for approval to create PR.
 ```
 
-**Closes**: #5
-**Creates**: Issues #6, #7, #8, #9, #10
+**User reviews and responds**:
 
----
+- ✅ "Approved, create PR"
+- ❌ "Please change X before PR" → Make changes, request approval again
 
-#### **Step 2: Design UI/UX**
+#### Step 6: Create Pull Request
 
-**Agent**: Design Agent
-
-**GitHub Issue**: `#6: Design - Authentication UI`
-
-- Labels: `design`, `phase-1`
-- Depends on: #5
-- Assignee: Design Agent
-
-**Actions**:
-
-1. Create design spec: `docs/design/auth-pages.md`
-2. Design login page layout
-3. Design register page layout
-4. Define form validation states
-5. Create component specifications
-
-**Deliverable**: `docs/design/auth-pages.md`
-
-```markdown
-# Authentication Pages Design
-
-## Login Page
-
-[Visual mockup with Tailwind classes]
-
-## Register Page
-
-[Visual mockup with Tailwind classes]
-
-## Components Needed
-
-- AuthLayout.vue
-- LoginForm.vue
-- RegisterForm.vue
-- FormInput.vue
-- FormButton.vue
-
-## Validation States
-
-- Empty field: border-red-300
-- Valid input: border-green-300
-- Focus state: ring-2 ring-primary-500
-```
-
-**Closes**: #6
-**Notifies**: Frontend Agent (#9)
-
----
-
-#### **Step 3: Define Shared Types**
-
-**Agent**: Common Agent
-
-**GitHub Issue**: `#7: Types - Authentication Models`
-
-- Labels: `common`, `types`, `phase-1`
-- Depends on: #5
-- Assignee: Common Agent
-
-**Actions**:
-
-1. Create types: `common/src/types/auth.types.ts`
-2. Create DTOs: `common/src/dto/auth.dto.ts`
-3. Create Zod schemas: `common/src/validators/auth.validator.ts`
-4. Export from index
-
-**Deliverable**: TypeScript interfaces + Zod schemas
-
-```typescript
-// common/src/types/auth.types.ts
-export interface User {
-  id: string;
-  email: string;
-  username: string;
-  fullName: string;
-  role: UserRole;
-}
-
-export interface AuthResponse {
-  user: User;
-  token: string;
-}
-
-// common/src/validators/auth.validator.ts
-export const registerSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-  username: z.string().min(3).max(20),
-  fullName: z.string().min(1),
-});
-```
-
-**Closes**: #7
-**Notifies**: Backend Agent (#8), Frontend Agent (#9)
-
----
-
-#### **Step 4: Implement Backend API**
-
-**Agent**: Backend Agent
-
-**GitHub Issue**: `#8: API - Authentication Endpoints`
-
-- Labels: `backend`, `api`, `phase-1`
-- Depends on: #5, #7
-- Assignee: Backend Agent
-
-**Actions**:
-
-1. Create NestJS module: `back/src/auth/`
-2. Implement Firebase Auth integration
-3. Create controllers and services
-4. Add validation with class-validator
-5. Write unit tests
-6. Update Swagger docs
-
-**Branch**: `agent/backend/auth-endpoints`
-
-**Files Changed**:
-
-- `back/src/auth/auth.module.ts`
-- `back/src/auth/auth.controller.ts`
-- `back/src/auth/auth.service.ts`
-- `back/src/auth/dto/`
-- `back/src/auth/guards/`
-- `back/src/auth/auth.controller.spec.ts`
-
-**Testing Checklist**:
-
-- [ ] Register with valid data returns 201
-- [ ] Register with duplicate email returns 409
-- [ ] Login with valid credentials returns token
-- [ ] Login with invalid credentials returns 401
-- [ ] Protected route requires valid token
-- [ ] Code coverage >85%
-
-**Closes**: #8
-**Notifies**: Frontend Agent (#9)
-
-**PR**: `#PR-1: Implement authentication API`
-
-- Reviewers: Architecture Agent
-- Labels: `backend`, `ready-for-review`
-
----
-
-#### **Step 5: Implement Frontend UI**
-
-**Agent**: Frontend Agent
-
-**GitHub Issue**: `#9: UI - Authentication Pages`
-
-- Labels: `frontend`, `ui`, `phase-1`
-- Depends on: #6, #7, #8
-- Assignee: Frontend Agent
-
-**Actions**:
-
-1. Create auth pages in `front/src/views/auth/`
-2. Create reusable form components
-3. Setup Pinia auth store
-4. Implement form validation with VeeValidate + Zod
-5. Add route guards in Vue Router
-6. Connect to backend API
-7. Write component tests
-
-**Branch**: `agent/frontend/auth-pages`
-
-**Files Changed**:
-
-- `front/src/views/auth/LoginView.vue`
-- `front/src/views/auth/RegisterView.vue`
-- `front/src/components/auth/LoginForm.vue`
-- `front/src/components/auth/RegisterForm.vue`
-- `front/src/stores/auth.store.ts`
-- `front/src/router/guards/auth.guard.ts`
-- `front/src/api/auth.api.ts`
-
-**Design Verification**:
-
-- [ ] Follows DESIGN_SYSTEM.md colors
-- [ ] Uses specified Tailwind classes
-- [ ] Responsive on mobile/tablet/desktop
-- [ ] Proper error states
-- [ ] Loading states implemented
-
-**Code Quality Verification (MANDATORY)**:
-
-- [ ] **ESLint: 0 errors** (run `npm run lint:front`)
-- [ ] Prettier formatting applied
-- [ ] TypeScript strict mode compliance
-- [ ] No `any` types used
-- [ ] Type-based props and emits
-- [ ] Multi-word component names
-- [ ] All components use `<script setup lang="ts">`
-- [ ] No `console.log` in production code
-
-**Closes**: #9
-**Notifies**: Testing Agent (#10), Design Agent (for review)
-
-**PR**: `#PR-2: Implement authentication UI`
-
-- Reviewers: Design Agent, Architecture Agent
-- Labels: `frontend`, `ready-for-review`
-- **Must pass**: ESLint with 0 errors before review
-
----
-
-#### **Step 6: Testing & Quality Assurance**
-
-**Agent**: Testing Agent
-
-**GitHub Issue**: `#10: Testing - Authentication Feature`
-
-- Labels: `testing`, `qa`, `phase-1`
-- Depends on: #8, #9
-- Assignee: Testing Agent
-
-**Actions**:
-
-1. Review test coverage
-2. Add integration tests
-3. Add E2E tests for auth flow
-4. Verify accessibility
-5. Performance testing
-6. Security audit
-
-**Test Scenarios**:
-
-```
-✓ User can register with valid data
-✓ User cannot register with invalid email
-✓ User cannot register with weak password
-✓ User can login after registration
-✓ User stays logged in after refresh
-✓ User can logout
-✓ Protected routes redirect to login
-✓ Authenticated user can access protected routes
-```
-
-**Deliverables**:
-
-- `back/test/auth.e2e-spec.ts`
-- `front/src/views/auth/__tests__/LoginView.spec.ts`
-- Test coverage report
-
-**Closes**: #10
-
----
-
-## Agent Handoff Protocol
-
-### Handoff Document Template
-
-When an agent completes their work, they create a handoff comment on the GitHub issue:
-
-```markdown
-## 🎯 Handoff: [Feature Name]
-
-**From**: @architecture-agent
-**To**: @design-agent, @common-agent
-**Status**: ✅ Completed
-
-### ✅ Completed Work
-
-- Created specification document
-- Defined API contracts
-- Identified data models
-- Documented security requirements
-
-### 📦 Deliverables
-
-- [docs/specs/auth/authentication.md](link)
-- Created sub-issues: #6, #7, #8, #9, #10
-
-### ⏭️ Next Steps for Design Agent (#6)
-
-- Review the specification
-- Design login and register pages
-- Define component structure
-- Follow design system guidelines
-
-### ⏭️ Next Steps for Common Agent (#7)
-
-- Create User interface based on spec
-- Define AuthResponse type
-- Create Zod validation schemas
-
-### 📝 Important Notes
-
-- Firebase Authentication is required
-- JWT tokens expire after 24 hours
-- Need to handle refresh token flow
-
-### 🚧 Blockers
-
-None
-
-### 🔗 Related Issues
-
-- Depends on: #5
-- Blocks: #6, #7
-- Related: #auth-epic
-```
-
----
-
-## GitHub Labels System
-
-### By Agent
-
-- `architecture` - Architecture decisions
-- `backend` - Backend work
-- `frontend` - Frontend work
-- `common` - Shared types/validators
-- `devops` - CI/CD, tooling
-- `testing` - Tests and QA
-- `design` - UI/UX design work
-
-### By Type
-
-- `spec` - Specification documents
-- `feature` - New feature
-- `bug` - Bug fix
-- `refactor` - Code refactoring
-- `docs` - Documentation
-- `chore` - Maintenance tasks
-
-### By Status
-
-- `planning` - In planning phase
-- `ready` - Ready to start
-- `in-progress` - Currently being worked on
-- `review` - In code review
-- `blocked` - Blocked by dependencies
-- `done` - Completed
-
-### By Phase
-
-- `phase-0` - Setup
-- `phase-1` - MVP
-- `phase-2` - Core features
-- `phase-3` - Enhancements
-- `phase-4` - Polish
-
-### By Priority
-
-- `priority-high` - High priority
-- `priority-medium` - Medium priority
-- `priority-low` - Low priority
-
----
-
-## GitHub Projects Board Structure
-
-### Board: Jira Clone Development
-
-**Columns**:
-
-1. **📋 Backlog** - All planned issues
-2. **📐 Spec & Design** - Architecture & Design agents
-3. **⚙️ Common Types** - Common agent work
-4. **🔧 Backend Dev** - Backend implementation
-5. **🎨 Frontend Dev** - Frontend implementation
-6. **🧪 Testing** - Testing & QA
-7. **👀 Review** - Code review
-8. **✅ Done** - Completed
-
-**Automation**:
-
-- New issues → Backlog
-- Issue assigned → Move to appropriate column
-- PR opened → Move to Review
-- PR merged → Move to Done
-
----
-
-## Sprint Planning with Agents
-
-### 2-Week Sprint Structure
-
-**Week 1 (Spec & Implementation)**:
-
-```
-Monday:
-- Architecture Agent: Create specs for Sprint features
-- Design Agent: Design UI for Sprint features
-
-Tuesday-Wednesday:
-- Common Agent: Define types and validators
-- Backend Agent: Start API implementation
-
-Thursday-Friday:
-- Backend Agent: Complete API implementation
-- Frontend Agent: Start UI implementation
-```
-
-**Week 2 (Implementation & Testing)**:
-
-```
-Monday-Wednesday:
-- Frontend Agent: Complete UI implementation
-- Testing Agent: Write tests
-
-Thursday:
-- Code reviews by Architecture & Design agents
-- Bug fixes
-
-Friday:
-- Sprint demo
-- Retrospective
-- Plan next sprint
-```
-
----
-
-## Communication Channels
-
-### GitHub Issue Comments
-
-Primary communication for feature-specific discussions
-
-### GitHub Discussions
-
-- Architecture decisions
-- General questions
-- Agent coordination
-
-### PR Reviews
-
-- Code quality feedback
-- Design consistency checks
-- Architecture alignment
-
----
-
-## Quality Gates
-
-Before merging any PR, verify:
-
-### Architecture Agent Checklist
-
-- [ ] Follows architectural patterns
-- [ ] No security vulnerabilities
-- [ ] Scalable and maintainable
-
-### Design Agent Checklist
-
-- [ ] Follows design system (docs/design/DESIGN_SYSTEM.md)
-- [ ] Accessible (WCAG 2.1 AA)
-- [ ] Responsive design
-- [ ] Consistent with other pages
-
-### Frontend Quality Checklist (MANDATORY)
-
-- [ ] **ESLint: ZERO errors** (Airbnb + Vue rules)
-- [ ] Prettier formatting applied
-- [ ] TypeScript strict mode compliance
-- [ ] No `any` types (or documented justification)
-- [ ] Type-based props and emits
-- [ ] Multi-word component names
-- [ ] All components use `<script setup lang="ts">`
-
-### Testing Agent Checklist
-
-- [ ] Unit tests pass
-- [ ] Integration tests pass
-- [ ] Code coverage > 80% (>85% backend)
-- [ ] E2E tests pass (for features)
-
-### DevOps Agent Checklist
-
-- [ ] CI pipeline passes
-- [ ] Build successful
-- [ ] No linting errors
-- [ ] Dependencies secure
-
----
-
-## Code Quality Standards (Non-Negotiable)
-
-### Frontend Standards
-
-**ESLint Configuration:**
-
-- Airbnb TypeScript style guide
-- Vue 3 recommended rules (strongest)
-- Prettier integration
-- Zero errors required for merge
-
-**TypeScript Strict:**
-
-- No `any` types without justification
-- Proper type annotations for all functions
-- Type-based props and emits only
-- Strict null checks enabled
-
-**Vue 3 Requirements:**
-
-- Always use `<script setup lang="ts">`
-- Multi-word component names (PascalCase)
-- Type-based declarations (not runtime)
-- No `v-html` without security review
-
-### Backend Standards
-
-- NestJS best practices
-- Dependency injection
-- DTOs for all endpoints
-- Validation pipes required
-- Service layer abstracts Firebase
-
-### Common Package Standards
-
-- All types documented with JSDoc
-- Zod schemas for validation
-- No circular dependencies
-- Proper exports in index.ts
-
----
-
-## Example Sprint: Authentication Feature
-
-### Sprint Goal
-
-Implement user authentication (register, login, logout)
-
-### Issue Breakdown
-
-**Epic**: `#epic-auth` - User Authentication System
-
-**Issues**:
-
-- `#5` - [Spec] Authentication specification (@architecture) - 2 pts
-- `#6` - [Design] Authentication UI design (@design) - 3 pts
-- `#7` - [Common] Auth types and validators (@common) - 2 pts
-- `#8` - [Backend] Auth API endpoints (@backend) - 5 pts
-- `#9` - [Frontend] Auth pages and forms (@frontend) - 8 pts
-- `#10` - [Testing] Auth feature tests (@testing) - 3 pts
-
-**Total**: 23 story points
-
-**Timeline**: 2 weeks
-
-**Dependencies**:
-
-```
-#5 (Spec)
-  ├─ #6 (Design)
-  ├─ #7 (Common)
-  └─ #8 (Backend)
-      └─ #9 (Frontend)
-          └─ #10 (Testing)
-```
-
----
-
-## Monitoring Progress
-
-### Daily Standup (Async via GitHub)
-
-Each agent posts update on their assigned issue:
-
-```markdown
-## Daily Update - [Date]
-
-**Yesterday**:
-
-- Completed login form component
-- Added form validation
-
-**Today**:
-
-- Will implement register form
-- Will add loading states
-
-**Blockers**:
-
-- Waiting for backend API to be deployed
-
-**Questions**:
-
-- @design-agent Should error messages be inline or toast?
-```
-
-### Weekly Review
-
-Architecture Agent reviews:
-
-- Sprint progress (velocity)
-- Code quality metrics
-- Agent utilization
-- Blockers and resolutions
-
----
-
-## Success Metrics
-
-Track these metrics throughout the project:
-
-1. **Velocity**: Story points completed per sprint
-2. **Cycle Time**: Time from issue creation to PR merge
-3. **Code Quality**: Test coverage, linting score
-4. **Agent Efficiency**: Tasks completed per agent
-5. **Handoff Speed**: Time between agent transitions
-6. **Review Time**: Time in code review
-7. **Bug Rate**: Bugs per feature
-
----
-
-## Tools Integration
-
-### Recommended Tools
-
-- **GitHub Projects**: For kanban board
-- **GitHub Actions**: For CI/CD
-- **GitHub Discussions**: For architecture decisions
-- **GitHub Wiki**: For detailed documentation
-- **Conventional Commits**: For clear git history
-
----
-
-## Next Steps
-
-1. Create GitHub repository
-2. Copy all agent instruction files to `.claude/agents/`
-3. Create issue templates in `.github/ISSUE_TEMPLATE/`
-4. Setup GitHub Projects board
-5. Create initial labels
-6. Start with Phase 0 issues
-7. Assign agents to initial tasks
-
-### Using Agent Instructions
-
-**Before starting any work:**
-
-1. Read the relevant agent instruction file from `.claude/agents/`
-2. Follow the guidelines and checklists in that file
-3. Reference the agent file during work for best practices
-4. Complete the agent-specific checklist in your PR
-
-**Agent Instructions Location:**
-
-All agent instructions are in `.claude/agents/` (Claude Code specific):
-
-```
-.claude/
-└── agents/
-    ├── architecture.md    # Read when: Creating specs, making decisions
-    ├── backend.md         # Read when: Building APIs
-    ├── frontend.md        # Read when: Building UI (includes ESLint rules)
-    ├── common.md          # Read when: Creating types
-    ├── devops.md          # Read when: CI/CD work
-    ├── testing.md         # Read when: Writing tests
-    └── design.md          # Read when: Designing UI/UX
-```
-
-**Example Workflow:**
+**After user approval**:
 
 ```bash
-# 1. Architecture Agent reads their instructions
-cat .claude/agents/architecture.md
+# Push task branch
+git push -u origin spec/001-user-authentication/T014-auth-endpoints
 
-# 2. Creates specification following the template
-# 3. Creates GitHub issues
-# 4. Passes to next agent with handoff
+# Create PR
+gh pr create \
+  --base spec/001-user-authentication \
+  --head spec/001-user-authentication/T014-auth-endpoints \
+  --title "[T014] Create AuthController endpoints" \
+  --body "Implements AuthController with 6 endpoints
 
-# Frontend Agent reads their instructions
-cat .claude/agents/frontend.md
+Closes #14
 
-# Sees ESLint requirements
-# Sets up IDE with ESLint
-# Writes code following guidelines
-# Runs: npm run lint:front
-# Ensures 0 errors before PR
+Changes:
+- auth.controller.ts
+- Tests: 12/12 passing
+- Coverage: 92%
+"
 ```
 
----
+**PR merges**: Task branch → Spec branch
+**Closes**: Task issue #14
 
-## Critical Reminders
-
-### Frontend Code Quality (Non-Negotiable)
-
-**EVERY frontend PR MUST:**
-
-1. Pass ESLint with **ZERO errors**
-   ```bash
-   npm run lint:front  # Must show: ✓ No ESLint errors
-   ```
-2. Be formatted with Prettier
-   ```bash
-   npm run format
-   ```
-3. Pass TypeScript compilation
-   ```bash
-   npm run type-check --workspace=front
-   ```
-
-**ESLint Configuration:**
-
-- Location: `front/.eslintrc.js`
-- Rules: Airbnb TypeScript + Vue 3 recommended
-- Integration: Prettier runs through ESLint
-- Enforcement: CI pipeline fails on errors
-
-**No Exceptions:**
-
-- Cannot merge with ESLint errors
-- Cannot disable rules without Architecture Agent approval
-- Must document any `any` type usage
-- Must use type-based props/emits
-
-**Before Every Commit:**
+#### Step 7: After PR Merged
 
 ```bash
-# Run these commands
-npm run lint:fix:front  # Auto-fix what's possible
-npm run format          # Format all files
-npm run type-check      # Check TypeScript
-npm run test --workspace=front  # Run tests
+# Switch back to spec branch
+git checkout spec/001-user-authentication
+
+# Pull latest (includes merged task)
+git pull origin spec/001-user-authentication
 ```
 
-### Agent Instruction Files
+#### Step 8: Next Task
 
-All agent instructions are in `.claude/agents/`:
-
-- These are **Claude-specific prompts**
-- Read before starting work in that role
-- Follow checklists provided
-- Reference during work for best practices
+**ONLY NOW** can the next task begin. Return to Step 1 for next task.
 
 ---
 
-## Resources
+## Phase 5: Final Integration
 
-- [GitHub Spec-Kit Documentation](https://github.com/)
-- [SPECIFICATION.md](../SPECIFICATION.md)
-- [Agent Instructions](../.claude/agents/)
-- [Design System](./design/DESIGN_SYSTEM.md)
-- [Project Constitution](./PROJECT_CONSTITUTION.md)
-- [Spec-Kit Integration](./SPECKIT_INTEGRATION.md)
+### 5.1 All Tasks Complete
+
+After all task PRs are merged to spec branch:
+
+```bash
+# Ensure on spec branch
+git checkout spec/001-user-authentication
+
+# Pull latest
+git pull origin spec/001-user-authentication
+
+# Run full test suite
+npm run test:all
+
+# Run E2E tests
+npm run test:e2e
+
+# Build all workspaces
+npm run build
+```
+
+### 5.2 ⚠️ **WAIT FOR USER APPROVAL** (MANDATORY)
+
+**Post message to user**:
+
+```
+Feature 001 (User Authentication) is complete.
+
+All 44 tasks completed and merged to spec branch.
+
+Summary:
+- Backend: 14 tasks
+- Frontend: 11 tasks
+- Tests: 7 tasks
+- Docs: 5 tasks
+
+Test Results:
+- Backend: 127/127 tests, 87% coverage
+- Frontend: 89/89 tests, 82% coverage
+- E2E: 15/15 scenarios
+
+Quality Gates: ✅ All passed
+
+Waiting for approval to create final PR to main.
+```
+
+**User reviews and responds**:
+
+- ✅ "Approved, create PR to main"
+- ❌ "Please test X scenario first" → Test, fix if needed, request approval again
+
+### 5.3 Create Final PR to Main
+
+**After user approval**:
+
+```bash
+# Create PR to main
+gh pr create \
+  --base main \
+  --head spec/001-user-authentication \
+  --title "feat: User Authentication System" \
+  --body "Closes #5"
+```
+
+**PR merges**: Spec branch → Main
+**Closes**: Spec issue #5
+
+---
+
+## Branch Hierarchy
+
+```
+main (protected)
+└── spec/###-feature-name (spec branch with spec+plan+tasks, merged after all tasks done)
+    ├── spec/###-feature-name/T001-task-a (task sub-branch, merged to spec branch)
+    ├── spec/###-feature-name/T002-task-b (task sub-branch, merged to spec branch)
+    └── spec/###-feature-name/T003-task-c (task sub-branch, merged to spec branch)
+```
+
+**Flow**:
+
+1. `/specify` creates `spec/###-name` branch
+2. `/plan` and `/tasks` commit to same spec branch
+3. Each task creates sub-branch from spec branch
+4. Task PRs merge back to spec branch (SEQUENTIAL)
+5. Final PR merges spec branch to main
+
+---
+
+## GitHub Project Board
+
+### Required Columns (in order)
+
+1. **📋 Backlog** - All new tasks start here after /tasks
+2. **📐 Spec & Design** - Spec issues, design work, architecture decisions
+3. **⚙️ Common Types** - Shared types, DTOs, interfaces across workspaces
+4. **🔧 Backend Dev** - Backend tasks in progress
+5. **🎨 Frontend Dev** - Frontend tasks in progress
+6. **🧪 Testing** - Test-only tasks in progress
+7. **👀 Review** - Tasks with open PRs awaiting review
+8. **✅ Done** - Completed and merged tasks
+
+**Workflow**:
+
+- Spec issues → "📐 Spec & Design"
+- Task issues → "📋 Backlog" initially
+- Move to appropriate dev column when starting work
+- Move to "👀 Review" when PR created
+- Move to "✅ Done" when merged
+
+---
+
+## GitHub Labels
+
+### Required Labels
+
+**Type Labels**:
+
+- `feature`, `bug`, `tech-debt`, `docs`, `security`, `spec`
+
+**Priority Labels**:
+
+- `P0-critical`, `P1-high`, `P2-medium`, `P3-low`
+
+**Agent Labels**:
+
+- `agent:architecture`, `agent:backend`, `agent:frontend`
+- `agent:design`, `agent:testing`, `agent:devops`, `agent:common`
+
+**Status Labels** (optional):
+
+- `in-progress`, `blocked`, `review`
+
+---
+
+## User Approval Gates
+
+### Gate 1: After /specify Command
+
+**Required**: User must review and approve spec before `/plan` can run
+**What to review**: spec.md file and GitHub issue
+
+### Gate 2: After /plan Command
+
+**Required**: User must review and approve plan before `/tasks` can run
+**What to review**: plan.md, research.md, data-model.md, contracts/, quickstart.md
+
+### Gate 3: After /tasks Command
+
+**Required**: User must review and approve task breakdown before implementation begins
+**What to review**: tasks.md, feature branch, GitHub task issues
+
+### Gate 4: After Each Task Implementation
+
+**Required**: User must approve each task before PR creation
+**What to review**: Code changes, test results, quality gates
+
+### Gate 5: After All Tasks Complete
+
+**Required**: User must approve entire feature before PR to main
+**What to review**: Full feature functionality, all tests passing
+
+---
+
+## Quick Reference
+
+### Commands
+
+```bash
+/specify <description>   # Create spec + GitHub issue
+/plan                    # Create implementation plan
+/tasks                   # Create tasks + branch + GitHub issues
+```
+
+### Branch Naming
+
+```
+feature/###-feature-name                      # Feature branch
+feature/###-feature-name/T###-task-name       # Task sub-branch
+```
+
+### Commit Messages
+
+```
+type: brief description
+
+Detailed explanation
+
+Refs #[task-issue-number]
+```
+
+Types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
+
+---
+
+## Constitution Reference
+
+This workflow is mandated by Constitution v2.7.0:
+
+- Article III, Section 3.1: Specification-First Process (with git workflow + 3 approval gates)
+- Article III, Section 3.4: GitHub Integration & Branch Strategy
+- Article III, Section 3.5: Issue and PR Protocol
+- Article IV, Section 4.4: Git Standards
+- Article XII: GitHub Project Board (8 columns)
+
+**Key Changes in v2.7.0**:
+
+- **Single spec branch workflow**: Spec, plan, and tasks all on same `spec/###-name` branch
+- **Sequential task execution**: MANDATORY - cannot start new task until previous merged
+- **Husky pre-commit hook handling**: MANDATORY user approval before fixing hook failures
+- **Task branches from spec branch**: All task sub-branches created from and merged to spec branch
+- **Final PR only after all tasks**: Spec branch merged to main only when feature complete
+
+**Key Changes in v2.6.0**:
+
+- **Storybook integration**: Design Agent must create .stories.ts for all UI components
+
+**Key Changes in v2.5.0**:
+
+- **Git workflow integration**: Spec commits to temp branch, plan to main, tasks to feature branch
+- **Mandatory agent assignment**: Each task assigned to agent based on file paths
+- **GitHub project board**: 8 columns with defined workflow
+- **Enhanced labels**: Agent labels (agent:backend, agent:frontend, etc.)
+- **Automated tracking**: Issues auto-added to project board columns
+
+**Key Changes in v2.4.0**:
+
+- Added individual task files: `tasks/T###-task-name.md`
+- Each task gets detailed file with dependencies, acceptance criteria, tracking
+- Task files linked in GitHub issues
+
+**Key Changes in v2.3.0**:
+
+- Added MANDATORY approval gate after /specify
+- Added MANDATORY approval gate after /plan
+- Added MANDATORY approval gate after /tasks
+- Commands must STOP and WAIT for explicit user approval before proceeding
+
+See `.specify/memory/constitution.md` for full details.
