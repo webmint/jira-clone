@@ -23,7 +23,27 @@
 7. Run Review Checklist
    → If any [NEEDS CLARIFICATION]: WARN "Spec has uncertainties"
    → If implementation details found: ERROR "Remove tech details"
-8. Return: SUCCESS (spec ready for planning)
+8. Commit spec to git:
+   → git checkout -b spec/[###-feature-name] (temporary branch for spec)
+   → git add .specify/specs/[###-feature-name]/spec.md
+   → git commit -m "docs: add specification for [feature-name]"
+   → git push origin spec/[###-feature-name]
+9. Create GitHub issue for spec review:
+   → Title: "[Spec] Feature Name"
+   → Labels: "feature", "spec", priority label (P1/P2/P3)
+   → Assignee: Architecture Agent
+   → Body: Link to spec file in git + summary
+   → Add to project board column: "📐 Spec & Design"
+10. ⚠️ STOP and WAIT FOR USER APPROVAL (MANDATORY)
+   → Display: "Spec created. GitHub issue #XXX created."
+   → Display: "Spec branch: spec/[###-name]"
+   → Display: "Please review spec at .specify/specs/[###-name]/spec.md"
+   → Display: "WAITING FOR APPROVAL to proceed to /plan"
+   → User must explicitly approve before /plan can run
+11. After approval:
+    → Stay on spec branch (do NOT merge to main yet)
+    → Proceed to /plan command
+12. Return: SUCCESS (spec approved, ready for /plan)
 ```
 
 ---
@@ -127,5 +147,29 @@ _Updated by main() during processing_
 - [ ] Requirements generated
 - [ ] Entities identified
 - [ ] Review checklist passed
+- [ ] GitHub issue created for spec review
+
+## GitHub Integration
+
+**Spec Issue**: #[issue-number]
+**Status**: ⚠️ AWAITING USER APPROVAL
+
+## ⚠️ APPROVAL GATE
+
+**MANDATORY**: User must review and approve this specification before proceeding.
+
+**Review Checklist for User**:
+
+- [ ] Requirements are clear and complete
+- [ ] Scope is well-defined and bounded
+- [ ] User scenarios make sense
+- [ ] No major concerns or missing requirements
+
+**After Review**:
+
+- ✅ **APPROVED**: Respond with "Approved, proceed with /plan"
+- ❌ **CHANGES NEEDED**: Comment with required changes
+
+**Next Step**: After user approval, run `/plan` command
 
 ---

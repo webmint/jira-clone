@@ -31,3 +31,5 @@ Thumbs.db
 firebase-debug.log
 /.npm-cache/
 /front/.npm-cache/
+/back/.npm-cache/
+/common/.npm-cache/

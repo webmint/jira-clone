@@ -1,36 +1,35 @@
 <!--
 Sync Impact Report:
-Version: 1.0.0 → 2.0.0 (MAJOR - merged two constitutions with expanded governance)
+Version: 2.6.0 → 2.7.0 (MINOR - corrected git workflow, added sequential task enforcement, Husky handling)
 Modified Principles:
-  - I. Code Quality & Maintainability → Enhanced with specific tooling (ESLint, Airbnb style)
-  - II. Testing Discipline → Added specific coverage targets per workspace
-  - III. User Experience Consistency → Expanded with design system authority
-  - IV. Performance & Scalability → Added specific performance budgets
+  - Article III, Section 3.1: Corrected git workflow - single spec branch for spec+plan+tasks
+  - Article III, Section 3.1: Added sequential task execution (MANDATORY)
+  - Article III, Section 3.1: Added Husky pre-commit hook failure protocol (MANDATORY approval)
+  - Article III, Section 3.1: Task branches from spec branch, not feature branch
 Added Sections:
-  - Development Workflow (agent responsibilities, decision-making)
-  - Technical Standards (immutable tech stack, naming conventions)
-  - Design System (authority and component library standards)
-  - Security Standards (authentication, validation, practices)
-  - Documentation Standards (code and project documentation)
-  - Continuous Integration (CI/CD requirements)
-  - Communication Protocols (agent handoffs, issue/PR communication)
-  - Violation Handling (severity levels and response)
-  - Constitution Amendments (amendment process)
+  - Implementation Requirements (Per Task) with 6 steps
+  - Pre-commit Hook Failure Protocol
+  - Sequential execution enforcement: cannot start new task until previous merged
+  - Husky hook failures require user approval before fixes
+Removed Sections:
+  - None
 Templates Status:
-  ✅ plan-template.md - Updated Constitution Check section (pending)
-  ✅ spec-template.md - Aligns with specification-first workflow
-  ✅ tasks-template.md - Supports agent-based task organization
-  ⚠️  Agent-specific files - May need agent responsibility documentation
+  ✅ spec-template.md - Stays on spec branch after approval, no merge to main
+  ✅ plan-template.md - Commits to spec branch, no push until tasks approved
+  ✅ tasks-template.md - Commits to spec branch, pushes after approval
+  ✅ tasks-template.md - Task branches from spec branch with sequential enforcement
+  ✅ WORKFLOW.md - Updated with Husky handling and sequential task workflow
 Follow-up TODOs:
-  - Consider creating agent-specific guidance files referenced in Article III
-  - Establish quarterly review schedule for constitution
+  - Ensure Husky pre-commit hooks configured in repository
+  - Test sequential task enforcement in practice
+  - Verify spec branch workflow with real feature
 -->
 
 # Jira Clone Project Constitution
 
-**Version**: 2.0.0
+**Version**: 2.7.0
 **Ratified**: 2025-10-04
-**Last Amended**: 2025-10-04
+**Last Amended**: 2025-10-05
 **Status**: Active
 
 ---
@@ -85,6 +84,12 @@ This constitution establishes the foundational principles, standards, and govern
 - All code must be testable
 - Critical paths require 100% test coverage
 - Tests are maintained with the same care as production code
+
+**7. Agent-Based Task Delegation** (NON-NEGOTIABLE)
+
+- Specialized agents MUST be used for complex, multi-step tasks
+- Direct implementation without agents is ONLY permitted for trivial, single-file operations
+- This principle ensures efficient use of computational resources and parallel task execution
 
 ---
 
@@ -170,15 +175,118 @@ This constitution establishes the foundational principles, standards, and govern
 **Mandatory Workflow (NO STAGE MAY BE SKIPPED):**
 
 ```
-Idea → Specification → Design → Implementation → Testing → Review → Merge
+Idea → Specification → GitHub Issue (Spec) → Design → GitHub Issues (Tasks) →
+Feature Branch → Task Sub-branches → Implementation → User Approval → PR → Review → Merge
 ```
 
 **Specification Requirements:**
 
-1. Load or create feature spec in `.specify/specs/[###-feature-name]/spec.md`
-2. All ambiguities marked with `[NEEDS CLARIFICATION]`
-3. All requirements must be testable
-4. User scenarios defined with acceptance criteria
+1. Create feature spec in `.specify/specs/[###-feature-name]/spec.md`
+2. **Git workflow**:
+   - Create branch: `spec/[###-name]` from `main`
+   - Commit spec.md to spec branch
+   - Push spec branch to origin
+3. Create GitHub issue for spec:
+   - Assign to: Architecture Agent
+   - Labels: `feature`, `spec`, priority (P1/P2/P3)
+   - Add to project board: "📐 Spec & Design" column
+4. All ambiguities marked with `[NEEDS CLARIFICATION]`
+5. All requirements must be testable
+6. User scenarios defined with acceptance criteria
+7. ⚠️ **MANDATORY APPROVAL GATE**: User must review and explicitly approve spec
+8. **After approval**: Proceed to `/plan` (stay on spec branch)
+
+**Planning Requirements:**
+
+1. After spec approved, run `/plan` to generate implementation plan
+2. Create research.md, data-model.md, contracts/, quickstart.md
+3. **Git workflow**:
+   - Work on spec branch: `spec/[###-name]` (same branch from /specify)
+   - Commit all plan files to spec branch
+   - Do NOT push yet
+4. ⚠️ **MANDATORY APPROVAL GATE**: User must review and explicitly approve plan
+5. **After approval**: Proceed to `/tasks` (stay on spec branch, no push yet)
+
+**Task Generation Requirements:**
+
+1. After plan approved, run `/tasks` to generate task breakdown
+2. Create tasks.md with numbered, ordered tasks (summary view)
+3. Create tasks/ folder under spec directory
+4. Create individual file for EACH task: `tasks/T###-task-name.md`
+5. Each task file contains: description, files, dependencies, acceptance criteria, agent assignment
+6. **Task sizing guidelines (MANDATORY)**:
+   - Each task should be **meaningful but focused** - not too big, not too granular
+   - **Good task size**: 1-3 related files, single responsibility, ~1-3 hours work
+   - **Too big**: Multiple unrelated concerns, 5+ files, >4 hours work
+   - **Too small**: Single import, one-line change, trivial refactor
+   - **Examples of good tasks**:
+     - "Create User entity with validation" (model + validation rules)
+     - "Implement UsersService CRUD operations" (service with all methods)
+     - "Create authentication DTOs" (login, register, refresh DTOs together)
+   - **Examples of too granular** (avoid):
+     - "Add email field to User entity"
+     - "Create UserDto class"
+     - "Add import statement"
+   - **Examples of too big** (split into multiple):
+     - "Implement entire authentication system" (split into: entity, service, controller, DTOs, middleware)
+     - "Build user dashboard with all features" (split by feature/component)
+7. **Agent assignment MANDATORY**: Assign based on file paths (backend/frontend/common/testing/etc)
+8. **Git workflow**:
+   - Work on spec branch: `spec/[###-name]` (same branch from /specify)
+   - Commit tasks.md and tasks/ folder to spec branch
+9. Create GitHub issue for EACH task:
+   - Assignee: Responsible agent (GitHub username)
+   - Labels: `feature`, `spec`, priority
+   - Add to project board: "📋 Backlog" column
+   - Link to task file in git
+10. ⚠️ **MANDATORY APPROVAL GATE**: User must review and explicitly approve tasks
+11. **After approval**:
+    - Push spec branch to origin (with spec + plan + tasks)
+    - **Do NOT create PR to main yet**
+    - Proceed to `/implement` (implementation starts from spec branch)
+
+**Implementation Requirements (Per Task):**
+
+1. **Sequential execution MANDATORY**: Cannot start new task until previous task merged to spec branch
+2. **For each task**:
+   - Create task branch: `spec/[###-name]/T###-task-name` from spec branch
+   - Implement task following TDD workflow
+   - Run all quality gates (tests, linting, build)
+3. **Git commit with Husky pre-commit hooks**:
+   - Attempt commit to task branch
+   - If pre-commit hooks FAIL:
+     - **MANDATORY**: Report failure to user with error details
+     - **MANDATORY**: Wait for user approval before fixing
+     - Fix issues based on hook errors (ESLint, Prettier, tests, etc.)
+     - Retry commit
+     - Repeat until hooks pass
+   - If pre-commit hooks PASS: Commit succeeds
+4. ⚠️ **MANDATORY APPROVAL GATE**: User must approve completed task before PR
+5. **After task approval**:
+   - Push task branch to origin
+   - Create PR: `spec/[###-name]/T###-task-name` → `spec/[###-name]`
+   - Wait for PR merge
+   - After merge, switch to spec branch
+   - Pull latest from spec branch
+   - **ONLY THEN** can next task begin
+6. **After ALL tasks complete**:
+   - All task PRs merged to spec branch
+   - Run full test suite on spec branch
+   - ⚠️ **MANDATORY APPROVAL GATE**: User must approve entire feature
+   - Create final PR: `spec/[###-name]` → `main`
+   - Wait for PR merge and feature completion
+
+**Pre-commit Hook Failure Protocol:**
+
+When git commit fails due to Husky pre-commit hooks:
+
+1. **STOP immediately** - do not attempt auto-fix without approval
+2. Display error output to user
+3. Ask: "Pre-commit hooks failed. Approve fixes for: [list of errors]?"
+4. **Wait for explicit user approval** (MANDATORY)
+5. After approval, fix errors
+6. Retry commit
+7. If hooks fail again, repeat protocol
 
 ### Section 3.2: Agent Responsibilities
 
@@ -192,8 +300,12 @@ Idea → Specification → Design → Implementation → Testing → Review → 
 **Design Agent** (Final Authority on UI/UX)
 
 - Creates and maintains design system
+- Creates Storybook stories for all UI components
+- Maintains component documentation in Storybook
+- Ensures components are viewable in browser via Storybook dev server
 - Approves all UI/UX implementations
 - **Authority**: Can reject any PR for design violations
+- **Required Tools**: Storybook (for live component preview and documentation)
 
 **Common Agent** (Guardian of Type Contracts)
 
@@ -213,6 +325,8 @@ Idea → Specification → Design → Implementation → Testing → Review → 
 **DevOps Agent** (Build and Deployment)
 
 - Maintains build and deployment systems
+- Configures and maintains Storybook infrastructure
+- Ensures Storybook dev server is available for design reviews
 - **Authority**: Can block merges if CI/CD is broken
 
 **Testing Agent** (Quality Assurance)
@@ -242,23 +356,76 @@ Idea → Specification → Design → Implementation → Testing → Review → 
 - Breaking changes to public APIs
 - Constitution amendments
 
-### Section 3.4: Issue and PR Protocol
+### Section 3.4: GitHub Integration & Branch Strategy (MANDATORY)
+
+**Feature Specification Phase:**
+
+1. Create feature spec in `.specify/specs/[###-feature-name]/spec.md`
+2. Create GitHub issue for specification review:
+   - Title: `[Spec] Feature Name`
+   - Labels: `feature`, `spec`, priority label
+   - Assign to: Architecture Agent role
+   - Link to spec file in description
+3. Wait for spec approval before proceeding
+
+**Task Planning Phase:**
+
+1. After spec approved, run `/tasks` to generate tasks.md
+2. Create GitHub issues for EACH task:
+   - Title: `[T###] Task description`
+   - Labels: `feature`, agent label (e.g., `agent:backend`), priority
+   - Assign to: Responsible agent role
+   - Link to: Parent spec issue
+3. Create feature branch from `main`:
+   - Format: `feature/###-feature-name`
+   - Example: `feature/001-user-authentication`
+
+**Implementation Phase:**
+
+1. For EACH task, create sub-branch from feature branch:
+   - Format: `feature/###-feature-name/T###-task-name`
+   - Example: `feature/001-user-authentication/T014-auth-endpoints`
+2. Implement task on sub-branch
+3. When complete, **WAIT FOR USER APPROVAL** (MANDATORY)
+4. After approval, create PR from task sub-branch → feature branch
+5. After all tasks complete and approved, create PR from feature branch → main
+
+**Branch Hierarchy:**
+
+```
+main
+└── feature/###-feature-name (feature branch)
+    ├── feature/###-feature-name/T001-task-a (task sub-branch)
+    ├── feature/###-feature-name/T002-task-b (task sub-branch)
+    └── feature/###-feature-name/T003-task-c (task sub-branch)
+```
+
+### Section 3.5: Issue and PR Protocol
 
 **Every Issue Must Have:**
 
 - Clear description
 - Acceptance criteria
-- Assigned agent
-- Proper labels (feature/bug/tech-debt/docs)
-- Linked to epic/milestone
+- Assigned agent (using GitHub assignment)
+- Proper labels (feature/bug/tech-debt/docs + agent + priority)
+- Linked to parent spec issue (for task issues)
 
-**Every PR Must Have:**
+**Every Task PR Must Have (Sub-branch → Feature Branch):**
 
-- Reference to issue number
+- Reference to task issue number
 - Description of changes and rationale
 - Test evidence (screenshots of passing tests)
 - Screenshots (for UI changes)
-- Agent checklist completed
+- User approval confirmation
+- Breaking changes documented (if any)
+
+**Every Feature PR Must Have (Feature Branch → Main):**
+
+- Reference to spec issue number
+- Summary of all completed tasks
+- Full test coverage evidence
+- All task PRs merged
+- User approval for entire feature
 - Breaking changes documented (if any)
 
 **PR Review Requirements:**
@@ -268,6 +435,55 @@ Idea → Specification → Design → Implementation → Testing → Review → 
 - Design Agent approval for UI changes
 - All CI checks passing (green build mandatory)
 - No unresolved conversations
+- **User approval obtained before PR creation (MANDATORY)**
+
+### Section 3.6: Agent Delegation Requirements (NON-NEGOTIABLE)
+
+**MANDATORY Agent Usage:**
+
+All contributors MUST use the Task tool to launch specialized agents for:
+
+1. **Multi-file searches and research**
+   - Searching for patterns across >3 files
+   - Finding implementations, definitions, or usage examples
+   - Researching best practices or external documentation
+
+2. **Codebase analysis requiring >3 file reads**
+   - Understanding feature implementation across modules
+   - Tracing data flow or control flow
+   - Analyzing architectural patterns
+
+3. **Debugging that requires tracing across modules**
+   - Following function calls across service boundaries
+   - Tracking state changes through multiple components
+   - Root cause analysis spanning multiple files
+
+4. **Tasks benefiting from parallel execution**
+   - Independent file modifications
+   - Parallel test execution planning
+   - Concurrent research tasks
+
+**Permitted Direct Implementation (WITHOUT agents):**
+
+Direct work is ONLY allowed for:
+
+- Single-file edits with complete context already loaded
+- Trivial bug fixes (typos, formatting, single-line changes)
+- Documentation updates to single files
+- Immediate error fixes where root cause is obvious
+
+**Enforcement:**
+
+- Code reviews MUST verify agent usage for complex tasks
+- PRs without proper agent delegation may be rejected
+- Reviewers should ask: "Could this have used agents more effectively?"
+
+**Rationale:**
+
+- Agents reduce context window usage through focused, parallel execution
+- Specialized agents are optimized for specific task types
+- Parallel agent execution improves overall task completion time
+- Proper delegation demonstrates systematic problem-solving
 
 ---
 
@@ -332,37 +548,43 @@ jira-clone/
 **Branch Naming:**
 
 ```
-agent/[agent-name]/[feature-name]
+feature/[###-feature-name]                    # Feature branch
+feature/[###-feature-name]/T###-[task-name]   # Task sub-branch
 ```
 
 Examples:
 
-- `agent/backend/auth-endpoints`
-- `agent/frontend/login-page`
-- `agent/design/component-library`
+- `feature/001-user-authentication` (feature branch)
+- `feature/001-user-authentication/T014-auth-endpoints` (task sub-branch)
+- `feature/002-project-board/T005-kanban-ui` (task sub-branch)
 
 **Commit Messages (Conventional Commits):**
 
 ```
-[Agent] type: brief description
+type: brief description
 
 Detailed explanation if needed
 
-Closes #[issue-number]
+Refs #[task-issue-number]
 ```
 
 Examples:
 
 ```
-[Backend] feat: implement user authentication endpoints
+feat: implement user authentication endpoints
 
 Added Firebase Auth integration, JWT token handling,
 and refresh token mechanism.
 
-Closes #8
+Refs #14
 ```
 
 **Commit Types**: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
+
+**PR Closing:**
+
+- Task PRs (sub-branch → feature branch): `Closes #[task-issue]`
+- Feature PRs (feature branch → main): `Closes #[spec-issue]`
 
 ---
 
@@ -392,7 +614,37 @@ The Design System documented in `docs/design/DESIGN_SYSTEM.md` is **authoritativ
 5. Composition over configuration
 6. Multi-word component names (PascalCase)
 
-### Section 5.3: Responsive Design (STANDARD BREAKPOINTS)
+### Section 5.3: Storybook Integration (MANDATORY)
+
+**Storybook Requirements for All UI Components:**
+
+1. **Every UI component MUST have a `.stories.ts` file**
+2. Stories MUST be created BEFORE or ALONGSIDE component implementation
+3. Stories MUST demonstrate all component states and variants
+4. Storybook dev server MUST be running during design work (`npm run storybook`)
+5. Design Agent reviews happen in browser via Storybook at `http://localhost:6006`
+6. Story files MUST include:
+   - Default story (basic usage)
+   - All prop variants
+   - All state variations (loading, error, empty, success)
+   - Interaction examples (for interactive components)
+7. **Component is NOT complete without Storybook story**
+
+**Storybook Standards:**
+
+- Use CSF3 (Component Story Format 3) with TypeScript
+- Stories must use `<script setup lang="ts">` syntax for Vue 3
+- Group stories by component category (atoms, molecules, organisms)
+- Include JSDoc comments for story descriptions
+- Use Storybook controls for interactive props
+
+**DevOps Requirement:**
+
+- Storybook MUST be configured and maintained by DevOps Agent
+- Storybook dev server MUST be available for all design reviews
+- Storybook build MUST be part of CI/CD pipeline
+
+### Section 5.5: Responsive Design (STANDARD BREAKPOINTS)
 
 **Breakpoints (Mobile-First):**
 
@@ -685,9 +937,52 @@ The Design System documented in `docs/design/DESIGN_SYSTEM.md` is **authoritativ
 
 ---
 
-## Article XII: Communication Protocols
+## Article XII: GitHub Project Board (MANDATORY)
 
-### Section 12.1: Agent Handoffs
+### Section 12.1: Project Board Structure
+
+**Required Columns**:
+
+1. **📋 Backlog** - All planned issues (new issues start here)
+2. **📐 Spec & Design** - Specification and design work
+3. **⚙️ Common Types** - Common package tasks
+4. **🔧 Backend Dev** - Backend implementation
+5. **🎨 Frontend Dev** - Frontend implementation
+6. **🧪 Testing** - Testing & QA tasks
+7. **👀 Review** - Code review (PRs move here automatically)
+8. **✅ Done** - Completed work (closed issues/PRs)
+
+### Section 12.2: Issue Movement Rules
+
+**Automated**:
+
+- New issue created → "📋 Backlog"
+- Spec issue created → "📐 Spec & Design"
+- Task assigned to agent → Move to agent's column
+- PR opened → "👀 Review"
+- PR merged or issue closed → "✅ Done"
+
+**Manual**:
+
+- When starting a task → Move from Backlog to appropriate dev column
+- When blocked → Add "blocked" label, stays in current column
+- When ready for review → "👀 Review"
+
+### Section 12.3: Label Requirements
+
+**Every issue/PR MUST have**:
+
+- Type label: `feature`, `bug`, `tech-debt`, `docs`, `security`, `spec`
+- Priority label: `P0-critical`, `P1-high`, `P2-medium`, `P3-low`
+- Agent label: `agent:backend`, `agent:frontend`, `agent:common`, `agent:testing`, `agent:devops`, `agent:design`, `agent:architecture`
+
+**Optional labels**:
+
+- Status: `in-progress`, `blocked`, `review`
+
+## Article XIII: Communication Protocols
+
+### Section 13.1: Agent Handoffs
 
 **Handoff Document Requirements:**
 
@@ -759,6 +1054,7 @@ The Design System documented in `docs/design/DESIGN_SYSTEM.md` is **authoritativ
 - Accessibility violations (WCAG AA)
 - Design system violations
 - Coverage below minimum
+- Agent delegation violations (complex tasks done directly without agents)
 
 **P2 - Medium (MUST FIX IN SPRINT)**
 
@@ -882,6 +1178,7 @@ This constitution is a **living document**. It should be reviewed and updated as
 - **Design**: Follow design system, no custom CSS without approval
 - **Specification**: Required before any code is written
 - **Performance**: <200ms API p95, <1s TTI, no regressions >5%
+- **Agent Delegation**: Use agents for multi-file searches, complex debugging, parallel tasks
 
 ### ❌ Prohibited (NEVER ALLOWED)
 
@@ -895,6 +1192,7 @@ This constitution is a **living document**. It should be reviewed and updated as
 - Code without specification
 - `v-html` without security review
 - Direct Firebase calls in controllers (use service layer)
+- Complex multi-file tasks without using agents
 
 ### 📋 Quality Gates Checklist
 
@@ -923,6 +1221,13 @@ Before merge, ALL must be ✅:
 
 ## Appendix B: Version History
 
+- **v2.7.0** (2025-10-05) - Corrected git workflow (single spec branch), sequential tasks, Husky handling
+- **v2.6.0** (2025-10-05) - Added Storybook integration for Design Agent workflow (Article V, Section 5.3)
+- **v2.5.0** (2025-10-05) - Added git workflow, agent assignment, GitHub project board (Article XII)
+- **v2.4.0** (2025-10-05) - Added individual task files in tasks/ folder with detailed tracking
+- **v2.3.0** (2025-10-05) - Added MANDATORY approval gates after /specify, /plan, /tasks commands
+- **v2.2.0** (2025-10-05) - Added GitHub integration workflow, branch strategy, user approval gates
+- **v2.1.0** (2025-10-05) - Added Agent-Based Task Delegation principle (Article I.7, Article III.6)
 - **v2.0.0** (2025-10-04) - Merged constitutions; added agent responsibilities, expanded standards
 - **v1.0.0** (2025-10-04) - Initial constitution established
 

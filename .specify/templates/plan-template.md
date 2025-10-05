@@ -23,12 +23,33 @@
    → If new violations: Refactor design, return to Phase 1
    → Update Progress Tracking: Post-Design Constitution Check
 8. Plan Phase 2 → Describe task generation approach (DO NOT create tasks.md)
-9. STOP - Ready for /tasks command
+9. Commit plan files to git:
+   → Ensure on spec branch: spec/[###-feature-name]
+   → git add .specify/specs/[###-feature-name]/plan.md
+   → git add .specify/specs/[###-feature-name]/research.md
+   → git add .specify/specs/[###-feature-name]/data-model.md
+   → git add .specify/specs/[###-feature-name]/contracts/
+   → git add .specify/specs/[###-feature-name]/quickstart.md
+   → git commit -m "docs: add implementation plan for [feature-name]"
+   → Do NOT push yet (wait for tasks approval)
+10. ⚠️ STOP and WAIT FOR USER APPROVAL (MANDATORY)
+    → Display: "Plan completed. Review deliverables:"
+    → Display: "  - plan.md (implementation strategy)"
+    → Display: "  - research.md (technical decisions)"
+    → Display: "  - data-model.md (database schema)"
+    → Display: "  - contracts/ (API contracts)"
+    → Display: "  - Files committed to spec branch (not pushed yet)"
+    → Display: "WAITING FOR APPROVAL to proceed to /tasks"
+    → User must explicitly approve before /tasks can run
+11. After approval:
+    → Stay on spec branch (do NOT push yet)
+    → Proceed to /tasks command
+12. Return: SUCCESS (plan approved, ready for /tasks)
 ```
 
-**IMPORTANT**: The /plan command STOPS at step 7. Phases 2-4 are executed by other commands:
+**IMPORTANT**: The /plan command STOPS at step 10 and waits for user approval. Phases 2-4 are executed by other commands:
 
-- Phase 2: /tasks command creates tasks.md
+- Phase 2: /tasks command creates tasks.md (AFTER user approves plan)
 - Phase 3-4: Implementation execution (manual or via tools)
 
 ## Summary
@@ -111,6 +132,14 @@ _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 - [ ] Feature specs in `.specify/specs/[###-feature-name]/spec.md`
 - [ ] API docs (OpenAPI/Swagger), component docs, deployment guides
 - [ ] README per workspace with onboarding guide
+
+### Article III.5: Agent Delegation Requirements
+
+- [ ] Multi-file searches planned to use general-purpose agents
+- [ ] Complex debugging tasks delegated to specialized agents
+- [ ] Research tasks (>3 files) assigned to agent execution
+- [ ] Parallel execution opportunities identified for agent usage
+- [ ] Direct implementation justified only for single-file trivial edits
 
 ## Project Structure
 
@@ -250,7 +279,14 @@ _This section describes what the /tasks command will do - DO NOT execute during 
 - Dependency order: Models before services before UI
 - Mark [P] for parallel execution (independent files)
 
-**Estimated Output**: 25-30 numbered, ordered tasks in tasks.md
+**GitHub Integration**:
+
+- Create feature branch: `feature/[###-feature-name]` from `main`
+- Create GitHub issue for EACH task
+- Assign tasks to responsible agents
+- Label tasks with: `feature`, agent label, priority
+
+**Estimated Output**: 25-30 numbered, ordered tasks in tasks.md + GitHub issues
 
 **IMPORTANT**: This phase is executed by the /tasks command, NOT by /plan
 
@@ -258,9 +294,22 @@ _This section describes what the /tasks command will do - DO NOT execute during 
 
 _These phases are beyond the scope of the /plan command_
 
-**Phase 3**: Task execution (/tasks command creates tasks.md)  
-**Phase 4**: Implementation (execute tasks.md following constitutional principles)  
-**Phase 5**: Validation (run tests, execute quickstart.md, performance validation)
+**Phase 3**: Task generation (/tasks command creates tasks.md + GitHub issues + feature branch)
+**Phase 4**: Implementation workflow for EACH task:
+
+1. Create sub-branch from feature branch: `feature/[###-name]/T###-task`
+2. Implement task following TDD and constitutional principles
+3. **WAIT FOR USER APPROVAL** (MANDATORY)
+4. Create PR from sub-branch → feature branch (closes task issue)
+5. Merge after review and CI passing
+
+**Phase 5**: Final integration:
+
+1. After all task PRs merged to feature branch
+2. Run full test suite and validation
+3. **WAIT FOR USER APPROVAL** (MANDATORY)
+4. Create PR from feature branch → main (closes spec issue)
+5. Merge after final review
 
 ## Complexity Tracking
 
@@ -290,7 +339,35 @@ _This checklist is updated during execution flow_
 - [ ] Post-Design Constitution Check: PASS
 - [ ] All NEEDS CLARIFICATION resolved
 - [ ] Complexity deviations documented
+- [ ] ⚠️ User approval obtained for plan
+
+## ⚠️ APPROVAL GATE
+
+**MANDATORY**: User must review and approve this implementation plan before proceeding to /tasks.
+
+**Review Checklist for User**:
+
+- [ ] Technical approach makes sense
+- [ ] Research decisions are sound
+- [ ] Data model is appropriate
+- [ ] API contracts are well-defined
+- [ ] No major concerns about architecture
+
+**Deliverables to Review**:
+
+- `plan.md` - This file (implementation strategy)
+- `research.md` - Technical research and decisions
+- `data-model.md` - Database schema and entities
+- `contracts/` - API contract definitions
+- `quickstart.md` - Manual testing guide
+
+**After Review**:
+
+- ✅ **APPROVED**: Respond with "Approved, proceed with /tasks"
+- ❌ **CHANGES NEEDED**: Comment with required changes
+
+**Next Step**: After user approval, run `/tasks` command
 
 ---
 
-_Based on Constitution v2.0.0 - See `.specify/memory/constitution.md`_
+_Based on Constitution v2.2.0 - See `.specify/memory/constitution.md`_
