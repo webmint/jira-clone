@@ -383,7 +383,8 @@ cat .specify/specs/authentication/spec.md
 ```
 jira-clone/
 ├── .claude/
-│   └── agents/              # Claude agent instructions (permanent)
+│   ├── commands/            # Claude slash commands
+│   └── agents/              # Claude agent instructions (Claude Code specific)
 │       ├── architecture.md
 │       ├── backend.md
 │       ├── frontend.md
@@ -417,32 +418,33 @@ jira-clone/
 
 ### What Goes Where
 
-| Content Type         | Location                 | Reason                  |
-| -------------------- | ------------------------ | ----------------------- |
-| Agent instructions   | `.claude/agents/`        | Claude-specific prompts |
-| Active feature specs | `.specify/specs/`        | Working documents       |
-| Templates            | `.specify/templates/`    | Reusable templates      |
-| Context/Memory       | `.specify/memory/`       | Session state           |
-| Automation scripts   | `.specify/scripts/`      | Workflow helpers        |
-| Design system        | `docs/design/`           | Permanent reference     |
-| ADRs                 | `docs/decisions/`        | Historical record       |
-| Main spec            | Root `SPECIFICATION.md`  | Project overview        |
-| Archived specs       | `docs/specs/` (optional) | Historical reference    |
+| Content Type         | Location                 | Reason                       |
+| -------------------- | ------------------------ | ---------------------------- |
+| Agent instructions   | `.claude/agents/`        | Claude Code specific prompts |
+| Slash commands       | `.claude/commands/`      | Claude Code slash commands   |
+| Active feature specs | `.specify/specs/`        | Working documents            |
+| Templates            | `.specify/templates/`    | Reusable templates           |
+| Context/Memory       | `.specify/memory/`       | Session state                |
+| Automation scripts   | `.specify/scripts/`      | Workflow helpers             |
+| Design system        | `docs/design/`           | Permanent reference          |
+| ADRs                 | `docs/decisions/`        | Historical record            |
+| Main spec            | Root `SPECIFICATION.md`  | Project overview             |
+| Archived specs       | `docs/specs/` (optional) | Historical reference         |
 
 ---
 
 ## Integration Checklist
 
-- [ ] `.claude/agents/` folder exists with agent instructions
+- [ ] `.claude/` folder exists (created by Claude Code or spec-kit)
+  - [ ] `.claude/agents/` contains agent instruction files
+  - [ ] `.claude/commands/` contains slash command definitions
 - [ ] `.specify/` folder exists (created by spec-kit)
-- [ ] Created feature spec template in `.specify/templates/`
-- [ ] Created ADR template in `.specify/templates/`
-- [ ] Created design spec template in `.specify/templates/`
-- [ ] Created automation scripts in `.specify/scripts/`
-- [ ] Understand what `.specify/memory/` is for
+  - [ ] `.specify/templates/` contains spec, plan, tasks, ADR, and design templates
+  - [ ] `.specify/scripts/` contains automation scripts
+  - [ ] `.specify/memory/` contains constitution and context files
 - [ ] Decided on spec location strategy (Option 1 or 2)
-- [ ] Updated agent instructions are in `.claude/agents/`
-- [ ] All agents know where to find/create specs
+- [ ] All documentation references correct paths (`.claude/agents/` not `docs/agents/`)
+- [ ] Team understands the dual structure (.claude for Claude Code, .specify for spec-kit)
 
 ---
 

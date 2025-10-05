@@ -34,7 +34,7 @@ The `.specify/` folder is created by GitHub spec-kit and provides:
 - **Feature Specs**: Store in `.specify/` (managed by spec-kit)
 - **Design Docs**: Keep in `docs/design/` (easier to browse)
 - **ADRs**: Keep in `docs/decisions/` (version controlled documentation)
-- **Agent Instructions**: Keep in `docs/agents/` (reference material)
+- **Agent Instructions**: Keep in `.claude/agents/` (Claude Code specific prompts)
 
 ### Repository Structure
 
@@ -52,15 +52,16 @@ jira-clone/
 │   │   └── design.md
 │   └── workflows/
 │       └── ci.yml
+├── .claude/
+│   └── agents/                 # Agent instruction files
+│       ├── architecture.md
+│       ├── backend.md
+│       ├── frontend.md
+│       ├── common.md
+│       ├── devops.md
+│       ├── testing.md
+│       └── design.md
 ├── docs/
-│   ├── agents/                 # Agent instruction files
-│   │   ├── architecture.md
-│   │   ├── backend.md
-│   │   ├── frontend.md
-│   │   ├── common.md
-│   │   ├── devops.md
-│   │   ├── testing.md
-│   │   └── design.md
 │   ├── design/                 # Design system & mockups
 │   │   ├── DESIGN_SYSTEM.md
 │   │   ├── COMPONENTS.md
@@ -873,6 +874,8 @@ Track these metrics throughout the project:
 
 **Agent Instructions Location:**
 
+All agent instructions are in `.claude/agents/` (Claude Code specific):
+
 ```
 .claude/
 └── agents/
@@ -965,7 +968,7 @@ All agent instructions are in `.claude/agents/`:
 
 - [GitHub Spec-Kit Documentation](https://github.com/)
 - [SPECIFICATION.md](../SPECIFICATION.md)
-- [Agent Instructions](.claude/agents/)
+- [Agent Instructions](../.claude/agents/)
 - [Design System](./design/DESIGN_SYSTEM.md)
 - [Project Constitution](./PROJECT_CONSTITUTION.md)
 - [Spec-Kit Integration](./SPECKIT_INTEGRATION.md)
