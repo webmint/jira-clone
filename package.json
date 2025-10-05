@@ -1,0 +1,31 @@
+{
+  "name": "jira-clone",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "front",
+    "back",
+    "common"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm:dev:*\"",
+    "dev:front": "npm run dev --workspace=front",
+    "dev:back": "npm run dev --workspace=back",
+    "build": "npm run build --workspace=common && npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write \"**/*.{ts,vue,json,md}\"",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vue/eslint-config-prettier": "^9.0.0",
+    "concurrently": "^8.2.0",
+    "eslint": "^8.50.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.2.0"
+  }
+}

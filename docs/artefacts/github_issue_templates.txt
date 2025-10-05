@@ -1,0 +1,479 @@
+# GitHub Issue Templates
+
+## File 1: Feature Template
+
+**File**: `.github/ISSUE_TEMPLATE/feature.md`
+
+```markdown
+---
+name: Feature
+about: New feature or enhancement
+title: '[Feature] '
+labels: feature
+assignees: ''
+---
+
+## Feature Description
+<!-- Brief description of the feature -->
+
+## User Story
+As a [role], I want to [action] so that [benefit]
+
+## Acceptance Criteria
+- [ ] Criterion 1
+- [ ] Criterion 2
+- [ ] Criterion 3
+
+## Technical Considerations
+<!-- Any technical details, dependencies, or constraints -->
+
+### Frontend
+- Components needed:
+- State changes:
+- Routing:
+
+### Backend
+- API endpoints:
+- Database changes:
+- Firebase changes:
+
+### Common
+- New types needed:
+- Validators needed:
+
+## Design
+<!-- Link to design specs or describe UI/UX requirements -->
+- [ ] Design spec created (in docs/design/ or .specify/)
+- [ ] Design reviewed by Design Agent
+
+## Dependencies
+- Depends on: #
+- Blocks: #
+- Related: #
+
+## Tasks Breakdown
+- [ ] [Spec] Architecture spec created
+- [ ] [Design] UI/UX design completed
+- [ ] [Common] Types and validators defined
+- [ ] [Backend] API implemented
+- [ ] [Frontend] UI implemented
+- [ ] [Testing] Tests written
+- [ ] [Docs] Documentation updated
+
+## Phase
+<!-- Which phase does this belong to? -->
+- [ ] Phase 0 (Setup)
+- [ ] Phase 1 (MVP)
+- [ ] Phase 2 (Core Features)
+- [ ] Phase 3 (Enhancements)
+- [ ] Phase 4 (Polish)
+
+## Story Points
+<!-- Estimate complexity: 1, 2, 3, 5, 8, 13, 21 -->
+**Estimate**: 
+
+## Agent Assignments
+- Architecture: @
+- Design: @
+- Common: @
+- Backend: @
+- Frontend: @
+- Testing: @
+- DevOps: @
+
+## Notes
+<!-- Any additional information -->
+```
+
+---
+
+## File 2: Bug Template
+
+**File**: `.github/ISSUE_TEMPLATE/bug.md`
+
+```markdown
+---
+name: Bug Report
+about: Report a bug or issue
+title: '[Bug] '
+labels: bug
+assignees: ''
+---
+
+## Bug Description
+<!-- Clear and concise description of the bug -->
+
+## Steps to Reproduce
+1. Go to '...'
+2. Click on '...'
+3. Scroll down to '...'
+4. See error
+
+## Expected Behavior
+<!-- What should happen -->
+
+## Actual Behavior
+<!-- What actually happens -->
+
+## Screenshots
+<!-- If applicable, add screenshots to help explain the problem -->
+
+## Environment
+- **Browser**: [e.g. Chrome 118, Firefox 119, Safari 17]
+- **OS**: [e.g. macOS 14, Windows 11, Ubuntu 22.04]
+- **Device**: [e.g. Desktop, iPhone 14, iPad]
+- **Version/Commit**: [e.g. v1.0.0 or commit hash]
+
+## Console Output
+<!-- If applicable, paste any error messages or console output -->
+```
+[Paste console errors here]
+```
+
+## Network Errors
+<!-- If applicable, paste any network errors from DevTools -->
+```
+[Paste network errors here]
+```
+
+## Additional Context
+<!-- Any other context about the problem -->
+
+## Possible Solution
+<!-- If you have suggestions on how to fix -->
+
+## Impact
+- [ ] Critical (blocks development/production)
+- [ ] High (major feature broken)
+- [ ] Medium (feature partially broken)
+- [ ] Low (minor issue, workaround exists)
+
+## Affected Component
+- [ ] Frontend
+- [ ] Backend
+- [ ] Common
+- [ ] DevOps/CI
+- [ ] Documentation
+
+## Labels to Add
+<!-- Check all that apply -->
+- [ ] `bug`
+- [ ] `frontend`
+- [ ] `backend`
+- [ ] `common`
+- [ ] `priority-high`
+- [ ] `priority-medium`
+- [ ] `priority-low`
+
+## Related Issues
+- Related to: #
+- Duplicate of: #
+```
+
+---
+
+## File 3: Design Template
+
+**File**: `.github/ISSUE_TEMPLATE/design.md`
+
+```markdown
+---
+name: Design
+about: UI/UX design task
+title: '[Design] '
+labels: design
+assignees: ''
+---
+
+## Design Task
+<!-- What needs to be designed -->
+
+## Feature Context
+<!-- Which feature is this design for? -->
+- Related Feature: #
+
+## Design Scope
+<!-- What specific UI/UX elements need to be designed -->
+
+### Pages/Views
+- [ ] Page/View 1
+- [ ] Page/View 2
+
+### Components
+- [ ] Component 1
+- [ ] Component 2
+
+### Interactions
+- [ ] Interaction pattern 1
+- [ ] Interaction pattern 2
+
+## User Flow
+<!-- Describe the user journey -->
+1. User starts at...
+2. User clicks/navigates...
+3. User sees...
+
+## Design Requirements
+
+### Functionality
+<!-- What must this design accomplish? -->
+- Requirement 1
+- Requirement 2
+
+### Design System Compliance
+- [ ] Uses design system colors
+- [ ] Uses design system typography
+- [ ] Uses design system spacing
+- [ ] Uses design system components
+- [ ] Follows established patterns
+
+### Responsive Design
+- [ ] Mobile design (< 768px)
+- [ ] Tablet design (768px - 1023px)
+- [ ] Desktop design (≥ 1024px)
+
+### Accessibility
+- [ ] WCAG 2.1 AA color contrast
+- [ ] Keyboard navigation planned
+- [ ] Screen reader considerations
+- [ ] Focus states defined
+- [ ] ARIA labels specified
+
+## Deliverables
+- [ ] Design specification document (.specify/ or docs/design/)
+- [ ] Component specifications with Tailwind classes
+- [ ] Interaction patterns documented
+- [ ] Responsive behavior documented
+- [ ] Accessibility requirements documented
+
+## Reference/Inspiration
+<!-- Links to similar designs, mockups, or inspiration -->
+
+## Design Constraints
+<!-- Any technical or business constraints -->
+
+## Timeline
+**Needed by**: [Date]
+
+## Handoff
+**Frontend Agent**: @
+<!-- Tag frontend agent who will implement this design -->
+
+## Review Checklist
+Before marking complete:
+- [ ] All components specified
+- [ ] Tailwind classes provided
+- [ ] All states documented (default, hover, active, disabled, loading)
+- [ ] Responsive behavior defined
+- [ ] Accessibility requirements clear
+- [ ] Frontend Agent can implement without questions
+
+## Notes
+<!-- Any additional information -->
+```
+
+---
+
+## File 4: Spec Template (Optional)
+
+**File**: `.github/ISSUE_TEMPLATE/spec.md`
+
+```markdown
+---
+name: Specification
+about: Create a feature specification
+title: '[Spec] '
+labels: spec, architecture
+assignees: ''
+---
+
+## Feature Name
+<!-- Name of the feature to be specified -->
+
+## Overview
+<!-- High-level description of what this feature does -->
+
+## Related Epic
+- Epic: #
+
+## Scope
+
+### In Scope
+- Item 1
+- Item 2
+
+### Out of Scope
+- Item 1
+- Item 2
+
+## User Stories
+- As a [role], I want to [action] so that [benefit]
+- As a [role], I want to [action] so that [benefit]
+
+## Technical Requirements
+
+### Frontend
+- Components needed:
+- State management:
+- Routing requirements:
+
+### Backend
+- API endpoints:
+- Services needed:
+- Database changes:
+
+### Common
+- Types to define:
+- Validators needed:
+- Shared utilities:
+
+## API Contracts
+
+### Endpoint 1
+**Method**: POST
+**Path**: /api/resource
+
+**Request**:
+```typescript
+interface RequestDto {
+  field: string;
+}
+```
+
+**Response**:
+```typescript
+interface ResponseDto {
+  id: string;
+  field: string;
+}
+```
+
+**Status Codes**:
+- 200: Success
+- 400: Validation error
+- 401: Unauthorized
+- 404: Not found
+- 500: Server error
+
+## Data Models
+
+### Firestore Collection
+**Collection**: `collection/{id}`
+
+```typescript
+interface Model {
+  id: string;
+  field: string;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+```
+
+**Indexes Required**:
+- Index 1: field ASC, createdAt DESC
+
+## Security Considerations
+- Authentication required: Yes/No
+- Authorization rules:
+- Data validation:
+- Rate limiting:
+
+## Performance Considerations
+- Expected load:
+- Caching strategy:
+- Query optimization:
+
+## Acceptance Criteria
+- [ ] Criterion 1
+- [ ] Criterion 2
+- [ ] Criterion 3
+
+## Dependencies
+- Depends on: #
+- Blocks: #
+
+## Sub-Tasks
+Once this spec is approved, create these issues:
+- [ ] #XX - [Design] Design UI/UX
+- [ ] #XX - [Common] Define types and validators
+- [ ] #XX - [Backend] Implement API
+- [ ] #XX - [Frontend] Implement UI
+- [ ] #XX - [Testing] Write tests
+
+## Architecture Decisions
+<!-- Any ADRs that need to be created -->
+- [ ] ADR needed: Yes/No
+
+## Timeline
+**Sprint**: [Sprint number]
+**Target completion**: [Date]
+
+## Notes
+<!-- Additional information or context -->
+```
+
+---
+
+## File 5: config.yml (Optional - Issue Template Chooser)
+
+**File**: `.github/ISSUE_TEMPLATE/config.yml`
+
+```yaml
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentation
+    url: https://github.com/your-username/jira-clone/blob/main/README.md
+    about: Check the project documentation
+  - name: 💬 Discussions
+    url: https://github.com/your-username/jira-clone/discussions
+    about: Ask questions and discuss ideas
+```
+
+---
+
+## How to Use These Templates
+
+### 1. Create the files:
+
+```bash
+# From project root
+mkdir -p .github/ISSUE_TEMPLATE
+
+# Copy each template above into these files:
+# .github/ISSUE_TEMPLATE/feature.md
+# .github/ISSUE_TEMPLATE/bug.md
+# .github/ISSUE_TEMPLATE/design.md
+# .github/ISSUE_TEMPLATE/spec.md (optional)
+# .github/ISSUE_TEMPLATE/config.yml (optional)
+```
+
+### 2. Commit and push:
+
+```bash
+git add .github/
+git commit -m "Add GitHub issue templates"
+git push
+```
+
+### 3. Test on GitHub:
+
+- Go to your repository
+- Click "Issues" → "New Issue"
+- You should see template chooser with options:
+  - 🎯 Feature
+  - 🐛 Bug Report
+  - 🎨 Design
+  - 📋 Specification (if you added it)
+
+## Template Usage by Agent
+
+| Template | Primary Agent | Used When |
+|----------|---------------|-----------|
+| Feature | Architecture | Planning new feature |
+| Bug | Any | Found a bug |
+| Design | Design | UI/UX work needed |
+| Spec | Architecture | Detailed spec needed |
+
+---
+
+All templates are ready to copy! 🚀

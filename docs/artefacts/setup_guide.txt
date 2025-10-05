@@ -1,0 +1,835 @@
+# Jira Clone - Complete Setup Guide
+
+## 📋 Overview
+
+This guide will help you set up your Jira Clone project with the complete sub-agent workflow system. All agent instruction files and workflow documents are ready to be copied into your project.
+
+## 🎯 What You Have
+
+You now have a complete set of artifacts for building a Jira Clone application:
+
+### Core Documentation
+1. **Project Specification** (`SPECIFICATION.md`)
+   - Complete project requirements
+   - Features and user stories
+   - Data models for Firestore
+   - API endpoints
+   - Technical requirements
+
+2. **GitHub Spec-Kit Workflow** (`docs/WORKFLOW.md`)
+   - Complete workflow methodology
+   - Phase-by-phase development process
+   - Agent handoff protocols
+   - GitHub Projects structure
+   - Issue templates and labels
+
+### Agent Instructions (7 Agents)
+All located in `docs/agents/`:
+
+1. **Architecture Agent** (`architecture.md`)
+   - System design and specifications
+   - Creates feature specs and ADRs
+   - Coordinates other agents
+
+2. **Backend Agent** (`backend.md`)
+   - NestJS API implementation
+   - Firebase integration
+   - Testing and documentation
+
+3. **Frontend Agent** (`frontend.md`)
+   - Vue 3 UI implementation
+   - Component development
+   - State management with Pinia
+
+4. **Common Agent** (`common.md`)
+   - Shared TypeScript types
+   - DTOs and validators
+   - Shared utilities
+
+5. **DevOps Agent** (`devops.md`)
+   - CI/CD setup with GitHub Actions
+   - Development tooling
+   - Build optimization
+
+6. **Testing Agent** (`testing.md`)
+   - Unit, integration, E2E testing
+   - Test strategy and coverage
+   - Accessibility testing
+
+7. **Design Agent** (`design.md`)
+   - Design system creation
+   - UI/UX specifications
+   - Component designs
+
+## 🚀 Setup Instructions
+
+### Step 1: Create Repository Structure
+
+```bash
+# Create the main project directory
+mkdir jira-clone
+cd jira-clone
+
+# Initialize git repository
+git init
+
+# Initialize spec-kit (if you haven't already)
+# This creates .specify and .claude folders
+# If you already have these from spec-kit, skip this step
+
+# Create the monorepo workspace structure
+mkdir -p {front,back,common}
+
+# Create Claude agents folder (for agent instructions)
+mkdir -p .claude/agents
+
+# Create additional documentation folders (alongside spec-kit folders)
+mkdir -p docs/{design,decisions}
+
+# Create README
+echo "# Jira Clone" > README.md
+```
+
+**Expected Structure After spec-kit + monorepo setup:**
+```
+jira-clone/
+├── .claude/                  # Claude-specific configurations (from spec-kit)
+│   └── agents/              # Agent instruction files
+├── .specify/                 # Spec-kit configurations
+│   ├── scripts/             # Spec-kit scripts
+│   ├── memory/              # Spec-kit memory/context
+│   └── templates/           # Spec-kit templates
+├── front/                   # Vue 3 application
+├── back/                    # NestJS API
+├── common/                  # Shared types
+├── docs/                    # Project documentation
+│   ├── design/             # Design specs (Design Agent)
+│   └── decisions/          # ADRs (Architecture Agent)
+├── .github/                # GitHub workflows and templates
+├── README.md
+└── package.json            # Root workspace configuration
+```
+
+### Step 2: Copy All Documentation
+
+Copy these artifacts into your project:
+
+```bash
+# Main specification
+# Copy content to: SPECIFICATION.md
+
+# Workflow guide
+# Copy content to: docs/WORKFLOW.md
+
+# Agent instructions (CLAUDE-SPECIFIC)
+# Copy content to:
+# - .claude/agents/architecture.md
+# - .claude/agents/backend.md
+# - .claude/agents/frontend.md
+# - .claude/agents/common.md
+# - .claude/agents/devops.md
+# - .claude/agents/testing.md
+# - .claude/agents/design.md
+
+# Project constitution
+# Copy content to: docs/PROJECT_CONSTITUTION.md
+
+# Spec-kit integration guide
+# Copy content to: docs/SPECKIT_INTEGRATION.md
+```
+
+### Step 3: Initialize Root Package
+
+```bash
+# Create root package.json
+cat > package.json << 'EOF'
+{
+  "name": "jira-clone",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "front",
+    "back",
+    "common"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm:dev:*\"",
+    "dev:front": "npm run dev --workspace=front",
+    "dev:back": "npm run dev --workspace=back",
+    "build": "npm run build --workspace=common && npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write \"**/*.{ts,vue,json,md}\"",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "concurrently": "^8.2.0",
+    "eslint": "^8.50.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.2.0"
+  }
+}
+EOF
+
+# Install root dependencies
+npm install
+```
+
+### Step 4: Setup Each Workspace
+
+#### Frontend (Vue 3)
+```bash
+cd front
+
+# Initialize package.json
+npm init -y
+
+# Install dependencies
+npm install vue@latest vue-router@latest pinia
+npm install axios firebase @vueuse/core
+npm install vee-validate zod vuedraggable
+npm install @tiptap/vue-3 @tiptap/starter-kit date-fns
+
+# Install dev dependencies
+npm install -D @vitejs/plugin-vue vite typescript vue-tsc
+npm install -D tailwindcss postcss autoprefixer
+npm install -D vitest @vue/test-utils jsdom
+
+# Install ESLint with Airbnb + Vue strongest rules
+npm install -D eslint \
+  eslint-config-airbnb-base \
+  eslint-config-airbnb-typescript \
+  eslint-plugin-import \
+  eslint-plugin-vue \
+  @typescript-eslint/eslint-plugin \
+  @typescript-eslint/parser
+
+# Install Prettier integration
+npm install -D prettier \
+  eslint-config-prettier \
+  eslint-plugin-prettier
+
+# Install ESLint TypeScript resolver
+npm install -D eslint-import-resolver-typescript
+
+# Initialize Vite
+npm create vite@latest . -- --template vue-ts
+
+# Initialize Tailwind
+npx tailwindcss init -p
+```
+
+#### Backend (NestJS)
+```bash
+cd ../back
+
+# Install NestJS CLI globally (optional)
+npm install -g @nestjs/cli
+
+# Create NestJS project
+nest new . --skip-git
+
+# Install additional dependencies
+npm install firebase-admin
+npm install @nestjs/config @nestjs/swagger
+npm install class-validator class-transformer
+
+# Install dev dependencies
+npm install -D @nestjs/testing supertest
+```
+
+#### Common Package
+```bash
+cd ../common
+
+# Initialize package.json
+npm init -y
+
+# Install dependencies
+npm install zod
+
+# Install dev dependencies
+npm install -D typescript
+
+# Create tsconfig.json
+cat > tsconfig.json << 'EOF'
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
+EOF
+
+# Create initial structure
+mkdir -p src/{types,dto,enums,validators,constants,utils}
+touch src/index.ts
+```
+
+### Step 5: Setup Development Tools
+
+```bash
+cd ..  # Back to root
+
+# Setup Root ESLint
+cat > .eslintrc.js << 'EOF'
+module.exports = {
+  root: true,
+  env: {
+    node: true,
+    es2021: true,
+  },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  plugins: ['@typescript-eslint'],
+  rules: {
+    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+  },
+  ignorePatterns: ['dist', 'node_modules', '*.config.js'],
+};
+EOF
+
+# Setup Frontend ESLint (Airbnb + Vue)
+cat > front/.eslintrc.js << 'EOF'
+module.exports = {
+  root: true,
+  env: {
+    browser: true,
+    es2021: true,
+    node: true,
+  },
+  extends: [
+    'airbnb-base',
+    'airbnb-typescript/base',
+    'plugin:vue/vue3-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'prettier',
+  ],
+  parser: 'vue-eslint-parser',
+  parserOptions: {
+    parser: '@typescript-eslint/parser',
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: './tsconfig.json',
+    extraFileExtensions: ['.vue'],
+  },
+  plugins: ['vue', '@typescript-eslint', 'prettier'],
+  rules: {
+    'prettier/prettier': 'error',
+    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    'vue/multi-word-component-names': 'error',
+    'vue/no-unused-vars': 'error',
+    'vue/require-default-prop': 'error',
+    'vue/prop-name-casing': ['error', 'camelCase'],
+    'vue/component-name-in-template-casing': ['error', 'PascalCase'],
+    'vue/block-lang': ['error', { script: { lang: 'ts' } }],
+    'vue/component-api-style': ['error', ['script-setup']],
+    'vue/define-emits-declaration': ['error', 'type-based'],
+    'vue/define-props-declaration': ['error', 'type-based'],
+    'import/extensions': ['error', 'ignorePackages', {
+      js: 'never',
+      jsx: 'never',
+      ts: 'never',
+      tsx: 'never',
+      vue: 'never',
+    }],
+    'import/no-extraneous-dependencies': ['error', {
+      devDependencies: ['**/*.spec.ts', '**/*.test.ts', '**/vite.config.ts'],
+    }],
+    'import/prefer-default-export': 'off',
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {
+        project: './tsconfig.json',
+      },
+    },
+  },
+  ignorePatterns: ['dist', 'node_modules', '*.config.js', '*.config.ts'],
+};
+EOF
+
+# Setup Prettier
+cat > .prettierrc.js << 'EOF'
+module.exports = {
+  semi: true,
+  trailingComma: 'es5',
+  singleQuote: true,
+  printWidth: 100,
+  tabWidth: 2,
+  useTabs: false,
+  arrowParens: 'always',
+  endOfLine: 'lf',
+  vueIndentScriptAndStyle: false,
+  bracketSpacing: true,
+  bracketSameLine: false,
+  overrides: [
+    {
+      files: '*.vue',
+      options: {
+        parser: 'vue',
+      },
+    },
+  ],
+};
+EOF
+
+# Setup Husky
+npx husky install
+npx husky add .husky/pre-commit "npx lint-staged"
+
+# Setup lint-staged
+cat > .lintstagedrc.js << 'EOF'
+module.exports = {
+  '*.{ts,tsx,vue}': ['eslint --fix', 'prettier --write'],
+  '*.{json,md}': ['prettier --write'],
+};
+EOF
+```
+
+### Step 6: Setup Firebase
+
+1. Go to [Firebase Console](https://console.firebase.google.com)
+2. Create a new project
+3. Enable services:
+   - Authentication (Email/Password)
+   - Firestore Database
+   - Storage
+
+4. Get credentials:
+   - Web app config (for frontend)
+   - Service account key (for backend)
+
+5. Create environment files:
+
+```bash
+# Frontend .env
+cat > front/.env.example << 'EOF'
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_API_BASE_URL=http://localhost:3000
+EOF
+
+# Backend .env
+cat > back/.env.example << 'EOF'
+PORT=3000
+NODE_ENV=development
+FIREBASE_PROJECT_ID=your_project_id
+FIREBASE_CLIENT_EMAIL=your_email
+FIREBASE_PRIVATE_KEY=your_key
+CORS_ORIGIN=http://localhost:5173
+EOF
+
+# Copy to actual .env files
+cp front/.env.example front/.env
+cp back/.env.example back/.env
+
+# Edit .env files with your actual credentials
+```
+
+### Step 7: Setup GitHub
+
+1. **Create Repository on GitHub**
+   ```bash
+   # Add remote
+   git remote add origin https://github.com/yourusername/jira-clone.git
+   ```
+
+2. **Create Issue Templates**
+   
+   Copy the following into `.github/ISSUE_TEMPLATE/`:
+   - `feature.md`
+   - `bug.md`
+   - `design.md`
+
+3. **Create PR Template**
+   
+   Create `.github/pull_request_template.md`
+
+4. **Setup GitHub Actions**
+   
+   Create `.github/workflows/ci.yml` (from DevOps agent instructions)
+
+5. **Setup GitHub Projects**
+   - Create new project (Board view)
+   - Add columns: Backlog, Spec & Design, Common Types, Backend Dev, Frontend Dev, Testing, Review, Done
+   - Setup automation rules
+
+6. **Create Labels**
+   ```
+   Agent labels:
+   - architecture
+   - backend
+   - frontend
+   - common
+   - devops
+   - testing
+   - design
+
+   Type labels:
+   - feature
+   - bug
+   - refactor
+   - docs
+   - chore
+
+   Status labels:
+   - planning
+   - ready
+   - in-progress
+   - review
+   - blocked
+   - done
+
+   Phase labels:
+   - phase-0
+   - phase-1
+   - phase-2
+   - phase-3
+   - phase-4
+
+   Priority labels:
+   - priority-high
+   - priority-medium
+   - priority-low
+   ```
+
+### Step 8: Create Initial Commit
+
+```bash
+# Create .gitignore
+cat > .gitignore << 'EOF'
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+*/dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Firebase
+.firebase/
+firebase-debug.log
+EOF
+
+# Initial commit
+git add .
+git commit -m "Initial project setup with monorepo structure and agent workflows"
+git push -u origin main
+```
+
+## 📊 Phase 0: Initial Setup Tasks
+
+Create these GitHub issues to start:
+
+### Issue #1: Setup monorepo structure
+- **Assignee**: DevOps Agent
+- **Labels**: `devops`, `phase-0`, `chore`
+- **Tasks**:
+  - [ ] Initialize npm workspaces
+  - [ ] Setup linting and formatting
+  - [ ] Configure TypeScript
+  - [ ] Setup Husky and lint-staged
+  - [ ] Create development scripts
+
+### Issue #2: Create design system
+- **Assignee**: Design Agent
+- **Labels**: `design`, `phase-0`
+- **Tasks**:
+  - [ ] Define color palette
+  - [ ] Create typography scale
+  - [ ] Define spacing system
+  - [ ] Document component library
+  - [ ] Configure Tailwind theme
+
+### Issue #3: Define common types
+- **Assignee**: Common Agent
+- **Labels**: `common`, `phase-0`
+- **Tasks**:
+  - [ ] Create base type definitions
+  - [ ] Define enums (UserRole, IssueType, etc.)
+  - [ ] Setup Zod validators
+  - [ ] Export from index
+
+### Issue #4: Setup CI/CD pipeline
+- **Assignee**: DevOps Agent
+- **Labels**: `devops`, `phase-0`, `chore`
+- **Tasks**:
+  - [ ] Create GitHub Actions workflow
+  - [ ] Setup test automation
+  - [ ] Configure build process
+  - [ ] Setup deployment (optional)
+
+## 🎯 Using the Sub-Agent System
+
+### Working with Agents
+
+When you (the developer) work on this project, you'll take on different agent roles:
+
+1. **Start with Architecture Agent**
+   - Read: `docs/agents/architecture.md`
+   - Create feature specification
+   - Break down into sub-issues
+   - Assign to other agents
+
+2. **Design Phase**
+   - Read: `docs/agents/design.md`
+   - Create UI/UX designs
+   - Document component specs
+   - Hand off to Frontend Agent
+
+3. **Implementation Phase**
+   - **Common**: Read `docs/agents/common.md`, create types
+   - **Backend**: Read `docs/agents/backend.md`, build API
+   - **Frontend**: Read `docs/agents/frontend.md`, build UI
+
+4. **Quality Assurance**
+   - Read: `docs/agents/testing.md`
+   - Write comprehensive tests
+   - Verify accessibility
+
+### Agent Workflow Example
+
+**Feature: User Authentication**
+
+```
+Week 1:
+- Architecture Agent: Create auth spec (Issue #5)
+- Design Agent: Design login/register pages (Issue #6)
+- Common Agent: Define User types, auth DTOs (Issue #7)
+
+Week 2:
+- Backend Agent: Implement auth API (Issue #8)
+- Frontend Agent: Build auth pages (Issue #9)
+- Testing Agent: Write tests (Issue #10)
+```
+
+Each issue references the agent instructions for guidance.
+
+## 📚 Key Documents Reference
+
+| Document | Location | Purpose |
+|----------|----------|---------|
+| Project Spec | `SPECIFICATION.md` | Main project requirements |
+| Workflow Guide | `docs/WORKFLOW.md` | Development process |
+| Architecture Agent | `docs/agents/architecture.md` | System design guidance |
+| Backend Agent | `docs/agents/backend.md` | Backend development guidance |
+| Frontend Agent | `docs/agents/frontend.md` | Frontend development guidance |
+| Common Agent | `docs/agents/common.md` | Shared types guidance |
+| DevOps Agent | `docs/agents/devops.md` | CI/CD and tooling guidance |
+| Testing Agent | `docs/agents/testing.md` | Testing strategy guidance |
+| Design Agent | `docs/agents/design.md` | UI/UX design guidance |
+
+## ✅ Verification Checklist
+
+Before starting development:
+
+- [ ] Repository created on GitHub
+- [ ] All agent instruction files copied to `.claude/agents/`
+- [ ] Monorepo structure created (front, back, common)
+- [ ] npm workspaces configured
+- [ ] Firebase project created and configured
+- [ ] Environment variables set
+- [ ] Git hooks (Husky) configured
+- [ ] **Root ESLint configured**
+- [ ] **Frontend ESLint configured (Airbnb + Vue + Prettier)**
+- [ ] **ESLint passes: `npm run lint` shows 0 errors**
+- [ ] **IDE configured for auto-fix on save**
+- [ ] Prettier configured
+- [ ] GitHub Projects board created
+- [ ] Issue templates created
+- [ ] Labels created in GitHub
+- [ ] CI/CD workflow created
+- [ ] Initial commit pushed
+
+### ESLint Verification
+
+Run these commands to verify ESLint is working:
+
+```bash
+# Should pass with 0 errors
+npm run lint
+
+# Should auto-fix issues
+npm run lint:fix
+
+# Frontend specific
+npm run lint:front
+
+# Should format all files
+npm run format
+```
+
+If you see ESLint errors, check:
+1. All ESLint packages installed (see Setup Guide Step 4)
+2. `.eslintrc.js` files created in root and `front/`
+3. `tsconfig.json` exists in `front/`
+4. IDE ESLint plugin installed and enabled
+
+## 🎓 Learning Path
+
+If this is your first time with these technologies:
+
+1. **Week 0**: Setup & Learn
+   - Setup project structure
+   - Read through agent instructions
+   - Study the workflow
+
+2. **Week 1-2**: Phase 1 (Authentication)
+   - Start with Architecture Agent role
+   - Follow the workflow for one complete feature
+   - Practice agent handoffs
+
+3. **Week 3+**: Regular Development
+   - Continue with Phase 2 features
+   - Refine your workflow
+   - Build momentum
+
+## 🆘 Troubleshooting
+
+### Common Issues
+
+**Issue**: npm workspaces not linking packages
+- **Fix**: Run `npm install` in root directory
+
+**Issue**: TypeScript can't find common package types
+- **Fix**: Build common package: `npm run build --workspace=common`
+
+**Issue**: Firebase authentication not working
+- **Fix**: Check environment variables, verify Firebase config
+
+**Issue**: CI pipeline failing
+- **Fix**: Check GitHub secrets are set correctly
+
+**Issue**: ESLint errors in frontend
+- **Fix**: 
+  1. Verify all ESLint packages installed
+  2. Check `.eslintrc.js` exists in `front/`
+  3. Run `npm install` in `front/` directory
+  4. Check `tsconfig.json` has correct `project` path
+
+**Issue**: ESLint can't parse Vue files
+- **Fix**:
+  1. Verify `eslint-plugin-vue` installed
+  2. Check parser is set to `vue-eslint-parser`
+  3. Verify `extraFileExtensions: ['.vue']` in parserOptions
+
+**Issue**: Prettier conflicts with ESLint
+- **Fix**:
+  1. Ensure `eslint-config-prettier` is installed
+  2. Verify `'prettier'` is LAST in extends array
+  3. Run `npm run format` before `npm run lint`
+
+**Issue**: Import errors with `@/` alias
+- **Fix**:
+  1. Check `vite.config.ts` has alias configured
+  2. Verify `tsconfig.json` has paths configured
+  3. Install `eslint-import-resolver-typescript`
+
+**Issue**: `any` type errors
+- **Fix**: Replace `any` with proper types or `unknown`
+  ```typescript
+  // ❌ Bad
+  const data: any = await api.get();
+  
+  // ✅ Good
+  const data: User[] = await api.get<User[]>();
+  ```
+
+**Issue**: Component name must be multi-word
+- **Fix**: Rename component to use PascalCase with multiple words
+  ```
+  ❌ User.vue → ✅ UserCard.vue
+  ❌ Button.vue → ✅ BaseButton.vue
+  ```
+
+## 📞 Next Steps
+
+1. **Complete Setup**: Follow steps 1-8 above
+2. **Create Phase 0 Issues**: Start with the 4 initial setup issues
+3. **Begin Development**: Start with authentication feature
+4. **Follow Workflow**: Use the agent methodology consistently
+5. **Iterate**: Refine the process as you learn
+
+## 🎉 You're Ready!
+
+You now have everything you need to build a production-ready Jira clone using a structured, agent-based development workflow. Each agent has clear responsibilities, and the workflow ensures quality at every step.
+
+**Happy coding!** 🚀
+
+### ⚠️ Important Reminder: Frontend Code Quality
+
+All frontend code MUST pass ESLint with ZERO errors before any PR can be merged:
+- Airbnb TypeScript style guide: ENFORCED
+- Vue 3 recommended rules: ENFORCED  
+- Prettier formatting: ENFORCED
+- TypeScript strict mode: ENFORCED
+
+**Before every commit:**
+```bash
+npm run lint:front     # Must show 0 errors
+npm run format         # Auto-format all files
+npm run type-check     # No TypeScript errors
+```
+
+**Configure your IDE:**
+- Install ESLint extension
+- Install Prettier extension
+- Enable "Format on Save"
+- Enable "ESLint auto-fix on save"
+
+This ensures consistent, high-quality code across the entire project.
+
+---
+
+For questions or issues, refer back to the individual agent instruction files in `docs/agents/`.

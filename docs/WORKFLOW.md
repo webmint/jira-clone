@@ -1,0 +1,971 @@
+# GitHub Spec-Kit Workflow for Jira Clone Sub-Agents
+
+## Overview
+
+This document describes how to use GitHub spec-kit methodology with our 7 specialized sub-agents to build the Jira Clone application systematically.
+
+## GitHub Spec-Kit Methodology
+
+### Core Principles
+
+1. **Specification First**: Write detailed specs before implementation
+2. **Issue-Driven Development**: Each feature becomes a GitHub issue
+3. **Structured Workflow**: Clear phases from spec → implementation → review
+4. **Agent Collaboration**: Each agent has specific responsibilities and handoff points
+
+### Spec-Kit Integration
+
+The `.specify/` folder is created by GitHub spec-kit and provides:
+
+- **Templates** (`.specify/templates/`): Reusable specification templates
+- **Memory** (`.specify/memory/`): Context persistence across work sessions
+- **Scripts** (`.specify/scripts/`): Automation and workflow helpers
+
+**How to Use Spec-Kit:**
+
+1. Store feature specifications in `.specify/` or link them from `docs/`
+2. Use `.specify/templates/` for consistent spec formatting
+3. Leverage `.specify/memory/` for maintaining context between sessions
+4. Utilize `.specify/scripts/` for automating repetitive tasks
+
+**Recommended Approach:**
+
+- **Main Project Spec**: Keep in root as `SPECIFICATION.md`
+- **Feature Specs**: Store in `.specify/` (managed by spec-kit)
+- **Design Docs**: Keep in `docs/design/` (easier to browse)
+- **ADRs**: Keep in `docs/decisions/` (version controlled documentation)
+- **Agent Instructions**: Keep in `docs/agents/` (reference material)
+
+### Repository Structure
+
+```
+jira-clone/
+├── .claude/                     # Claude AI configurations
+├── .specify/                    # Spec-kit framework
+│   ├── scripts/                # Spec-kit automation scripts
+│   ├── memory/                 # Context and memory storage
+│   └── templates/              # Spec-kit templates
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── feature.md
+│   │   ├── bug.md
+│   │   └── design.md
+│   └── workflows/
+│       └── ci.yml
+├── docs/
+│   ├── agents/                 # Agent instruction files
+│   │   ├── architecture.md
+│   │   ├── backend.md
+│   │   ├── frontend.md
+│   │   ├── common.md
+│   │   ├── devops.md
+│   │   ├── testing.md
+│   │   └── design.md
+│   ├── design/                 # Design system & mockups
+│   │   ├── DESIGN_SYSTEM.md
+│   │   ├── COMPONENTS.md
+│   │   └── PAGES.md
+│   ├── decisions/              # Architecture Decision Records (ADR)
+│   │   └── 001-monorepo-structure.md
+│   └── PROJECT_CONSTITUTION.md
+├── front/
+├── back/
+├── common/
+├── SPECIFICATION.md            # Main project spec
+└── README.md
+```
+
+**Note on Spec-Kit Integration:**
+
+- `.specify/` folder is managed by GitHub spec-kit
+- Feature specifications can be stored in `.specify/` or `docs/specs/` (your choice)
+- `.specify/templates/` can store reusable spec templates
+- `.specify/memory/` helps maintain context across sessions
+
+---
+
+## Workflow Phases
+
+### Phase 0: Project Setup (Week 0)
+
+**Agents Involved**: Architecture → DevOps → Design → Common
+
+```
+1. Architecture Agent
+   ├─ Review SPECIFICATION.md
+   ├─ Create initial ADR documents
+   ├─ Define folder structure
+   └─ Output: Architecture decisions documented
+
+2. DevOps Agent
+   ├─ Setup monorepo structure
+   ├─ Configure build tools
+   ├─ Setup linting/formatting
+   ├─ Create GitHub Actions workflows
+   └─ Output: Working development environment
+
+3. Design Agent
+   ├─ Create DESIGN_SYSTEM.md
+   ├─ Configure Tailwind theme
+   ├─ Define component library
+   └─ Output: Design foundation
+
+4. Common Agent
+   ├─ Setup common package structure
+   ├─ Define base types and enums
+   ├─ Create shared validators
+   └─ Output: Shared contracts ready
+```
+
+**GitHub Issues for Phase 0:**
+
+- #1: Setup monorepo structure (@devops)
+- #2: Create design system (@design)
+- #3: Define common types (@common)
+- #4: Configure CI/CD pipeline (@devops)
+
+---
+
+### Phase 1: Feature Development Workflow
+
+Each feature follows this 6-step workflow:
+
+```
+Step 1: Specification (Architecture Agent)
+   ↓
+Step 2: Design (Design Agent)
+   ↓
+Step 3: Types & Validation (Common Agent)
+   ↓
+Step 4: API Implementation (Backend Agent)
+   ↓
+Step 5: UI Implementation (Frontend Agent)
+   ↓
+Step 6: Testing & QA (Testing Agent)
+```
+
+---
+
+## Detailed Workflow for Each Feature
+
+### Example: Implementing "User Authentication"
+
+#### **Step 1: Create Feature Specification**
+
+**Agent**: Architecture Agent
+
+**GitHub Issue**: `#5: Spec - User Authentication`
+
+- Labels: `spec`, `phase-1`, `architecture`
+- Assignee: Architecture Agent
+
+**Actions**:
+
+1. Create spec file: `docs/specs/auth/authentication.md` or `.specify/specs/auth/authentication.md`
+2. Define:
+   - User stories
+   - Technical requirements
+   - API contracts
+   - Data models
+   - Security considerations
+3. Create sub-issues for other agents
+4. Link all issues together
+
+**Deliverable**: `docs/specs/auth/authentication.md`
+
+```markdown
+# User Authentication Specification
+
+## User Stories
+
+- As a new user, I want to register...
+- As a registered user, I want to login...
+
+## Technical Requirements
+
+### Firebase Authentication
+
+- Email/Password provider
+- JWT token management
+- Session handling
+
+### Frontend ESLint Compliance
+
+- All components must pass Airbnb + Vue ESLint rules
+- Zero ESLint errors required
+- TypeScript strict mode
+- Type-based props/emits
+
+## API Endpoints
+
+POST /api/auth/register
+POST /api/auth/login
+POST /api/auth/logout
+GET /api/auth/me
+
+## Security
+
+- Password hashing via Firebase
+- JWT token expiration: 24h
+- Refresh token strategy
+
+## Dependencies
+
+- Firebase Admin SDK
+- @nestjs/passport
+- Vue Router navigation guards
+
+## Quality Requirements
+
+- Backend: >85% test coverage
+- Frontend: >80% test coverage
+- ESLint: 0 errors
+- Accessibility: WCAG 2.1 AA
+```
+
+**Closes**: #5
+**Creates**: Issues #6, #7, #8, #9, #10
+
+---
+
+#### **Step 2: Design UI/UX**
+
+**Agent**: Design Agent
+
+**GitHub Issue**: `#6: Design - Authentication UI`
+
+- Labels: `design`, `phase-1`
+- Depends on: #5
+- Assignee: Design Agent
+
+**Actions**:
+
+1. Create design spec: `docs/design/auth-pages.md`
+2. Design login page layout
+3. Design register page layout
+4. Define form validation states
+5. Create component specifications
+
+**Deliverable**: `docs/design/auth-pages.md`
+
+```markdown
+# Authentication Pages Design
+
+## Login Page
+
+[Visual mockup with Tailwind classes]
+
+## Register Page
+
+[Visual mockup with Tailwind classes]
+
+## Components Needed
+
+- AuthLayout.vue
+- LoginForm.vue
+- RegisterForm.vue
+- FormInput.vue
+- FormButton.vue
+
+## Validation States
+
+- Empty field: border-red-300
+- Valid input: border-green-300
+- Focus state: ring-2 ring-primary-500
+```
+
+**Closes**: #6
+**Notifies**: Frontend Agent (#9)
+
+---
+
+#### **Step 3: Define Shared Types**
+
+**Agent**: Common Agent
+
+**GitHub Issue**: `#7: Types - Authentication Models`
+
+- Labels: `common`, `types`, `phase-1`
+- Depends on: #5
+- Assignee: Common Agent
+
+**Actions**:
+
+1. Create types: `common/src/types/auth.types.ts`
+2. Create DTOs: `common/src/dto/auth.dto.ts`
+3. Create Zod schemas: `common/src/validators/auth.validator.ts`
+4. Export from index
+
+**Deliverable**: TypeScript interfaces + Zod schemas
+
+```typescript
+// common/src/types/auth.types.ts
+export interface User {
+  id: string;
+  email: string;
+  username: string;
+  fullName: string;
+  role: UserRole;
+}
+
+export interface AuthResponse {
+  user: User;
+  token: string;
+}
+
+// common/src/validators/auth.validator.ts
+export const registerSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+  username: z.string().min(3).max(20),
+  fullName: z.string().min(1),
+});
+```
+
+**Closes**: #7
+**Notifies**: Backend Agent (#8), Frontend Agent (#9)
+
+---
+
+#### **Step 4: Implement Backend API**
+
+**Agent**: Backend Agent
+
+**GitHub Issue**: `#8: API - Authentication Endpoints`
+
+- Labels: `backend`, `api`, `phase-1`
+- Depends on: #5, #7
+- Assignee: Backend Agent
+
+**Actions**:
+
+1. Create NestJS module: `back/src/auth/`
+2. Implement Firebase Auth integration
+3. Create controllers and services
+4. Add validation with class-validator
+5. Write unit tests
+6. Update Swagger docs
+
+**Branch**: `agent/backend/auth-endpoints`
+
+**Files Changed**:
+
+- `back/src/auth/auth.module.ts`
+- `back/src/auth/auth.controller.ts`
+- `back/src/auth/auth.service.ts`
+- `back/src/auth/dto/`
+- `back/src/auth/guards/`
+- `back/src/auth/auth.controller.spec.ts`
+
+**Testing Checklist**:
+
+- [ ] Register with valid data returns 201
+- [ ] Register with duplicate email returns 409
+- [ ] Login with valid credentials returns token
+- [ ] Login with invalid credentials returns 401
+- [ ] Protected route requires valid token
+- [ ] Code coverage >85%
+
+**Closes**: #8
+**Notifies**: Frontend Agent (#9)
+
+**PR**: `#PR-1: Implement authentication API`
+
+- Reviewers: Architecture Agent
+- Labels: `backend`, `ready-for-review`
+
+---
+
+#### **Step 5: Implement Frontend UI**
+
+**Agent**: Frontend Agent
+
+**GitHub Issue**: `#9: UI - Authentication Pages`
+
+- Labels: `frontend`, `ui`, `phase-1`
+- Depends on: #6, #7, #8
+- Assignee: Frontend Agent
+
+**Actions**:
+
+1. Create auth pages in `front/src/views/auth/`
+2. Create reusable form components
+3. Setup Pinia auth store
+4. Implement form validation with VeeValidate + Zod
+5. Add route guards in Vue Router
+6. Connect to backend API
+7. Write component tests
+
+**Branch**: `agent/frontend/auth-pages`
+
+**Files Changed**:
+
+- `front/src/views/auth/LoginView.vue`
+- `front/src/views/auth/RegisterView.vue`
+- `front/src/components/auth/LoginForm.vue`
+- `front/src/components/auth/RegisterForm.vue`
+- `front/src/stores/auth.store.ts`
+- `front/src/router/guards/auth.guard.ts`
+- `front/src/api/auth.api.ts`
+
+**Design Verification**:
+
+- [ ] Follows DESIGN_SYSTEM.md colors
+- [ ] Uses specified Tailwind classes
+- [ ] Responsive on mobile/tablet/desktop
+- [ ] Proper error states
+- [ ] Loading states implemented
+
+**Code Quality Verification (MANDATORY)**:
+
+- [ ] **ESLint: 0 errors** (run `npm run lint:front`)
+- [ ] Prettier formatting applied
+- [ ] TypeScript strict mode compliance
+- [ ] No `any` types used
+- [ ] Type-based props and emits
+- [ ] Multi-word component names
+- [ ] All components use `<script setup lang="ts">`
+- [ ] No `console.log` in production code
+
+**Closes**: #9
+**Notifies**: Testing Agent (#10), Design Agent (for review)
+
+**PR**: `#PR-2: Implement authentication UI`
+
+- Reviewers: Design Agent, Architecture Agent
+- Labels: `frontend`, `ready-for-review`
+- **Must pass**: ESLint with 0 errors before review
+
+---
+
+#### **Step 6: Testing & Quality Assurance**
+
+**Agent**: Testing Agent
+
+**GitHub Issue**: `#10: Testing - Authentication Feature`
+
+- Labels: `testing`, `qa`, `phase-1`
+- Depends on: #8, #9
+- Assignee: Testing Agent
+
+**Actions**:
+
+1. Review test coverage
+2. Add integration tests
+3. Add E2E tests for auth flow
+4. Verify accessibility
+5. Performance testing
+6. Security audit
+
+**Test Scenarios**:
+
+```
+✓ User can register with valid data
+✓ User cannot register with invalid email
+✓ User cannot register with weak password
+✓ User can login after registration
+✓ User stays logged in after refresh
+✓ User can logout
+✓ Protected routes redirect to login
+✓ Authenticated user can access protected routes
+```
+
+**Deliverables**:
+
+- `back/test/auth.e2e-spec.ts`
+- `front/src/views/auth/__tests__/LoginView.spec.ts`
+- Test coverage report
+
+**Closes**: #10
+
+---
+
+## Agent Handoff Protocol
+
+### Handoff Document Template
+
+When an agent completes their work, they create a handoff comment on the GitHub issue:
+
+```markdown
+## 🎯 Handoff: [Feature Name]
+
+**From**: @architecture-agent
+**To**: @design-agent, @common-agent
+**Status**: ✅ Completed
+
+### ✅ Completed Work
+
+- Created specification document
+- Defined API contracts
+- Identified data models
+- Documented security requirements
+
+### 📦 Deliverables
+
+- [docs/specs/auth/authentication.md](link)
+- Created sub-issues: #6, #7, #8, #9, #10
+
+### ⏭️ Next Steps for Design Agent (#6)
+
+- Review the specification
+- Design login and register pages
+- Define component structure
+- Follow design system guidelines
+
+### ⏭️ Next Steps for Common Agent (#7)
+
+- Create User interface based on spec
+- Define AuthResponse type
+- Create Zod validation schemas
+
+### 📝 Important Notes
+
+- Firebase Authentication is required
+- JWT tokens expire after 24 hours
+- Need to handle refresh token flow
+
+### 🚧 Blockers
+
+None
+
+### 🔗 Related Issues
+
+- Depends on: #5
+- Blocks: #6, #7
+- Related: #auth-epic
+```
+
+---
+
+## GitHub Labels System
+
+### By Agent
+
+- `architecture` - Architecture decisions
+- `backend` - Backend work
+- `frontend` - Frontend work
+- `common` - Shared types/validators
+- `devops` - CI/CD, tooling
+- `testing` - Tests and QA
+- `design` - UI/UX design work
+
+### By Type
+
+- `spec` - Specification documents
+- `feature` - New feature
+- `bug` - Bug fix
+- `refactor` - Code refactoring
+- `docs` - Documentation
+- `chore` - Maintenance tasks
+
+### By Status
+
+- `planning` - In planning phase
+- `ready` - Ready to start
+- `in-progress` - Currently being worked on
+- `review` - In code review
+- `blocked` - Blocked by dependencies
+- `done` - Completed
+
+### By Phase
+
+- `phase-0` - Setup
+- `phase-1` - MVP
+- `phase-2` - Core features
+- `phase-3` - Enhancements
+- `phase-4` - Polish
+
+### By Priority
+
+- `priority-high` - High priority
+- `priority-medium` - Medium priority
+- `priority-low` - Low priority
+
+---
+
+## GitHub Projects Board Structure
+
+### Board: Jira Clone Development
+
+**Columns**:
+
+1. **📋 Backlog** - All planned issues
+2. **📐 Spec & Design** - Architecture & Design agents
+3. **⚙️ Common Types** - Common agent work
+4. **🔧 Backend Dev** - Backend implementation
+5. **🎨 Frontend Dev** - Frontend implementation
+6. **🧪 Testing** - Testing & QA
+7. **👀 Review** - Code review
+8. **✅ Done** - Completed
+
+**Automation**:
+
+- New issues → Backlog
+- Issue assigned → Move to appropriate column
+- PR opened → Move to Review
+- PR merged → Move to Done
+
+---
+
+## Sprint Planning with Agents
+
+### 2-Week Sprint Structure
+
+**Week 1 (Spec & Implementation)**:
+
+```
+Monday:
+- Architecture Agent: Create specs for Sprint features
+- Design Agent: Design UI for Sprint features
+
+Tuesday-Wednesday:
+- Common Agent: Define types and validators
+- Backend Agent: Start API implementation
+
+Thursday-Friday:
+- Backend Agent: Complete API implementation
+- Frontend Agent: Start UI implementation
+```
+
+**Week 2 (Implementation & Testing)**:
+
+```
+Monday-Wednesday:
+- Frontend Agent: Complete UI implementation
+- Testing Agent: Write tests
+
+Thursday:
+- Code reviews by Architecture & Design agents
+- Bug fixes
+
+Friday:
+- Sprint demo
+- Retrospective
+- Plan next sprint
+```
+
+---
+
+## Communication Channels
+
+### GitHub Issue Comments
+
+Primary communication for feature-specific discussions
+
+### GitHub Discussions
+
+- Architecture decisions
+- General questions
+- Agent coordination
+
+### PR Reviews
+
+- Code quality feedback
+- Design consistency checks
+- Architecture alignment
+
+---
+
+## Quality Gates
+
+Before merging any PR, verify:
+
+### Architecture Agent Checklist
+
+- [ ] Follows architectural patterns
+- [ ] No security vulnerabilities
+- [ ] Scalable and maintainable
+
+### Design Agent Checklist
+
+- [ ] Follows design system (docs/design/DESIGN_SYSTEM.md)
+- [ ] Accessible (WCAG 2.1 AA)
+- [ ] Responsive design
+- [ ] Consistent with other pages
+
+### Frontend Quality Checklist (MANDATORY)
+
+- [ ] **ESLint: ZERO errors** (Airbnb + Vue rules)
+- [ ] Prettier formatting applied
+- [ ] TypeScript strict mode compliance
+- [ ] No `any` types (or documented justification)
+- [ ] Type-based props and emits
+- [ ] Multi-word component names
+- [ ] All components use `<script setup lang="ts">`
+
+### Testing Agent Checklist
+
+- [ ] Unit tests pass
+- [ ] Integration tests pass
+- [ ] Code coverage > 80% (>85% backend)
+- [ ] E2E tests pass (for features)
+
+### DevOps Agent Checklist
+
+- [ ] CI pipeline passes
+- [ ] Build successful
+- [ ] No linting errors
+- [ ] Dependencies secure
+
+---
+
+## Code Quality Standards (Non-Negotiable)
+
+### Frontend Standards
+
+**ESLint Configuration:**
+
+- Airbnb TypeScript style guide
+- Vue 3 recommended rules (strongest)
+- Prettier integration
+- Zero errors required for merge
+
+**TypeScript Strict:**
+
+- No `any` types without justification
+- Proper type annotations for all functions
+- Type-based props and emits only
+- Strict null checks enabled
+
+**Vue 3 Requirements:**
+
+- Always use `<script setup lang="ts">`
+- Multi-word component names (PascalCase)
+- Type-based declarations (not runtime)
+- No `v-html` without security review
+
+### Backend Standards
+
+- NestJS best practices
+- Dependency injection
+- DTOs for all endpoints
+- Validation pipes required
+- Service layer abstracts Firebase
+
+### Common Package Standards
+
+- All types documented with JSDoc
+- Zod schemas for validation
+- No circular dependencies
+- Proper exports in index.ts
+
+---
+
+## Example Sprint: Authentication Feature
+
+### Sprint Goal
+
+Implement user authentication (register, login, logout)
+
+### Issue Breakdown
+
+**Epic**: `#epic-auth` - User Authentication System
+
+**Issues**:
+
+- `#5` - [Spec] Authentication specification (@architecture) - 2 pts
+- `#6` - [Design] Authentication UI design (@design) - 3 pts
+- `#7` - [Common] Auth types and validators (@common) - 2 pts
+- `#8` - [Backend] Auth API endpoints (@backend) - 5 pts
+- `#9` - [Frontend] Auth pages and forms (@frontend) - 8 pts
+- `#10` - [Testing] Auth feature tests (@testing) - 3 pts
+
+**Total**: 23 story points
+
+**Timeline**: 2 weeks
+
+**Dependencies**:
+
+```
+#5 (Spec)
+  ├─ #6 (Design)
+  ├─ #7 (Common)
+  └─ #8 (Backend)
+      └─ #9 (Frontend)
+          └─ #10 (Testing)
+```
+
+---
+
+## Monitoring Progress
+
+### Daily Standup (Async via GitHub)
+
+Each agent posts update on their assigned issue:
+
+```markdown
+## Daily Update - [Date]
+
+**Yesterday**:
+
+- Completed login form component
+- Added form validation
+
+**Today**:
+
+- Will implement register form
+- Will add loading states
+
+**Blockers**:
+
+- Waiting for backend API to be deployed
+
+**Questions**:
+
+- @design-agent Should error messages be inline or toast?
+```
+
+### Weekly Review
+
+Architecture Agent reviews:
+
+- Sprint progress (velocity)
+- Code quality metrics
+- Agent utilization
+- Blockers and resolutions
+
+---
+
+## Success Metrics
+
+Track these metrics throughout the project:
+
+1. **Velocity**: Story points completed per sprint
+2. **Cycle Time**: Time from issue creation to PR merge
+3. **Code Quality**: Test coverage, linting score
+4. **Agent Efficiency**: Tasks completed per agent
+5. **Handoff Speed**: Time between agent transitions
+6. **Review Time**: Time in code review
+7. **Bug Rate**: Bugs per feature
+
+---
+
+## Tools Integration
+
+### Recommended Tools
+
+- **GitHub Projects**: For kanban board
+- **GitHub Actions**: For CI/CD
+- **GitHub Discussions**: For architecture decisions
+- **GitHub Wiki**: For detailed documentation
+- **Conventional Commits**: For clear git history
+
+---
+
+## Next Steps
+
+1. Create GitHub repository
+2. Copy all agent instruction files to `.claude/agents/`
+3. Create issue templates in `.github/ISSUE_TEMPLATE/`
+4. Setup GitHub Projects board
+5. Create initial labels
+6. Start with Phase 0 issues
+7. Assign agents to initial tasks
+
+### Using Agent Instructions
+
+**Before starting any work:**
+
+1. Read the relevant agent instruction file from `.claude/agents/`
+2. Follow the guidelines and checklists in that file
+3. Reference the agent file during work for best practices
+4. Complete the agent-specific checklist in your PR
+
+**Agent Instructions Location:**
+
+```
+.claude/
+└── agents/
+    ├── architecture.md    # Read when: Creating specs, making decisions
+    ├── backend.md         # Read when: Building APIs
+    ├── frontend.md        # Read when: Building UI (includes ESLint rules)
+    ├── common.md          # Read when: Creating types
+    ├── devops.md          # Read when: CI/CD work
+    ├── testing.md         # Read when: Writing tests
+    └── design.md          # Read when: Designing UI/UX
+```
+
+**Example Workflow:**
+
+```bash
+# 1. Architecture Agent reads their instructions
+cat .claude/agents/architecture.md
+
+# 2. Creates specification following the template
+# 3. Creates GitHub issues
+# 4. Passes to next agent with handoff
+
+# Frontend Agent reads their instructions
+cat .claude/agents/frontend.md
+
+# Sees ESLint requirements
+# Sets up IDE with ESLint
+# Writes code following guidelines
+# Runs: npm run lint:front
+# Ensures 0 errors before PR
+```
+
+---
+
+## Critical Reminders
+
+### Frontend Code Quality (Non-Negotiable)
+
+**EVERY frontend PR MUST:**
+
+1. Pass ESLint with **ZERO errors**
+   ```bash
+   npm run lint:front  # Must show: ✓ No ESLint errors
+   ```
+2. Be formatted with Prettier
+   ```bash
+   npm run format
+   ```
+3. Pass TypeScript compilation
+   ```bash
+   npm run type-check --workspace=front
+   ```
+
+**ESLint Configuration:**
+
+- Location: `front/.eslintrc.js`
+- Rules: Airbnb TypeScript + Vue 3 recommended
+- Integration: Prettier runs through ESLint
+- Enforcement: CI pipeline fails on errors
+
+**No Exceptions:**
+
+- Cannot merge with ESLint errors
+- Cannot disable rules without Architecture Agent approval
+- Must document any `any` type usage
+- Must use type-based props/emits
+
+**Before Every Commit:**
+
+```bash
+# Run these commands
+npm run lint:fix:front  # Auto-fix what's possible
+npm run format          # Format all files
+npm run type-check      # Check TypeScript
+npm run test --workspace=front  # Run tests
+```
+
+### Agent Instruction Files
+
+All agent instructions are in `.claude/agents/`:
+
+- These are **Claude-specific prompts**
+- Read before starting work in that role
+- Follow checklists provided
+- Reference during work for best practices
+
+---
+
+## Resources
+
+- [GitHub Spec-Kit Documentation](https://github.com/)
+- [SPECIFICATION.md](../SPECIFICATION.md)
+- [Agent Instructions](.claude/agents/)
+- [Design System](./design/DESIGN_SYSTEM.md)
+- [Project Constitution](./PROJECT_CONSTITUTION.md)
+- [Spec-Kit Integration](./SPECKIT_INTEGRATION.md)

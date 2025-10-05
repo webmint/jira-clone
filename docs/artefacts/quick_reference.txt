@@ -1,0 +1,441 @@
+# Quick Reference Guide - Jira Clone Project
+
+## 📑 All Artifacts Created
+
+You now have **15 comprehensive artifacts** for building your Jira Clone:
+
+### 1️⃣ Project Specification
+**File**: `SPECIFICATION.md`
+**Purpose**: Complete project requirements and technical specs
+**Use when**: Understanding project scope, referring to requirements
+
+### 2️⃣ GitHub Spec-Kit Workflow
+**File**: `docs/WORKFLOW.md`
+**Purpose**: Complete development workflow and agent coordination
+**Use when**: Planning sprints, coordinating agents, managing issues
+
+### 3️⃣ Spec-Kit Integration Guide
+**File**: `docs/SPECKIT_INTEGRATION.md`
+**Purpose**: How to use `.specify/` and `.claude/` folders effectively
+**Use when**: 
+- Setting up spec-kit templates
+- Creating automation scripts
+- Understanding where to put specs
+- Leveraging spec-kit memory features
+**NEW**: Aligns with your actual spec-kit setup
+
+### 4️⃣ Architecture Agent Instructions
+**File**: `.claude/agents/architecture.md`
+**Purpose**: System design and feature specifications
+**Use when**: 
+- Starting a new feature
+- Making architectural decisions
+- Creating specifications
+- Reviewing PRs for architectural compliance
+
+### 5️⃣ Backend Agent Instructions
+**File**: `.claude/agents/backend.md`
+**Purpose**: NestJS API and Firebase integration
+**Use when**:
+- Implementing API endpoints
+- Working with Firestore
+- Writing backend tests
+- Integrating Firebase services
+
+### 6️⃣ Frontend Agent Instructions
+**File**: `.claude/agents/frontend.md`
+**Purpose**: Vue 3 UI implementation with STRICT ESLint rules
+**Use when**:
+- Building components
+- Creating pages
+- Managing state with Pinia
+- Writing component tests
+**IMPORTANT**: All frontend code must pass Airbnb + Vue ESLint rules
+
+### 7️⃣ Common Agent Instructions
+**File**: `.claude/agents/common.md`
+**Purpose**: Shared types, DTOs, validators
+**Use when**:
+- Creating new types
+- Adding validation schemas
+- Defining shared constants
+- Creating utility functions
+
+### 8️⃣ DevOps Agent Instructions
+**File**: `.claude/agents/devops.md`
+**Purpose**: CI/CD, build tools, development environment
+**Use when**:
+- Setting up CI/CD pipelines
+- Configuring build process
+- Managing dependencies
+- Optimizing workflows
+
+### 9️⃣ Testing Agent Instructions
+**File**: `.claude/agents/testing.md`
+**Purpose**: Testing strategy and implementation
+**Use when**:
+- Writing tests
+- Planning test coverage
+- Reviewing test quality
+- Testing accessibility
+
+🔟 Design Agent Instructions
+**File**: `.claude/agents/design.md`
+**Purpose**: UI/UX design and design system
+**Use when**:
+- Designing new features
+- Creating components
+- Maintaining visual consistency
+- Ensuring accessibility
+
+1️⃣1️⃣ Setup Guide
+**File**: Reference document
+**Purpose**: Complete setup instructions
+**Use when**: Initial project setup
+
+1️⃣2️⃣ Frontend ESLint Config
+**File**: `front/.eslintrc.js`
+**Purpose**: Complete ESLint configuration with Airbnb + Vue rules
+**Use when**: Setting up frontend linting
+
+1️⃣3️⃣ Project Constitution
+**File**: `docs/PROJECT_CONSTITUTION.md`
+**Purpose**: Foundational rules, principles, and governance
+**Use when**: 
+- Resolving disputes
+- Making decisions
+- Onboarding contributors
+- Enforcing standards
+**CRITICAL**: This is the law of the project
+
+1️⃣4️⃣ Constitution Prompt Template
+**File**: Reference for creating custom constitutions
+**Purpose**: Template for generating/modifying project constitution
+**Use when**: Creating constitution for other projects or modifying this one
+
+1️⃣5️⃣ Quick Reference
+**File**: This document
+**Purpose**: Quick navigation guide
+
+---
+
+## 🎯 Quick Start Checklist
+
+### Immediate Actions (Today)
+- [ ] Create GitHub repository
+- [ ] Copy all 9 agent instruction files to `docs/agents/`
+- [ ] Copy SPECIFICATION.md to root
+- [ ] Copy WORKFLOW.md to `docs/`
+- [ ] Create folder structure (front, back, common)
+
+### Setup Phase (This Week)
+- [ ] Initialize npm workspaces
+- [ ] Setup Firebase project
+- [ ] Configure development tools (ESLint, Prettier, Husky)
+- [ ] **Setup frontend ESLint with Airbnb + Vue rules**
+- [ ] Configure IDE for auto-lint and auto-format
+- [ ] Verify ESLint passes with zero errors
+- [ ] Create GitHub Projects board
+- [ ] Setup issue templates
+- [ ] Create initial GitHub issues for Phase 0
+
+### First Feature (Next 2 Weeks)
+- [ ] Architecture Agent: Write auth spec
+- [ ] Design Agent: Design login/register
+- [ ] Common Agent: Define User types
+- [ ] Backend Agent: Implement auth API
+- [ ] Frontend Agent: Build auth UI
+- [ ] Testing Agent: Write tests
+
+---
+
+## 🔄 Agent Workflow Quick Reference
+
+```
+Feature Request
+    ↓
+Architecture Agent
+    ↓ (creates spec)
+Design Agent
+    ↓ (creates UI design)
+Common Agent
+    ↓ (creates types)
+    ├→ Backend Agent (builds API)
+    └→ Frontend Agent (builds UI)
+         ↓
+    Testing Agent
+    (writes tests)
+```
+
+---
+
+## 📋 When to Use Each Agent
+
+| Situation | Agent to Use | Document to Read |
+|-----------|--------------|------------------|
+| New feature idea | Architecture | `.claude/agents/architecture.md` |
+| Need API endpoint | Backend | `.claude/agents/backend.md` |
+| Need UI component | Frontend | `.claude/agents/frontend.md` |
+| Need shared types | Common | `.claude/agents/common.md` |
+| CI/CD issue | DevOps | `.claude/agents/devops.md` |
+| Need tests | Testing | `.claude/agents/testing.md` |
+| Design new page | Design | `.claude/agents/design.md` |
+| Coordinate work | Check workflow | `docs/WORKFLOW.md` |
+| Spec-kit questions | Integration guide | `docs/SPECKIT_INTEGRATION.md` |
+
+---
+
+## 🗂️ Project Structure
+
+```
+jira-clone/
+├── .claude/                     ← Claude AI config (from spec-kit)
+│   └── agents/                 ← Agent instructions (7 files)
+│       ├── architecture.md
+│       ├── backend.md
+│       ├── frontend.md
+│       ├── common.md
+│       ├── devops.md
+│       ├── testing.md
+│       └── design.md
+├── .specify/                    ← Spec-kit framework
+│   ├── scripts/                ← Automation scripts
+│   ├── memory/                 ← Context storage
+│   └── templates/              ← Spec templates
+├── SPECIFICATION.md             ← Main project spec
+├── README.md
+├── package.json                 ← Root workspace config
+├── .github/
+│   ├── workflows/
+│   │   └── ci.yml              ← CI/CD pipeline
+│   ├── ISSUE_TEMPLATE/         ← Issue templates
+│   └── pull_request_template.md
+├── docs/
+│   ├── PROJECT_CONSTITUTION.md  ← Project rules
+│   ├── WORKFLOW.md              ← Development workflow
+│   ├── SPECKIT_INTEGRATION.md   ← Spec-kit guide
+│   ├── design/                  ← Design documents
+│   └── decisions/               ← ADRs
+├── front/                       ← Vue 3 app
+│   ├── src/
+│   ├── package.json
+│   └── vite.config.ts
+├── back/                        ← NestJS API
+│   ├── src/
+│   ├── package.json
+│   └── nest-cli.json
+└── common/                      ← Shared types
+    ├── src/
+    ├── package.json
+    └── tsconfig.json
+```
+
+**Spec-Kit Folders:**
+- `.claude/agents/` - **Agent instructions (Claude-specific prompts)**
+- `.specify/` - Spec-kit framework folder (templates, memory, scripts)
+  - Use `.specify/templates/` for spec templates
+  - `.specify/memory/` maintains context
+  - `.specify/scripts/` for automation
+
+**Where to Put What:**
+- **Agent Instructions**: `.claude/agents/` (Claude-specific)
+- **Feature Specs**: `.specify/` (if using spec-kit features) or `docs/specs/`
+- **Design Docs**: `docs/design/`
+- **ADRs**: `docs/decisions/`
+- **Project Docs**: `docs/` (constitution, workflow, etc.)
+
+---
+
+## 💡 Key Concepts
+
+### Sub-Agent Methodology
+- Each "agent" is a role you adopt
+- Each agent has specific responsibilities
+- Agents hand off work to each other
+- Clear documentation for each role
+
+### GitHub Spec-Kit
+- Specification-first development
+- Issue-driven workflow
+- Clear handoff protocols
+- Structured collaboration
+
+### Monorepo Benefits
+- Shared types across front/back
+- Single version control
+- Unified tooling
+- Easier refactoring
+
+---
+
+## 🎓 Learning Order
+
+**If you're new to this stack:**
+
+1. **Start Here**: Read `SPECIFICATION.md`
+2. **Understand Workflow**: Read `docs/WORKFLOW.md`
+3. **Pick One Agent**: Read `docs/agents/architecture.md`
+4. **Follow Example**: Build authentication feature following the workflow
+5. **Iterate**: Use other agents as needed
+
+**If you're experienced:**
+
+1. Skim all agent documents
+2. Setup project structure
+3. Start with Phase 1 directly
+4. Reference agent docs as needed
+
+---
+
+## 🚀 Common Commands
+
+```bash
+# Development
+npm run dev              # Start all (front + back)
+npm run dev:front       # Start frontend only
+npm run dev:back        # Start backend only
+
+# Building
+npm run build           # Build all packages
+npm run build:front     # Build frontend
+npm run build:back      # Build backend
+
+# Testing
+npm run test            # Run all tests
+npm run test:unit       # Unit tests only
+npm run test:e2e        # E2E tests
+
+# Code Quality (MUST PASS BEFORE COMMIT)
+npm run lint            # Lint all code
+npm run lint:fix        # Auto-fix lint issues
+npm run format          # Format with Prettier
+npm run type-check      # TypeScript check
+
+# Frontend specific (run from root)
+npm run lint --workspace=front        # Check frontend ESLint
+npm run lint:fix --workspace=front    # Fix frontend ESLint issues
+npm run format --workspace=front      # Format frontend code
+```
+
+**Pre-Commit Checklist:**
+1. Run `npm run lint` - Must show 0 errors
+2. Run `npm run format` - Auto-format all files
+3. Run `npm run type-check` - No TypeScript errors
+4. Run `npm run test` - All tests pass
+
+---
+
+## 📊 Development Metrics
+
+Track these as you build:
+
+- **Velocity**: Story points per sprint
+- **Coverage**: Test coverage percentage
+- **Quality**: Bugs found vs bugs fixed
+- **Consistency**: Design adherence score
+- **Speed**: Average PR merge time
+
+---
+
+## 🎯 Success Indicators
+
+You're on the right track if:
+
+✅ Features have specs before implementation
+✅ Each agent's responsibilities are clear
+✅ PRs reference GitHub issues
+✅ Code follows design system
+✅ **Frontend code passes ESLint with 0 errors (Airbnb + Vue rules)**
+✅ **Prettier formatting is consistent across all files**
+✅ Tests are written alongside features
+✅ CI/CD pipeline is green
+✅ Team can work in parallel
+✅ No console.log or debugger in production code
+
+---
+
+## 📞 Getting Help
+
+**Stuck on setup?**
+→ Check Setup Guide artifact
+
+**Don't understand workflow?**
+→ Read `docs/WORKFLOW.md`
+
+**Confused about an agent's role?**
+→ Read that agent's instruction file in `.claude/agents/`
+
+**Need to understand a feature?**
+→ Check `SPECIFICATION.md`
+
+**Technical implementation question?**
+→ Consult the relevant agent document in `.claude/agents/`
+
+**Don't know where to put files?**
+→ Read `docs/SPECKIT_INTEGRATION.md`
+
+---
+
+## 🎉 You Have Everything!
+
+All artifacts are complete and ready to use:
+
+1. ✅ Project Specification
+2. ✅ Complete Workflow Guide
+3. ✅ 7 Agent Instruction Files
+4. ✅ Setup Guide
+5. ✅ Quick Reference (this doc)
+
+**Next Step**: Start with the Setup Guide and create your project structure!
+
+---
+
+## 📝 Quick Tips
+
+💡 **Tip 1**: Print or bookmark agent documents you use most
+💡 **Tip 2**: Start each work session by reading the relevant agent instructions
+💡 **Tip 3**: Create GitHub issues before coding
+💡 **Tip 4**: Use the agent checklists in PRs
+💡 **Tip 5**: Review the workflow weekly and adjust as needed
+
+### 🎯 Frontend Code Quality Tips
+
+⚠️ **CRITICAL**: Frontend code MUST pass ESLint before PR
+- Configure your IDE to show ESLint errors inline
+- Enable auto-fix on save
+- Run `npm run lint:fix` frequently
+- Never commit code with ESLint errors
+
+**Common ESLint Issues & Fixes:**
+```typescript
+// ❌ Wrong: Missing return type
+const fetchData = async () => { ... }
+
+// ✅ Correct: Explicit return type
+const fetchData = async (): Promise<void> => { ... }
+
+// ❌ Wrong: Using 'any'
+const data: any = response.data;
+
+// ✅ Correct: Proper typing
+const data: User[] = response.data;
+
+// ❌ Wrong: Missing emits type
+const emit = defineEmits(['submit']);
+
+// ✅ Correct: Type-based emits
+interface Emits {
+  (e: 'submit', data: FormData): void;
+}
+const emit = defineEmits<Emits>();
+
+// ❌ Wrong: Missing button type
+<button>Click me</button>
+
+// ✅ Correct: Explicit type
+<button type="button">Click me</button>
+```
+
+---
+
+**Ready to build? Start with the Setup Guide artifact!** 🚀
