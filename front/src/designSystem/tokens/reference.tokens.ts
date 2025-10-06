@@ -173,3 +173,40 @@ export const SHADOW = {
   /** Inner shadow - Inset elements */
   INNER: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
 } as const;
+
+/* ==========================================================================
+   BORDER RADIUS
+   ========================================================================== */
+
+/**
+ * Border Radius Tokens (7 values: NONE to FULL)
+ *
+ * Progressive rounding scale for UI elements.
+ * Defines corner roundness from sharp edges to fully circular.
+ *
+ * Usage:
+ * - NONE: Sharp corners (tables, dividers)
+ * - SM: Subtle rounding (inputs, small buttons)
+ * - BASE: Default rounding (buttons, cards)
+ * - MD/LG: Pronounced rounding (large cards, containers)
+ * - XL/2XL: Heavy rounding (badges, pills)
+ * - FULL: Circular elements (avatars, icon buttons)
+ */
+export const BORDER_RADIUS = {
+  /** 0px - No rounding, sharp corners */
+  NONE: '0',
+  /** 2px - Subtle rounding */
+  SM: '0.125rem',
+  /** 4px - Default rounding */
+  BASE: '0.25rem',
+  /** 6px - Medium rounding */
+  MD: '0.375rem',
+  /** 8px - Large rounding */
+  LG: '0.5rem',
+  /** 12px - Extra large rounding */
+  XL: '0.75rem',
+  /** 16px - 2X large rounding */
+  '2XL': '1rem',
+  /** 9999px - Fully circular/pill shape */
+  FULL: '9999px',
+} as const;
