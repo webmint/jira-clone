@@ -8,6 +8,6 @@
 @import 'tailwindcss';
 
 /**
- * Design tokens will be imported here after T020
- * @import './tokens.css';
+ * Design Tokens
  */
+@import '../../designSystem/styles/tokens.css';
