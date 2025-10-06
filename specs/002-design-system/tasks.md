@@ -29,7 +29,7 @@ This task breakdown implements a comprehensive design system foundation with 5 p
 
 - [x] **T005 [P]** Create reference tokens file with typography primitives (font family, sizes, weights, line heights) in src/tokens/reference.tokens.ts
 - [x] **T006 [P]** Create reference tokens for spacing scale (rem-based, base-8 pattern) in src/tokens/reference.tokens.ts
-- [ ] **T007 [P]** Create reference tokens for shadows (5 levels: SM, BASE, MD, LG, XL) in src/tokens/reference.tokens.ts
+- [x] **T007 [P]** Create reference tokens for shadows (5 levels: SM, BASE, MD, LG, XL) in src/tokens/reference.tokens.ts
 - [ ] **T008 [P]** Create reference tokens for border radius (7 values: NONE to FULL) in src/tokens/reference.tokens.ts
 - [ ] **T009 [P]** Create reference tokens for z-index scale (8 levels: HIDE to TOOLTIP) in src/tokens/reference.tokens.ts
 - [ ] **T010 [P]** Create reference tokens for opacity values (8 steps: 0 to 100) in src/tokens/reference.tokens.ts
