@@ -217,9 +217,10 @@ Creates:
    - NOT pushed yet (waiting for approval)
 5. GitHub Issues created for EACH task:
    - Title: `[T###] Task description`
+   - **Body**: Full task content from task file (description, files to modify, dependencies, acceptance criteria, implementation notes, testing requirements)
    - Labels: `feature`, `spec`, agent label (e.g., `agent:backend`), priority
    - **Assigned to**: Responsible agent role (MANDATORY)
-   - Linked to: Parent spec issue + task file
+   - Linked to: Parent spec issue + task file path
    - **Added to project board**: "📋 Backlog" column
 
 **Example**:
