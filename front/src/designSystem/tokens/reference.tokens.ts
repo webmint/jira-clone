@@ -294,3 +294,58 @@ export const OPACITY = {
   /** 100% - Fully opaque */
   '100': '1',
 } as const;
+
+/* ==========================================================================
+   TRANSITIONS
+   ========================================================================== */
+
+/**
+ * Transition Duration Tokens
+ *
+ * Timing values for animations and transitions.
+ * Based on common UI animation principles.
+ *
+ * Usage:
+ * - INSTANT: Immediate feedback (0ms)
+ * - FAST: Quick state changes (150ms)
+ * - BASE: Default transitions (200ms)
+ * - MEDIUM: Smooth animations (300ms)
+ * - SLOW: Emphasized transitions (500ms)
+ */
+export const TRANSITION_DURATION = {
+  /** 0ms - Instant, no animation */
+  INSTANT: '0ms',
+  /** 150ms - Fast transitions */
+  FAST: '150ms',
+  /** 200ms - Default transition speed */
+  BASE: '200ms',
+  /** 300ms - Medium transitions */
+  MEDIUM: '300ms',
+  /** 500ms - Slow, emphasized transitions */
+  SLOW: '500ms',
+} as const;
+
+/**
+ * Transition Timing Function Tokens
+ *
+ * Easing functions for natural motion.
+ * Based on standard CSS easing curves.
+ *
+ * Usage:
+ * - LINEAR: Constant speed
+ * - EASE_IN: Accelerating (good for exit animations)
+ * - EASE_OUT: Decelerating (good for entrance animations)
+ * - EASE_IN_OUT: Smooth start and end (default choice)
+ */
+export const TRANSITION_TIMING = {
+  /** Linear easing - Constant speed */
+  LINEAR: 'linear',
+  /** Ease in - Accelerating from zero velocity */
+  EASE_IN: 'cubic-bezier(0.4, 0, 1, 1)',
+  /** Ease out - Decelerating to zero velocity */
+  EASE_OUT: 'cubic-bezier(0, 0, 0.2, 1)',
+  /** Ease in-out - Smooth acceleration and deceleration */
+  EASE_IN_OUT: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  /** Ease - Standard easing (browser default) */
+  EASE: 'ease',
+} as const;
