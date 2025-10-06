@@ -1,6 +1,7 @@
 import '../src/style.css';
 
 import type { Preview } from '@storybook/vue3';
+import { withThemeByClassName } from '@storybook/addon-themes';
 
 const preview: Preview = {
   parameters: {
@@ -43,6 +44,15 @@ const preview: Preview = {
       defaultViewport: 'mobile',
     },
   },
+  decorators: [
+    withThemeByClassName({
+      themes: {
+        light: 'light',
+        dark: 'dark',
+      },
+      defaultTheme: 'light',
+    }),
+  ],
 };
 
 export default preview;
