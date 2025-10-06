@@ -136,3 +136,76 @@
   --transition-timing-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --transition-timing-ease: ease;
 }
+
+/* ==========================================================================
+   LIGHT THEME (DEFAULT)
+   ========================================================================== */
+
+:root,
+.light {
+  /* Primary Colors - Corporate Trust (default palette) */
+  --color-primary-50: #EFF6FF;
+  --color-primary-100: #DBEAFE;
+  --color-primary-200: #BFDBFE;
+  --color-primary-300: #93C5FD;
+  --color-primary-400: #60A5FA;
+  --color-primary-500: #3B82F6;
+  --color-primary-600: #2563EB;
+  --color-primary-700: #1D4ED8;
+  --color-primary-800: #1E40AF;
+  --color-primary-900: #1E3A8A;
+
+  /* Neutral Colors - Blue-Gray */
+  --color-neutral-0: #FFFFFF;
+  --color-neutral-50: #F8FAFC;
+  --color-neutral-100: #F1F5F9;
+  --color-neutral-200: #E2E8F0;
+  --color-neutral-300: #CBD5E1;
+  --color-neutral-400: #94A3B8;
+  --color-neutral-500: #64748B;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1E293B;
+  --color-neutral-900: #0F172A;
+  --color-neutral-1000: #000000;
+
+  /* Semantic Colors - Success */
+  --color-success-100: #D1FAE5;
+  --color-success-500: #10B981;
+  --color-success-700: #047857;
+
+  /* Semantic Colors - Warning */
+  --color-warning-100: #FEF3C7;
+  --color-warning-500: #F59E0B;
+  --color-warning-700: #B45309;
+
+  /* Semantic Colors - Error */
+  --color-error-100: #FEE2E2;
+  --color-error-500: #EF4444;
+  --color-error-700: #B91C1C;
+
+  /* Semantic Colors - Info */
+  --color-info-100: #CFFAFE;
+  --color-info-500: #06B6D4;
+  --color-info-700: #0E7490;
+
+  /* System Semantic Tokens */
+  --color-background-default: var(--color-neutral-0);
+  --color-background-subtle: var(--color-neutral-50);
+  --color-background-muted: var(--color-neutral-100);
+
+  --color-surface-default: var(--color-neutral-0);
+  --color-surface-raised: var(--color-neutral-50);
+  --color-surface-overlay: var(--color-neutral-100);
+
+  --color-text-primary: var(--color-neutral-900);
+  --color-text-secondary: var(--color-neutral-700);
+  --color-text-tertiary: var(--color-neutral-600);
+  --color-text-disabled: var(--color-neutral-400);
+  --color-text-inverse: var(--color-neutral-0);
+
+  --color-border-default: var(--color-neutral-200);
+  --color-border-subtle: var(--color-neutral-100);
+  --color-border-strong: var(--color-neutral-300);
+  --color-border-focus: var(--color-primary-500);
+}
