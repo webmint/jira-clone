@@ -88,3 +88,54 @@ export const LETTER_SPACING = {
   /** Widest letter spacing for labels/buttons */
   WIDER: '0.05em',
 } as const;
+
+/* ==========================================================================
+   SPACING
+   ========================================================================== */
+
+/**
+ * Spacing Scale Tokens (rem-based, base-8 pattern)
+ *
+ * Base unit: 0.5rem (8px)
+ * Scale follows 8-point grid system for consistent spacing
+ * and alignment across the design system.
+ *
+ * Usage:
+ * - Use smaller values (0.5-2) for tight spacing (padding, gaps)
+ * - Use medium values (3-8) for component spacing
+ * - Use larger values (10-20) for layout spacing
+ */
+export const SPACING = {
+  /** 0px - No spacing */
+  NONE: '0',
+  /** 4px - Extra tight spacing */
+  '0_5': '0.25rem',
+  /** 8px - Base unit, tight spacing */
+  '1': '0.5rem',
+  /** 12px - Small spacing */
+  '1_5': '0.75rem',
+  /** 16px - Default spacing */
+  '2': '1rem',
+  /** 20px - Comfortable spacing */
+  '2_5': '1.25rem',
+  /** 24px - Medium spacing */
+  '3': '1.5rem',
+  /** 32px - Large spacing */
+  '4': '2rem',
+  /** 40px - Extra large spacing */
+  '5': '2.5rem',
+  /** 48px - Section spacing */
+  '6': '3rem',
+  /** 56px - Large section spacing */
+  '7': '3.5rem',
+  /** 64px - Extra large section */
+  '8': '4rem',
+  /** 80px - Layout spacing */
+  '10': '5rem',
+  /** 96px - Large layout spacing */
+  '12': '6rem',
+  /** 128px - Extra large layout */
+  '16': '8rem',
+  /** 160px - Hero section spacing */
+  '20': '10rem',
+} as const;
