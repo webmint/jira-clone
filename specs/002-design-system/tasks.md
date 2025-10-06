@@ -18,7 +18,7 @@ This task breakdown implements a comprehensive design system foundation with 5 p
 
 ## Phase 3.1: Setup & Foundation (Sequential)
 
-- [ ] **T001** Create project structure for design system (src/tokens/, src/palettes/, src/design-system/, src/composables/, src/assets/styles/)
+- [x] **T001** Create project structure for design system (front/src/designSystem/ with tokens/, palettes/, storybook/, composables/, styles/ subdirectories)
 - [ ] **T002** Install and configure dependencies (Tailwind CSS 4.0, Zod 3.x, @vueuse/core, storybook-design-token addon)
 - [ ] **T003** Configure Tailwind CSS 4.0 with @theme directive support in tailwind.config.ts
 - [ ] **T004** Configure Storybook 8.x with design token addon and theme switching in .storybook/main.ts and .storybook/preview.ts
