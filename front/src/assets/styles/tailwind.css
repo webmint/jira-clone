@@ -1,0 +1,13 @@
+/**
+ * Tailwind CSS 4.0 - Design System Entry Point
+ *
+ * This file imports Tailwind CSS and will import design tokens
+ * after they are created in T020.
+ */
+
+@import 'tailwindcss';
+
+/**
+ * Design tokens will be imported here after T020
+ * @import './tokens.css';
+ */
