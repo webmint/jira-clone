@@ -62,7 +62,7 @@ This task breakdown implements a comprehensive design system foundation with 5 p
 
 ## Phase 3.6: Vue Composables (Parallel Execution)
 
-- [ ] **T024 [P]** Create useTheme composable for theme switching (light/dark/system) with localStorage persistence in src/composables/useTheme.ts
+- [x] **T024 [P]** Create useTheme composable for theme switching (light/dark/system) with localStorage persistence in src/composables/useTheme.ts
 - [ ] **T025 [P]** Create useTokens composable for type-safe token access in components in src/composables/useTokens.ts
 
 ## Phase 3.7: Storybook Documentation (Parallel Execution)
