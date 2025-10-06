@@ -55,7 +55,7 @@ This task breakdown implements a comprehensive design system foundation with 5 p
 
 **IMPORTANT**: Sequential tasks as they build on each other.
 
-- [ ] **T020** Create tokens.css with @theme directive and CSS variable definitions in src/assets/styles/tokens.css
+- [x] **T020** Create tokens.css with @theme directive and CSS variable definitions in src/assets/styles/tokens.css
 - [ ] **T021** Implement light theme CSS variables (background, surface, text colors) in tokens.css
 - [ ] **T022** Implement dark theme CSS variables with WCAG AAA contrast validation in tokens.css
 - [ ] **T023** Create token utility functions (getToken, resolveToken) in src/tokens/utils.ts
