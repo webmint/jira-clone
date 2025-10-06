@@ -210,3 +210,45 @@ export const BORDER_RADIUS = {
   /** 9999px - Fully circular/pill shape */
   FULL: '9999px',
 } as const;
+
+/* ==========================================================================
+   Z-INDEX
+   ========================================================================== */
+
+/**
+ * Z-Index Scale Tokens (8 levels: HIDE to TOOLTIP)
+ *
+ * Stacking order system for layered UI elements.
+ * Prevents z-index conflicts with predefined scale.
+ *
+ * Usage:
+ * - HIDE: Hidden elements (negative z-index)
+ * - BASE: Default layer (0)
+ * - DROPDOWN: Dropdowns, menus
+ * - STICKY: Sticky headers, footers
+ * - FIXED: Fixed position elements
+ * - MODAL_BACKDROP: Modal overlays
+ * - MODAL: Modal dialogs
+ * - POPOVER: Popovers, tooltips
+ * - TOOLTIP: Highest priority (tooltips)
+ */
+export const Z_INDEX = {
+  /** -1 - Hidden elements */
+  HIDE: -1,
+  /** 0 - Base layer */
+  BASE: 0,
+  /** 10 - Dropdown menus */
+  DROPDOWN: 10,
+  /** 20 - Sticky elements */
+  STICKY: 20,
+  /** 30 - Fixed position elements */
+  FIXED: 30,
+  /** 40 - Modal backdrop overlays */
+  MODAL_BACKDROP: 40,
+  /** 50 - Modal dialogs */
+  MODAL: 50,
+  /** 60 - Popovers */
+  POPOVER: 60,
+  /** 70 - Tooltips (highest priority) */
+  TOOLTIP: 70,
+} as const;
