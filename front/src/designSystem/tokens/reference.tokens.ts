@@ -252,3 +252,45 @@ export const Z_INDEX = {
   /** 70 - Tooltips (highest priority) */
   TOOLTIP: 70,
 } as const;
+
+/* ==========================================================================
+   OPACITY
+   ========================================================================== */
+
+/**
+ * Opacity Tokens (8 steps: 0 to 100)
+ *
+ * Transparency scale for fading, disabled states, and overlays.
+ * Uses percentage-based values for clarity.
+ *
+ * Usage:
+ * - 0: Completely transparent
+ * - 5/10: Very subtle transparency (hover effects)
+ * - 20/30: Disabled states, subtle overlays
+ * - 50: Semi-transparent overlays
+ * - 60/75: Prominent but translucent
+ * - 90: Almost opaque
+ * - 100: Fully opaque
+ */
+export const OPACITY = {
+  /** 0% - Completely transparent */
+  '0': '0',
+  /** 5% - Very subtle transparency */
+  '5': '0.05',
+  /** 10% - Subtle transparency */
+  '10': '0.1',
+  /** 20% - Light transparency */
+  '20': '0.2',
+  /** 30% - Disabled states */
+  '30': '0.3',
+  /** 50% - Semi-transparent */
+  '50': '0.5',
+  /** 60% - Prominent transparency */
+  '60': '0.6',
+  /** 75% - Mostly opaque */
+  '75': '0.75',
+  /** 90% - Almost fully opaque */
+  '90': '0.9',
+  /** 100% - Fully opaque */
+  '100': '1',
+} as const;
