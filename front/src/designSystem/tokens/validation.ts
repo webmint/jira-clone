@@ -234,3 +234,256 @@ export function validateLayoutTokens(tokens: unknown) {
 export function validateTransitionTokens(tokens: unknown) {
   return transitionTokensSchema.safeParse(tokens);
 }
+
+/* ==========================================================================
+   PALETTE VALIDATION FUNCTIONS (T004, T005)
+   ========================================================================== */
+
+import { getCSSVariableForPalette, getContrastRatio } from './utils';
+
+/**
+ * Palette variation interface
+ */
+export interface PaletteVariation {
+  palette:
+    | 'corporate-trust'
+    | 'creative-energy'
+    | 'natural-harmony'
+    | 'warm-welcome'
+    | 'minimalist';
+  mode: 'light' | 'dark';
+  tokens: Record<string, string>; // Map of token name → value
+}
+
+/**
+ * Token completeness validation result
+ */
+export interface TokenCompletenessResult {
+  valid: boolean;
+  missingTokens?: Array<{
+    variation: string; // e.g., "creative-energy.dark"
+    missing: string[]; // Array of missing token names
+  }>;
+  extraTokens?: Array<{
+    variation: string;
+    extra: string[]; // Array of unexpected token names
+  }>;
+}
+
+/**
+ * Contrast check parameters
+ */
+export interface ContrastCheck {
+  variation: string; // e.g., "natural-harmony.light"
+  foregroundToken: string; // e.g., "--color-text-primary"
+  backgroundToken: string; // e.g., "--color-background-default"
+  minimumRatio: number; // 4.5 for normal text, 3.0 for large text/UI
+}
+
+/**
+ * Contrast validation result
+ */
+export interface ContrastValidationResult {
+  valid: boolean;
+  failures?: Array<{
+    variation: string;
+    foreground: string;
+    foregroundValue: string; // Hex color
+    background: string;
+    backgroundValue: string; // Hex color
+    ratio: number; // Actual contrast ratio
+    required: number; // Required contrast ratio
+  }>;
+}
+
+/**
+ * Validate that all palette variations have complete and identical token sets
+ * (T004 - Token Completeness Validation)
+ *
+ * @param variations - Array of palette variations to validate
+ * @returns Validation result with details of missing or extra tokens
+ *
+ * @example
+ * ```ts
+ * const result = validateTokenCompleteness(allVariations);
+ * if (!result.valid) {
+ *   result.missingTokens?.forEach(({ variation, missing }) => {
+ *     console.error(`${variation} missing: ${missing.join(', ')}`);
+ *   });
+ * }
+ * ```
+ */
+export function validateTokenCompleteness(
+  variations: PaletteVariation[],
+): TokenCompletenessResult {
+  if (!variations || variations.length === 0) {
+    return { valid: false, missingTokens: [{ variation: 'none', missing: ['No variations provided'] }] };
+  }
+
+  // Step 1: Find the intersection of tokens (tokens present in ALL variations)
+  // Start with tokens from the first variation
+  const firstVariationTokens = new Set(Object.keys(variations[0].tokens));
+
+  // Intersect with tokens from all other variations
+  variations.slice(1).forEach((variation) => {
+    const variationTokens = new Set(Object.keys(variation.tokens));
+    // Remove tokens from intersection that aren't in this variation
+    firstVariationTokens.forEach((token) => {
+      if (!variationTokens.has(token)) {
+        firstVariationTokens.delete(token);
+      }
+    });
+  });
+
+  // Also collect the union of all tokens to find "extra" tokens
+  const allUniqueTokens = new Set<string>();
+  variations.forEach((variation) => {
+    Object.keys(variation.tokens).forEach((tokenName) => {
+      allUniqueTokens.add(tokenName);
+    });
+  });
+
+  // Expected tokens = intersection (tokens ALL variations have)
+  const expectedTokens = Array.from(firstVariationTokens).sort();
+
+  // All tokens = union (for finding extras)
+  const unionTokens = Array.from(allUniqueTokens).sort();
+
+  // Step 2: Check each variation for missing or extra tokens
+  const missingTokens: Array<{ variation: string; missing: string[] }> = [];
+  const extraTokens: Array<{ variation: string; extra: string[] }> = [];
+
+  variations.forEach((variation) => {
+    const variationName = `${variation.palette}.${variation.mode}`;
+    const variationTokens = Object.keys(variation.tokens);
+
+    // Find missing tokens (in unionTokens but not in this variation)
+    const missing = unionTokens.filter(
+      (token) => !variationTokens.includes(token),
+    );
+
+    // Find extra tokens (in this variation but not in expectedTokens/intersection)
+    const extra = variationTokens.filter(
+      (token) => !expectedTokens.includes(token),
+    );
+
+    if (missing.length > 0) {
+      missingTokens.push({ variation: variationName, missing: missing.sort() });
+    }
+
+    if (extra.length > 0) {
+      extraTokens.push({ variation: variationName, extra: extra.sort() });
+    }
+  });
+
+  // Step 3: Return validation result
+  const valid = missingTokens.length === 0 && extraTokens.length === 0;
+
+  return {
+    valid,
+    ...(missingTokens.length > 0 && { missingTokens }),
+    ...(extraTokens.length > 0 && { extraTokens }),
+  };
+}
+
+/**
+ * Validate that color pairs meet WCAG contrast requirements
+ * (T005 - Contrast Ratio Validation)
+ *
+ * @param checks - Array of contrast checks to perform
+ * @returns Validation result with details of any failures
+ *
+ * @example
+ * ```ts
+ * const result = validateContrastRatios([
+ *   {
+ *     variation: 'corporate-trust.light',
+ *     foregroundToken: '--color-text-primary',
+ *     backgroundToken: '--color-background-default',
+ *     minimumRatio: 4.5,
+ *   },
+ * ]);
+ * ```
+ */
+export function validateContrastRatios(
+  checks: ContrastCheck[],
+): ContrastValidationResult {
+  const failures: ContrastValidationResult['failures'] = [];
+
+  checks.forEach((check) => {
+    try {
+      // Parse variation into palette and mode
+      const [palette, mode] = check.variation.split('.');
+      if (!palette || !mode) {
+        failures?.push({
+          variation: check.variation,
+          foreground: check.foregroundToken,
+          foregroundValue: 'N/A',
+          background: check.backgroundToken,
+          backgroundValue: 'N/A',
+          ratio: 0,
+          required: check.minimumRatio,
+        });
+        return;
+      }
+
+      // Get computed color values for the specific variation
+      const foregroundValue = getCSSVariableForPalette(
+        check.foregroundToken,
+        palette,
+        mode,
+      );
+      const backgroundValue = getCSSVariableForPalette(
+        check.backgroundToken,
+        palette,
+        mode,
+      );
+
+      // Skip if values are empty (tokens not defined yet)
+      if (!foregroundValue || !backgroundValue) {
+        failures?.push({
+          variation: check.variation,
+          foreground: check.foregroundToken,
+          foregroundValue: foregroundValue || 'N/A',
+          background: check.backgroundToken,
+          backgroundValue: backgroundValue || 'N/A',
+          ratio: 0,
+          required: check.minimumRatio,
+        });
+        return;
+      }
+
+      // Calculate contrast ratio
+      const ratio = getContrastRatio(foregroundValue, backgroundValue);
+
+      // Check if it meets the minimum requirement
+      if (ratio < check.minimumRatio) {
+        failures?.push({
+          variation: check.variation,
+          foreground: check.foregroundToken,
+          foregroundValue,
+          background: check.backgroundToken,
+          backgroundValue,
+          ratio,
+          required: check.minimumRatio,
+        });
+      }
+    } catch (error) {
+      // Handle any errors (invalid colors, etc.)
+      failures?.push({
+        variation: check.variation,
+        foreground: check.foregroundToken,
+        foregroundValue: 'ERROR',
+        background: check.backgroundToken,
+        backgroundValue: 'ERROR',
+        ratio: 0,
+        required: check.minimumRatio,
+      });
+    }
+  });
+
+  return {
+    valid: failures.length === 0,
+    ...(failures.length > 0 && { failures }),
+  };
+}

@@ -6,6 +6,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+import { validateContrastRatios } from '@/designSystem/tokens/validation';
 
 /**
  * Calculate relative luminance of an RGB color
@@ -225,7 +226,6 @@ describe('WCAG Contrast Tests', () => {
 
     it('should have validateContrastRatios function defined', () => {
       // This test will fail until we implement the function in T005
-      const { validateContrastRatios } = require('@/designSystem/tokens/validation');
       expect(validateContrastRatios).toBeDefined();
       expect(typeof validateContrastRatios).toBe('function');
     });
@@ -234,8 +234,6 @@ describe('WCAG Contrast Tests', () => {
       modes.forEach((mode) => {
         describe(`${palette}.${mode}`, () => {
           it('text-primary on background-default meets AA (4.5:1)', () => {
-            const { validateContrastRatios } = require('@/designSystem/tokens/validation');
-
             const result = validateContrastRatios([
               {
                 variation: `${palette}.${mode}`,
@@ -250,8 +248,6 @@ describe('WCAG Contrast Tests', () => {
           });
 
           it('text-secondary on background-default meets AA (4.5:1)', () => {
-            const { validateContrastRatios } = require('@/designSystem/tokens/validation');
-
             const result = validateContrastRatios([
               {
                 variation: `${palette}.${mode}`,
@@ -266,8 +262,6 @@ describe('WCAG Contrast Tests', () => {
           });
 
           it('text-tertiary on background-default meets AA (4.5:1)', () => {
-            const { validateContrastRatios } = require('@/designSystem/tokens/validation');
-
             const result = validateContrastRatios([
               {
                 variation: `${palette}.${mode}`,
@@ -282,8 +276,6 @@ describe('WCAG Contrast Tests', () => {
           });
 
           it('primary-500 on background-default meets AA for large text (3:1)', () => {
-            const { validateContrastRatios } = require('@/designSystem/tokens/validation');
-
             const result = validateContrastRatios([
               {
                 variation: `${palette}.${mode}`,
@@ -298,8 +290,6 @@ describe('WCAG Contrast Tests', () => {
           });
 
           it('border-default on background-default meets AA for UI components (3:1)', () => {
-            const { validateContrastRatios } = require('@/designSystem/tokens/validation');
-
             const result = validateContrastRatios([
               {
                 variation: `${palette}.${mode}`,
@@ -317,8 +307,6 @@ describe('WCAG Contrast Tests', () => {
     });
 
     it('should fail when contrast ratio is insufficient', () => {
-      const { validateContrastRatios } = require('@/designSystem/tokens/validation');
-
       // Mock a check with insufficient contrast
       const result = validateContrastRatios([
         {
@@ -335,8 +323,6 @@ describe('WCAG Contrast Tests', () => {
     });
 
     it('should provide detailed failure information', () => {
-      const { validateContrastRatios } = require('@/designSystem/tokens/validation');
-
       const result = validateContrastRatios([
         {
           variation: 'creative-energy.dark',
@@ -359,8 +345,6 @@ describe('WCAG Contrast Tests', () => {
     });
 
     it('should validate multiple checks at once', () => {
-      const { validateContrastRatios } = require('@/designSystem/tokens/validation');
-
       const checks = palettes.flatMap((palette) =>
         modes.map((mode) => ({
           variation: `${palette}.${mode}`,

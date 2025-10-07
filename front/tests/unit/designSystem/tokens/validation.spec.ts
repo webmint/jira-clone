@@ -22,6 +22,8 @@ import {
   layoutTokensSchema,
   transitionTokensSchema,
   designTokensSchema,
+  validateTokenCompleteness,
+  validateContrastRatios,
 } from '@/designSystem/tokens/validation';
 
 describe('Token Validation', () => {
@@ -351,14 +353,11 @@ describe('Token Validation', () => {
 
     it('should have validateTokenCompleteness function defined', () => {
       // This test will fail until we implement the function in T004
-      const { validateTokenCompleteness } = require('@/designSystem/tokens/validation');
       expect(validateTokenCompleteness).toBeDefined();
       expect(typeof validateTokenCompleteness).toBe('function');
     });
 
     it('should validate that all 10 variations have identical token names', () => {
-      const { validateTokenCompleteness } = require('@/designSystem/tokens/validation');
-
       // Mock variations with complete token sets
       const mockVariations = palettes.flatMap((palette) =>
         modes.map((mode) => ({
@@ -380,8 +379,6 @@ describe('Token Validation', () => {
     });
 
     it('should fail when a variation is missing tokens', () => {
-      const { validateTokenCompleteness } = require('@/designSystem/tokens/validation');
-
       // Create variations where one is incomplete
       const incompleteVariations = palettes.flatMap((palette) =>
         modes.map((mode) => ({
@@ -411,8 +408,6 @@ describe('Token Validation', () => {
     });
 
     it('should detect extra tokens in a variation', () => {
-      const { validateTokenCompleteness } = require('@/designSystem/tokens/validation');
-
       // Create variations where one has extra tokens
       const variationsWithExtra = palettes.flatMap((palette) =>
         modes.map((mode) => ({
@@ -445,8 +440,6 @@ describe('Token Validation', () => {
     });
 
     it('should handle multiple variations missing different tokens', () => {
-      const { validateTokenCompleteness } = require('@/designSystem/tokens/validation');
-
       // Create variations where multiple are incomplete
       const multipleIncomplete = palettes.flatMap((palette) =>
         modes.map((mode) => {
