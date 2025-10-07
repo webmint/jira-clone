@@ -1,6 +1,6 @@
 # Feature Specification: Palette Switcher
 
-**Feature Branch**: `003-palette-switcher-i`
+**Feature Branch**: `003-palette-switcher`
 **Created**: 2025-10-07
 **Status**: Draft
 **Input**: User description: "palette-switcher. I want later user to switch in app between palletes defined in design system. So this is about update current design system to be able to do that"
@@ -27,10 +27,10 @@
 7. Run Review Checklist
    → ✅ All clarifications resolved, spec complete
 8. Commit spec to git:
-   → git checkout -b spec/003-palette-switcher-i (temporary branch for spec)
-   → git add .specify/specs/003-palette-switcher-i/spec.md
+   → git checkout -b spec/003-palette-switcher (temporary branch for spec)
+   → git add .specify/specs/003-palette-switcher/spec.md
    → git commit -m "docs: add specification for palette-switcher"
-   → git push origin spec/003-palette-switcher-i
+   → git push origin spec/003-palette-switcher
 9. Create GitHub issue for spec review:
    → Title: "[Spec] Palette Switcher"
    → Labels: "feature", "spec", priority label (P2)
@@ -39,8 +39,8 @@
    → Add to project board column: "📐 Spec & Design"
 10. ⚠️ STOP and WAIT FOR USER APPROVAL (MANDATORY)
    → Display: "Spec created. GitHub issue #XXX created."
-   → Display: "Spec branch: spec/003-palette-switcher-i"
-   → Display: "Please review spec at .specify/specs/003-palette-switcher-i/spec.md"
+   → Display: "Spec branch: spec/003-palette-switcher"
+   → Display: "Please review spec at .specify/specs/003-palette-switcher/spec.md"
    → Display: "WAITING FOR APPROVAL to proceed to /plan"
    → User must explicitly approve before /plan can run
 11. After approval:
