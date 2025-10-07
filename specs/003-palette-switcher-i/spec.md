@@ -13,10 +13,10 @@
 2. Extract key concepts from description
    → Identified: actors (user), actions (switch between palettes), data (design system palettes), constraints (palettes must be defined in design system)
 3. For each unclear aspect:
-   → [NEEDS CLARIFICATION: How many palettes should be available? Just light/dark or multiple themes?]
-   → [NEEDS CLARIFICATION: Should palette preference persist across sessions?]
-   → [NEEDS CLARIFICATION: Where in the UI should the palette switcher be accessible?]
-   → [NEEDS CLARIFICATION: Should the switch be instantaneous or animated?]
+   → ✅ CLARIFIED: Use existing light and dark palettes already defined in tokens.css
+   → ✅ CLARIFIED: Keep independent palette structure (no composition/inheritance)
+   → ✅ CLARIFIED: Use CSS class switching mechanism (.light and .dark classes)
+   → ✅ CLARIFIED: Components should be universal, using semantic tokens that work with all palettes
 4. Fill User Scenarios & Testing section
    → User flow identified: User navigates to switcher → selects palette → palette applies immediately
 5. Generate Functional Requirements
@@ -25,7 +25,7 @@
 6. Identify Key Entities (if data involved)
    → Palette, User Preference
 7. Run Review Checklist
-   → WARN "Spec has uncertainties - see clarification markers"
+   → ✅ All clarifications resolved, spec complete
 8. Commit spec to git:
    → git checkout -b spec/003-palette-switcher-i (temporary branch for spec)
    → git add .specify/specs/003-palette-switcher-i/spec.md
@@ -88,34 +88,36 @@ As a design system maintainer, I want to structure the design system to support 
 
 ### Acceptance Scenarios
 
-1. **Given** the design system exists, **When** multiple palettes are defined, **Then** each palette contains a complete set of design tokens (colors, backgrounds, borders, shadows, etc.)
-2. **Given** palettes are defined in the design system, **When** a developer inspects the structure, **Then** palettes are organized in a way that allows programmatic switching (e.g., via CSS variables, data attributes, or class names)
-3. **Given** a component uses design tokens, **When** a different palette is activated, **Then** all token references automatically resolve to the new palette's values
-4. **Given** [NEEDS CLARIFICATION: how many palettes should be defined?], **When** reviewing the design system, **Then** each palette is fully documented with its purpose and token values
-5. **Given** the design system is used in an application, **When** the application switches palettes, **Then** all components render correctly without requiring individual component changes
+1. **Given** the design system exists with light and dark palettes, **When** multiple palettes are defined, **Then** each palette contains a complete set of design tokens (colors, backgrounds, borders, shadows, etc.)
+2. **Given** palettes are defined using CSS classes (.light and .dark), **When** a developer inspects the structure, **Then** palettes are organized to allow programmatic switching via class name changes on the root element
+3. **Given** a component uses semantic design tokens, **When** a different palette is activated by changing the root class, **Then** all token references automatically resolve to the new palette's values
+4. **Given** light and dark palettes are defined, **When** reviewing the design system, **Then** each palette is fully documented with its purpose, token values, and usage guidelines
+5. **Given** the design system is used in an application, **When** the application switches palettes via class toggle, **Then** all components render correctly without requiring individual component code changes
+6. **Given** components in Storybook, **When** previewing a component, **Then** Storybook provides controls to view the component in both light and dark palettes
 
 ### Edge Cases
 
-- What happens when a palette is missing some design tokens?
-- Should there be a fallback/default palette defined?
-- How should the design system handle custom or user-defined palettes?
-- Should palette definitions support inheritance or composition?
-- How does each palette ensure accessibility compliance (contrast ratios, WCAG compliance)?
+- What happens when a palette is missing some design tokens? (Both palettes must have complete token coverage)
+- How does the system fallback if no palette class is applied? (Light palette is the default via :root selector)
+- Should the design system support custom palettes beyond light/dark in the future? (Out of scope for this feature, but structure should be extensible)
+- How are accessibility violations detected and reported for each palette? (Need validation tooling/tests)
+- What happens if a component uses a token that doesn't exist in a palette? (Should fail validation during build/test)
 
 ## Requirements _(mandatory)_
 
 ### Functional Requirements
 
-- **FR-001**: Design system MUST define [NEEDS CLARIFICATION: how many palettes? Light/dark only, or multiple themes?] with complete token sets (colors, backgrounds, borders, shadows, text, etc.)
-- **FR-002**: Design system MUST organize palette definitions in a structure that enables programmatic switching
-- **FR-003**: Each palette MUST include all tokens required for complete UI rendering (no missing tokens)
-- **FR-004**: Design system MUST provide a mechanism (e.g., CSS custom properties, data attributes) that allows applications to switch between palettes
-- **FR-005**: Design system MUST document each palette's purpose, use cases, and token values
-- **FR-006**: Design system MUST ensure all defined palettes meet WCAG accessibility standards (contrast requirements)
-- **FR-007**: Design system MUST designate one palette as the default/fallback
-- **FR-008**: Palette structure MUST allow Storybook to preview components in all available palettes
-- **FR-009**: Design system MUST [NEEDS CLARIFICATION: should palettes support composition/inheritance, or be completely independent?]
-- **FR-010**: Token naming convention MUST support palette switching without component code changes
+- **FR-001**: Design system MUST maintain light and dark palettes (existing in tokens.css) with complete token sets (colors, backgrounds, borders, shadows, text, semantic states)
+- **FR-002**: Design system MUST organize palette definitions using CSS classes (.light and .dark) that enable programmatic switching
+- **FR-003**: Each palette (light and dark) MUST include all tokens required for complete UI rendering (no missing tokens between palettes)
+- **FR-004**: Design system MUST use CSS class-based switching mechanism where applications toggle .light/.dark classes on the root element
+- **FR-005**: Design system MUST document each palette's purpose, use cases, token values, and switching mechanism
+- **FR-006**: Design system MUST ensure both light and dark palettes meet WCAG AA accessibility standards (minimum 4.5:1 contrast for normal text, 3:1 for large text)
+- **FR-007**: Design system MUST designate light palette as the default/fallback theme
+- **FR-008**: Palette structure MUST allow Storybook to preview components in both light and dark palettes via theme switcher controls
+- **FR-009**: Palettes MUST be independent (each defines complete token set) without composition or inheritance between them
+- **FR-010**: Components MUST use semantic tokens (e.g., --color-text-primary, --color-background-default) that automatically resolve to palette-specific values
+- **FR-011**: Design system MUST provide examples and guidelines for creating components that work universally with both palettes
 
 ### Key Entities _(include if feature involves data)_
 
@@ -137,9 +139,9 @@ _GATE: Automated checks run during main() execution_
 
 ### Requirement Completeness
 
-- [ ] No [NEEDS CLARIFICATION] markers remain (4 clarifications needed)
-- [ ] Requirements are testable and unambiguous (pending clarifications)
-- [ ] Success criteria are measurable (partially - needs clarification on palette count and switching mechanism)
+- [x] No [NEEDS CLARIFICATION] markers remain (all 4 clarifications resolved)
+- [x] Requirements are testable and unambiguous
+- [x] Success criteria are measurable (light/dark palettes, CSS class switching, universal components)
 - [x] Scope is clearly bounded (design system infrastructure for palette switching)
 - [x] Dependencies and assumptions identified (updates to existing design system)
 
@@ -151,11 +153,11 @@ _Updated by main() during processing_
 
 - [x] User description parsed
 - [x] Key concepts extracted
-- [x] Ambiguities marked (4 clarification markers)
+- [x] Ambiguities marked and resolved (4 clarifications answered)
 - [x] User scenarios defined (focused on design system preparation)
 - [x] Requirements generated (focused on design system infrastructure)
 - [x] Entities identified
-- [ ] Review checklist passed (pending clarifications)
+- [x] Review checklist passed (all clarifications resolved)
 - [x] GitHub issue created for spec review (#88)
 
 ## GitHub Integration
@@ -174,12 +176,12 @@ _Updated by main() during processing_
 - [ ] User scenarios make sense
 - [ ] No major concerns or missing requirements
 
-**Key Clarifications Needed**:
+**Clarifications Resolved**:
 
-1. How many palettes should be defined in the design system? (e.g., light/dark only, or multiple themes)
-2. Should palettes support composition/inheritance, or be completely independent?
-3. What is the preferred mechanism for palette switching? (CSS custom properties, data attributes, CSS classes, etc.)
-4. Should the design system include palette-specific component variants, or should all components work universally with any palette?
+1. ✅ **Palettes**: Light and dark (existing in tokens.css)
+2. ✅ **Structure**: Independent palettes (no composition/inheritance)
+3. ✅ **Switching mechanism**: CSS classes (.light and .dark on root element)
+4. ✅ **Components**: Universal components using semantic tokens that work with all palettes
 
 **After Review**:
 
