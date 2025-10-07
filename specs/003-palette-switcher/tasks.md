@@ -41,7 +41,7 @@ Extend the design system to support 5 color palettes (Corporate Trust/blue, Crea
 
 **Palette Definitions** (can run in parallel after T003):
 
-- [ ] T006 [P] Define Creative Energy palette (light + dark) in `front/src/designSystem/styles/tokens.css`
+- [X] T006 [P] Define Creative Energy palette (light + dark) in `front/src/designSystem/styles/tokens.css`
 - [ ] T007 [P] Define Natural Harmony palette (light + dark) in `front/src/designSystem/styles/tokens.css`
 - [ ] T008 [P] Define Warm Welcome palette (light + dark) in `front/src/designSystem/styles/tokens.css`
 - [ ] T009 [P] Define Minimalist palette (light + dark) in `front/src/designSystem/styles/tokens.css`
