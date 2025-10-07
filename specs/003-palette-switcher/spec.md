@@ -13,10 +13,10 @@
 2. Extract key concepts from description
    → Identified: actors (user), actions (switch between palettes), data (design system palettes), constraints (palettes must be defined in design system)
 3. For each unclear aspect:
-   → ✅ CLARIFIED: Use existing light and dark palettes already defined in tokens.css
-   → ✅ CLARIFIED: Keep independent palette structure (no composition/inheritance)
-   → ✅ CLARIFIED: Use CSS class switching mechanism (.light and .dark classes)
-   → ✅ CLARIFIED: Components should be universal, using semantic tokens that work with all palettes
+   → ✅ CLARIFIED: 5 palettes (Corporate Trust, Creative Energy, Natural Harmony, Warm Welcome, Minimalist) each with light/dark modes
+   → ✅ CLARIFIED: Keep independent palette structure (no composition/inheritance), 2-dimensional system
+   → ✅ CLARIFIED: Use CSS class switching mechanism (palette class + mode class, e.g., `.corporate-trust.light`)
+   → ✅ CLARIFIED: Components should be universal, using semantic tokens that work with all 10 variations
 4. Fill User Scenarios & Testing section
    → User flow identified: User navigates to switcher → selects palette → palette applies immediately
 5. Generate Functional Requirements
@@ -107,17 +107,17 @@ As a design system maintainer, I want to structure the design system to support 
 
 ### Functional Requirements
 
-- **FR-001**: Design system MUST maintain light and dark palettes (existing in tokens.css) with complete token sets (colors, backgrounds, borders, shadows, text, semantic states)
-- **FR-002**: Design system MUST organize palette definitions using CSS classes (.light and .dark) that enable programmatic switching
-- **FR-003**: Each palette (light and dark) MUST include all tokens required for complete UI rendering (no missing tokens between palettes)
-- **FR-004**: Design system MUST use CSS class-based switching mechanism where applications toggle .light/.dark classes on the root element
+- **FR-001**: Design system MUST define 5 palettes (Corporate Trust/blue, Creative Energy/purple, Natural Harmony/green, Warm Welcome/orange, Minimalist/gray) each with light and dark modes, totaling 10 variations with complete token sets
+- **FR-002**: Design system MUST organize palette definitions using 2-dimensional CSS classes (palette class + mode class, e.g., `.corporate-trust.light`) that enable programmatic switching
+- **FR-003**: Each of the 10 palette variations MUST include all tokens required for complete UI rendering (no missing tokens across any variation)
+- **FR-004**: Design system MUST use CSS class-based switching mechanism where applications apply both palette and mode classes to the root element (e.g., `<html class="natural-harmony dark">`)
 - **FR-005**: Design system MUST document each palette's purpose, use cases, token values, and switching mechanism
-- **FR-006**: Design system MUST ensure both light and dark palettes meet WCAG AA accessibility standards (minimum 4.5:1 contrast for normal text, 3:1 for large text)
-- **FR-007**: Design system MUST designate light palette as the default/fallback theme
-- **FR-008**: Palette structure MUST allow Storybook to preview components in both light and dark palettes via theme switcher controls
-- **FR-009**: Palettes MUST be independent (each defines complete token set) without composition or inheritance between them
-- **FR-010**: Components MUST use semantic tokens (e.g., --color-text-primary, --color-background-default) that automatically resolve to palette-specific values
-- **FR-011**: Design system MUST provide examples and guidelines for creating components that work universally with both palettes
+- **FR-006**: Design system MUST ensure all 10 palette variations meet WCAG AA accessibility standards (minimum 4.5:1 contrast for normal text, 3:1 for large text)
+- **FR-007**: Design system MUST designate Corporate Trust light mode as the default/fallback theme
+- **FR-008**: Palette structure MUST allow Storybook to preview components in all 10 palette variations (5 palettes × 2 modes) via theme switcher controls
+- **FR-009**: All 10 palette variations MUST be independent (each defines complete token set) without composition or inheritance between them
+- **FR-010**: Components MUST use semantic tokens (e.g., --color-text-primary, --color-background-default) that automatically resolve to palette-and-mode-specific values
+- **FR-011**: Design system MUST provide examples and guidelines for creating components that work universally with all 10 palette variations
 
 ### Key Entities _(include if feature involves data)_
 
@@ -178,10 +178,10 @@ _Updated by main() during processing_
 
 **Clarifications Resolved**:
 
-1. ✅ **Palettes**: Light and dark (existing in tokens.css)
-2. ✅ **Structure**: Independent palettes (no composition/inheritance)
-3. ✅ **Switching mechanism**: CSS classes (.light and .dark on root element)
-4. ✅ **Components**: Universal components using semantic tokens that work with all palettes
+1. ✅ **Palettes**: 5 palettes × 2 modes = 10 variations (Corporate Trust, Creative Energy, Natural Harmony, Warm Welcome, Minimalist - each with light/dark)
+2. ✅ **Structure**: Independent palettes (no composition/inheritance), 2-dimensional system (palette + mode)
+3. ✅ **Switching mechanism**: CSS classes (palette class + mode class on root element, e.g., `.corporate-trust.light`)
+4. ✅ **Components**: Universal components using semantic tokens that work with all palette/mode combinations
 
 **After Review**:
 
