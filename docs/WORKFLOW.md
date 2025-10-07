@@ -217,9 +217,10 @@ Creates:
    - NOT pushed yet (waiting for approval)
 5. GitHub Issues created for EACH task:
    - Title: `[T###] Task description`
+   - **Body**: Full task content from task file (description, files to modify, dependencies, acceptance criteria, implementation notes, testing requirements)
    - Labels: `feature`, `spec`, agent label (e.g., `agent:backend`), priority
    - **Assigned to**: Responsible agent role (MANDATORY)
-   - Linked to: Parent spec issue + task file
+   - Linked to: Parent spec issue + task file path
    - **Added to project board**: "📋 Backlog" column
 
 **Example**:
@@ -334,11 +335,25 @@ git pull origin spec/001-user-authentication
 
 **MANDATORY**: Cannot proceed if previous task PR not merged!
 
-#### Step 2: Create Task Sub-branch
+#### Step 2: Create Task Sub-branch and Link to Issue
 
 ```bash
 # Create sub-branch for task from spec branch
 git checkout -b spec/001-user-authentication/T014-auth-endpoints
+
+# Push branch to establish remote tracking
+git push -u origin spec/001-user-authentication/T014-auth-endpoints
+
+# Link branch to GitHub issue and move to "In Progress" column
+gh issue develop #14 --branch spec/001-user-authentication/T014-auth-endpoints
+gh issue edit #14 --add-label "in-progress"
+
+# Move issue to appropriate "In Progress" column on project board
+# Based on agent assignment:
+# - agent:backend → "🔧 Backend Dev"
+# - agent:frontend → "🎨 Frontend Dev"
+# - agent:common → "⚙️ Common Types"
+# - agent:testing → "🧪 Testing"
 ```
 
 #### Step 3: Implement Task
@@ -421,14 +436,11 @@ git commit -m "feat: implement auth controller endpoints"
 
 **If hooks PASS**: Commit succeeds, proceed to next step
 
-#### Step 6: Create Pull Request
+#### Step 6: Create Pull Request and Move to Review
 
 **After successful commit**:
 
 ```bash
-# Push task branch
-git push -u origin spec/001-user-authentication/T014-auth-endpoints
-
 # Create PR following .github/pull_request_template.md
 gh pr create \
   --base spec/001-user-authentication \
@@ -467,6 +479,9 @@ Implements AuthController with 6 REST endpoints for authentication flow.
 Closes #14
 EOF
 )"
+
+# Move issue to "👀 Review" column on project board
+gh issue edit #14 --remove-label "in-progress" --add-label "review"
 ```
 
 **IMPORTANT**: PR must follow `.github/pull_request_template.md` format (MANDATORY)
@@ -550,13 +565,17 @@ Waiting for your approval to merge (or request changes based on pr-reviewer find
 
 **MANDATORY**: Cannot merge until user explicitly approves!
 
-#### Step 9: Merge PR and Prepare for Next Task
+#### Step 9: Merge PR and Move to Done
 
 **After receiving user approval**:
 
 ```bash
 # Merge PR (via GitHub or gh CLI)
 gh pr merge XX --squash
+
+# Move issue to "✅ Done" column on project board
+gh issue edit #14 --remove-label "review" --add-label "done"
+gh issue close #14
 
 # Step 1: Checkout spec branch
 git checkout spec/001-user-authentication
@@ -571,6 +590,7 @@ git log --oneline -1  # Should show merged task commit
 **Verify merge**:
 
 - Confirm PR #XX is merged
+- Confirm issue #14 moved to "✅ Done" column
 - Confirm spec branch contains latest changes
 - All tests still passing on spec branch
 
@@ -820,10 +840,14 @@ main (protected)
 **Workflow**:
 
 - Spec issues → "📐 Spec & Design"
-- Task issues → "📋 Backlog" initially
-- Move to appropriate dev column when starting work
-- Move to "👀 Review" when PR created
-- Move to "✅ Done" when merged
+- Task issues → "📋 Backlog" initially (created during `/tasks`)
+- Move to appropriate dev column when starting task (Step 2):
+  - `agent:backend` → "🔧 Backend Dev"
+  - `agent:frontend` → "🎨 Frontend Dev"
+  - `agent:common` → "⚙️ Common Types"
+  - `agent:testing` → "🧪 Testing"
+- Move to "👀 Review" when PR created (Step 6)
+- Move to "✅ Done" when PR merged and issue closed (Step 9)
 
 ---
 

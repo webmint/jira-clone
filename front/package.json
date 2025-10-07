@@ -7,12 +7,17 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook"
   },
   "dependencies": {
-    "vue": "^3.5.22"
+    "@vueuse/core": "^13.9.0",
+    "vue": "^3.5.22",
+    "zod": "^4.1.11"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^8.6.14",
@@ -27,17 +32,22 @@
     "@tailwindcss/vite": "^4.0.0",
     "@types/node": "^24.6.0",
     "@vitejs/plugin-vue": "^6.0.1",
+    "@vitest/ui": "^3.2.4",
     "@vue/eslint-config-airbnb": "^8.0.0",
     "@vue/eslint-config-typescript": "^12.0.0",
     "@vue/test-utils": "^2.4.3",
     "@vue/tsconfig": "^0.8.1",
     "autoprefixer": "^10.4.21",
     "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-vue": "^10.5.0",
+    "happy-dom": "^19.0.2",
     "postcss": "^8.5.6",
     "storybook": "^8.6.14",
+    "storybook-design-token": "^3.3.0",
     "tailwindcss": "^4.0.0",
     "typescript": "~5.9.3",
     "vite": "^7.1.7",
+    "vitest": "^3.2.4",
     "vue-tsc": "^3.1.0"
   }
 }

@@ -44,6 +44,13 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
   },
+  /**
+   * NAMING CONVENTIONS (Enforced via code review):
+   * - Files and folders: camelCase (e.g., designSystem/, userService.ts)
+   * - Vue components: PascalCase (e.g., UserCard.vue)
+   * - Config files: any case (e.g., vite.config.ts)
+   * - Type files: camelCase with .d.ts (e.g., types.d.ts)
+   */
   settings: {
     'import/resolver': {
       typescript: {

@@ -1,0 +1,351 @@
+/**
+ * Design System Reference Tokens
+ *
+ * Reference tokens are the foundational design values that define
+ * the visual language of the system. They are primitive values that
+ * are referenced by system tokens and component tokens.
+ *
+ * Architecture: Reference → System → Component
+ */
+
+/* ==========================================================================
+   TYPOGRAPHY
+   ========================================================================== */
+
+/**
+ * Font Family Tokens
+ *
+ * Primary font: Roboto (Google Fonts)
+ * Should be loaded via CDN in index.html or Storybook preview
+ */
+export const FONT_FAMILY = {
+  /** Primary font for body text, headings, and UI elements */
+  PRIMARY: "'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+  /** Monospace font for code blocks */
+  MONO: "'Roboto Mono', 'Courier New', monospace",
+} as const;
+
+/**
+ * Font Size Tokens (rem-based)
+ *
+ * Base size: 16px (1rem)
+ * Scale: Minor third (1.2 ratio)
+ */
+export const FONT_SIZE = {
+  XS: '0.75rem', // 12px - captions, labels
+  SM: '0.875rem', // 14px - small text, metadata
+  BASE: '1rem', // 16px - body text
+  MD: '1.125rem', // 18px - subheadings
+  LG: '1.25rem', // 20px - section headings
+  XL: '1.5rem', // 24px - page headings
+  '2XL': '1.875rem', // 30px - hero headings
+  '3XL': '2.25rem', // 36px - display headings
+  '4XL': '3rem', // 48px - large displays
+} as const;
+
+/**
+ * Font Weight Tokens
+ *
+ * Roboto supports: 100, 300, 400, 500, 700, 900
+ */
+export const FONT_WEIGHT = {
+  THIN: 100,
+  LIGHT: 300,
+  REGULAR: 400,
+  MEDIUM: 500,
+  BOLD: 700,
+  BLACK: 900,
+} as const;
+
+/**
+ * Line Height Tokens
+ *
+ * Optimized for readability across different text sizes
+ */
+export const LINE_HEIGHT = {
+  /** Tight line height for headings */
+  TIGHT: 1.25,
+  /** Normal line height for body text */
+  NORMAL: 1.5,
+  /** Relaxed line height for large text blocks */
+  RELAXED: 1.75,
+  /** Loose line height for enhanced readability */
+  LOOSE: 2,
+} as const;
+
+/**
+ * Letter Spacing Tokens (em-based)
+ *
+ * Subtle adjustments for different text sizes
+ */
+export const LETTER_SPACING = {
+  /** Tighter letter spacing for large headings */
+  TIGHT: '-0.025em',
+  /** Normal letter spacing */
+  NORMAL: '0em',
+  /** Wider letter spacing for small text */
+  WIDE: '0.025em',
+  /** Widest letter spacing for labels/buttons */
+  WIDER: '0.05em',
+} as const;
+
+/* ==========================================================================
+   SPACING
+   ========================================================================== */
+
+/**
+ * Spacing Scale Tokens (rem-based, base-8 pattern)
+ *
+ * Base unit: 0.5rem (8px)
+ * Scale follows 8-point grid system for consistent spacing
+ * and alignment across the design system.
+ *
+ * Usage:
+ * - Use smaller values (0.5-2) for tight spacing (padding, gaps)
+ * - Use medium values (3-8) for component spacing
+ * - Use larger values (10-20) for layout spacing
+ */
+export const SPACING = {
+  /** 0px - No spacing */
+  NONE: '0',
+  /** 4px - Extra tight spacing */
+  '0_5': '0.25rem',
+  /** 8px - Base unit, tight spacing */
+  '1': '0.5rem',
+  /** 12px - Small spacing */
+  '1_5': '0.75rem',
+  /** 16px - Default spacing */
+  '2': '1rem',
+  /** 20px - Comfortable spacing */
+  '2_5': '1.25rem',
+  /** 24px - Medium spacing */
+  '3': '1.5rem',
+  /** 32px - Large spacing */
+  '4': '2rem',
+  /** 40px - Extra large spacing */
+  '5': '2.5rem',
+  /** 48px - Section spacing */
+  '6': '3rem',
+  /** 56px - Large section spacing */
+  '7': '3.5rem',
+  /** 64px - Extra large section */
+  '8': '4rem',
+  /** 80px - Layout spacing */
+  '10': '5rem',
+  /** 96px - Large layout spacing */
+  '12': '6rem',
+  /** 128px - Extra large layout */
+  '16': '8rem',
+  /** 160px - Hero section spacing */
+  '20': '10rem',
+} as const;
+
+/* ==========================================================================
+   SHADOWS
+   ========================================================================== */
+
+/**
+ * Shadow Tokens (5 levels: SM, BASE, MD, LG, XL)
+ *
+ * Elevation system using box-shadow for depth perception.
+ * Shadows create visual hierarchy and focus attention.
+ *
+ * Usage:
+ * - SM: Subtle elevation (buttons, inputs)
+ * - BASE: Default cards, panels
+ * - MD: Elevated cards, dropdowns
+ * - LG: Modals, overlays
+ * - XL: Maximum elevation (dialogs, popovers)
+ */
+export const SHADOW = {
+  /** No shadow */
+  NONE: 'none',
+  /** Small shadow - Subtle elevation for interactive elements */
+  SM: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+  /** Base shadow - Default elevation for cards and panels */
+  BASE: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
+  /** Medium shadow - Elevated elements like dropdowns */
+  MD: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+  /** Large shadow - Modals and overlays */
+  LG: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+  /** Extra large shadow - Maximum elevation for dialogs */
+  XL: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+  /** Inner shadow - Inset elements */
+  INNER: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
+} as const;
+
+/* ==========================================================================
+   BORDER RADIUS
+   ========================================================================== */
+
+/**
+ * Border Radius Tokens (7 values: NONE to FULL)
+ *
+ * Progressive rounding scale for UI elements.
+ * Defines corner roundness from sharp edges to fully circular.
+ *
+ * Usage:
+ * - NONE: Sharp corners (tables, dividers)
+ * - SM: Subtle rounding (inputs, small buttons)
+ * - BASE: Default rounding (buttons, cards)
+ * - MD/LG: Pronounced rounding (large cards, containers)
+ * - XL/2XL: Heavy rounding (badges, pills)
+ * - FULL: Circular elements (avatars, icon buttons)
+ */
+export const BORDER_RADIUS = {
+  /** 0px - No rounding, sharp corners */
+  NONE: '0',
+  /** 2px - Subtle rounding */
+  SM: '0.125rem',
+  /** 4px - Default rounding */
+  BASE: '0.25rem',
+  /** 6px - Medium rounding */
+  MD: '0.375rem',
+  /** 8px - Large rounding */
+  LG: '0.5rem',
+  /** 12px - Extra large rounding */
+  XL: '0.75rem',
+  /** 16px - 2X large rounding */
+  '2XL': '1rem',
+  /** 9999px - Fully circular/pill shape */
+  FULL: '9999px',
+} as const;
+
+/* ==========================================================================
+   Z-INDEX
+   ========================================================================== */
+
+/**
+ * Z-Index Scale Tokens (8 levels: HIDE to TOOLTIP)
+ *
+ * Stacking order system for layered UI elements.
+ * Prevents z-index conflicts with predefined scale.
+ *
+ * Usage:
+ * - HIDE: Hidden elements (negative z-index)
+ * - BASE: Default layer (0)
+ * - DROPDOWN: Dropdowns, menus
+ * - STICKY: Sticky headers, footers
+ * - FIXED: Fixed position elements
+ * - MODAL_BACKDROP: Modal overlays
+ * - MODAL: Modal dialogs
+ * - POPOVER: Popovers, tooltips
+ * - TOOLTIP: Highest priority (tooltips)
+ */
+export const Z_INDEX = {
+  /** -1 - Hidden elements */
+  HIDE: -1,
+  /** 0 - Base layer */
+  BASE: 0,
+  /** 10 - Dropdown menus */
+  DROPDOWN: 10,
+  /** 20 - Sticky elements */
+  STICKY: 20,
+  /** 30 - Fixed position elements */
+  FIXED: 30,
+  /** 40 - Modal backdrop overlays */
+  MODAL_BACKDROP: 40,
+  /** 50 - Modal dialogs */
+  MODAL: 50,
+  /** 60 - Popovers */
+  POPOVER: 60,
+  /** 70 - Tooltips (highest priority) */
+  TOOLTIP: 70,
+} as const;
+
+/* ==========================================================================
+   OPACITY
+   ========================================================================== */
+
+/**
+ * Opacity Tokens (8 steps: 0 to 100)
+ *
+ * Transparency scale for fading, disabled states, and overlays.
+ * Uses percentage-based values for clarity.
+ *
+ * Usage:
+ * - 0: Completely transparent
+ * - 5/10: Very subtle transparency (hover effects)
+ * - 20/30: Disabled states, subtle overlays
+ * - 50: Semi-transparent overlays
+ * - 60/75: Prominent but translucent
+ * - 90: Almost opaque
+ * - 100: Fully opaque
+ */
+export const OPACITY = {
+  /** 0% - Completely transparent */
+  '0': '0',
+  /** 5% - Very subtle transparency */
+  '5': '0.05',
+  /** 10% - Subtle transparency */
+  '10': '0.1',
+  /** 20% - Light transparency */
+  '20': '0.2',
+  /** 30% - Disabled states */
+  '30': '0.3',
+  /** 50% - Semi-transparent */
+  '50': '0.5',
+  /** 60% - Prominent transparency */
+  '60': '0.6',
+  /** 75% - Mostly opaque */
+  '75': '0.75',
+  /** 90% - Almost fully opaque */
+  '90': '0.9',
+  /** 100% - Fully opaque */
+  '100': '1',
+} as const;
+
+/* ==========================================================================
+   TRANSITIONS
+   ========================================================================== */
+
+/**
+ * Transition Duration Tokens
+ *
+ * Timing values for animations and transitions.
+ * Based on common UI animation principles.
+ *
+ * Usage:
+ * - INSTANT: Immediate feedback (0ms)
+ * - FAST: Quick state changes (150ms)
+ * - BASE: Default transitions (200ms)
+ * - MEDIUM: Smooth animations (300ms)
+ * - SLOW: Emphasized transitions (500ms)
+ */
+export const TRANSITION_DURATION = {
+  /** 0ms - Instant, no animation */
+  INSTANT: '0ms',
+  /** 150ms - Fast transitions */
+  FAST: '150ms',
+  /** 200ms - Default transition speed */
+  BASE: '200ms',
+  /** 300ms - Medium transitions */
+  MEDIUM: '300ms',
+  /** 500ms - Slow, emphasized transitions */
+  SLOW: '500ms',
+} as const;
+
+/**
+ * Transition Timing Function Tokens
+ *
+ * Easing functions for natural motion.
+ * Based on standard CSS easing curves.
+ *
+ * Usage:
+ * - LINEAR: Constant speed
+ * - EASE_IN: Accelerating (good for exit animations)
+ * - EASE_OUT: Decelerating (good for entrance animations)
+ * - EASE_IN_OUT: Smooth start and end (default choice)
+ */
+export const TRANSITION_TIMING = {
+  /** Linear easing - Constant speed */
+  LINEAR: 'linear',
+  /** Ease in - Accelerating from zero velocity */
+  EASE_IN: 'cubic-bezier(0.4, 0, 1, 1)',
+  /** Ease out - Decelerating to zero velocity */
+  EASE_OUT: 'cubic-bezier(0, 0, 0.2, 1)',
+  /** Ease in-out - Smooth acceleration and deceleration */
+  EASE_IN_OUT: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  /** Ease - Standard easing (browser default) */
+  EASE: 'ease',
+} as const;
