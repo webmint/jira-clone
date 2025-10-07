@@ -161,7 +161,7 @@ _Updated by main() during processing_
 
 ## GitHub Integration
 
-**Spec Issue**: #[pending]
+**Spec Issue**: #88
 **Status**: ⚠️ AWAITING USER APPROVAL
 
 ## ⚠️ APPROVAL GATE
