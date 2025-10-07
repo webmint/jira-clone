@@ -28,16 +28,16 @@ Extend the design system to support 5 color palettes (Corporate Trust/blue, Crea
 
 **CRITICAL: These tests MUST be written and MUST FAIL before ANY implementation**
 
-- [ ] T001 [P] Write token completeness validation tests in `front/tests/unit/designSystem/tokens/validation.spec.ts`
-- [ ] T002 [P] Write WCAG contrast validation tests in `front/tests/unit/designSystem/tokens/contrast.spec.ts`
+- [X] T001 [P] Write token completeness validation tests in `front/tests/unit/designSystem/tokens/validation.spec.ts`
+- [X] T002 [P] Write WCAG contrast validation tests in `front/tests/unit/designSystem/tokens/contrast.spec.ts`
 
 ## Phase 3.2: Core Implementation (ONLY after tests are failing)
 
 **Validation Functions**:
 
-- [ ] T003 Implement helper functions in `front/src/designSystem/tokens/utils.ts` (getCSSVariable, getContrastRatio)
-- [ ] T004 Implement validateTokenCompleteness in `front/src/designSystem/tokens/validation.ts` (depends on T003)
-- [ ] T005 Implement validateContrastRatios in `front/src/designSystem/tokens/validation.ts` (depends on T003)
+- [X] T003 Implement helper functions in `front/src/designSystem/tokens/utils.ts` (getCSSVariable, getContrastRatio)
+- [X] T004 Implement validateTokenCompleteness in `front/src/designSystem/tokens/validation.ts` (depends on T003)
+- [X] T005 Implement validateContrastRatios in `front/src/designSystem/tokens/validation.ts` (depends on T003)
 
 **Palette Definitions** (can run in parallel after T003):
 

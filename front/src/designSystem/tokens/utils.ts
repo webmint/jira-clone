@@ -164,3 +164,128 @@ export function hasToken(category: string, key: string): boolean {
   if (!tokenCategory) return false;
   return key in (tokenCategory as Record<string, unknown>);
 }
+
+/* ==========================================================================
+   PALETTE-SPECIFIC UTILITIES (T003)
+   ========================================================================== */
+
+/**
+ * Get a CSS variable value for a specific palette variation
+ * Creates a temporary element with palette and mode classes to resolve the value
+ *
+ * @param tokenName - CSS variable name (e.g., "--color-text-primary")
+ * @param palette - Palette name (e.g., "corporate-trust", "creative-energy")
+ * @param mode - Mode name ("light" or "dark")
+ * @returns Resolved CSS variable value (e.g., "#0F172A")
+ *
+ * @example
+ * ```ts
+ * getCSSVariableForPalette('--color-text-primary', 'creative-energy', 'dark')
+ * // returns "#FFFFFF"
+ * ```
+ */
+export function getCSSVariableForPalette(
+  tokenName: string,
+  palette: string,
+  mode: string,
+): string {
+  // Create a temporary element
+  const tempElement = document.createElement('div');
+
+  // Add palette and mode classes
+  tempElement.className = `${palette} ${mode}`;
+
+  // Hide the element completely
+  tempElement.style.position = 'absolute';
+  tempElement.style.visibility = 'hidden';
+  tempElement.style.pointerEvents = 'none';
+
+  // Append to body
+  document.body.appendChild(tempElement);
+
+  try {
+    // Ensure token name has -- prefix
+    const varName = tokenName.startsWith('--') ? tokenName : `--${tokenName}`;
+
+    // Get computed style
+    const value = getComputedStyle(tempElement).getPropertyValue(varName).trim();
+
+    return value;
+  } finally {
+    // Always clean up
+    document.body.removeChild(tempElement);
+  }
+}
+
+/**
+ * Calculate WCAG contrast ratio between two hex colors
+ * Implements the WCAG 2.1 relative luminance formula
+ * https://www.w3.org/TR/WCAG21/#dfn-relative-luminance
+ *
+ * @param foreground - Foreground hex color (e.g., "#0F172A")
+ * @param background - Background hex color (e.g., "#FFFFFF")
+ * @returns Contrast ratio (range: 1.0 to 21.0)
+ *
+ * @example
+ * ```ts
+ * getContrastRatio('#0F172A', '#FFFFFF')
+ * // returns 15.68 (passes WCAG AAA)
+ * ```
+ */
+export function getContrastRatio(foreground: string, background: string): number {
+  const rgb1 = hexToRgb(foreground);
+  const rgb2 = hexToRgb(background);
+
+  const lum1 = getRelativeLuminance(rgb1.r, rgb1.g, rgb1.b);
+  const lum2 = getRelativeLuminance(rgb2.r, rgb2.g, rgb2.b);
+
+  const lighter = Math.max(lum1, lum2);
+  const darker = Math.min(lum1, lum2);
+
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+/**
+ * Convert hex color to RGB components
+ * @internal
+ */
+function hexToRgb(hex: string): { r: number; g: number; b: number } {
+  // Remove # if present
+  const cleanHex = hex.replace(/^#/, '');
+
+  // Handle 3-digit hex codes
+  if (cleanHex.length === 3) {
+    const r = parseInt(cleanHex[0] + cleanHex[0], 16);
+    const g = parseInt(cleanHex[1] + cleanHex[1], 16);
+    const b = parseInt(cleanHex[2] + cleanHex[2], 16);
+    return { r, g, b };
+  }
+
+  // Handle 6-digit hex codes
+  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
+  if (!result) {
+    throw new Error(`Invalid hex color: ${hex}`);
+  }
+
+  return {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16),
+  };
+}
+
+/**
+ * Calculate relative luminance of an RGB color
+ * Implements WCAG 2.1 formula
+ * @internal
+ */
+function getRelativeLuminance(r: number, g: number, b: number): number {
+  // Convert to 0-1 range and apply gamma correction
+  const [rs, gs, bs] = [r, g, b].map((component) => {
+    const val = component / 255;
+    return val <= 0.03928 ? val / 12.92 : Math.pow((val + 0.055) / 1.055, 2.4);
+  });
+
+  // Apply WCAG luminance weights
+  return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+}
