@@ -422,3 +422,149 @@
   --color-border-strong: var(--color-neutral-300);
   --color-border-focus: var(--color-primary-400);
 }
+
+/* ==========================================================================
+   NATURAL HARMONY PALETTE (GREEN)
+   Light Mode - Fresh, natural, growth-oriented
+   ========================================================================== */
+
+.natural-harmony.light {
+  /* Primary Colors - Emerald/Green Scale */
+  --color-primary-50: #ECFDF5;
+  --color-primary-100: #D1FAE5;
+  --color-primary-200: #A7F3D0;
+  --color-primary-300: #6EE7B7;
+  --color-primary-400: #34D399;
+  --color-primary-500: #10B981;
+  --color-primary-600: #059669;
+  --color-primary-700: #047857;
+  --color-primary-800: #065F46;
+  --color-primary-900: #064E3B;
+
+  /* Neutral Colors - Shared Scale */
+  --color-neutral-0: #FFFFFF;
+  --color-neutral-50: #F8FAFC;
+  --color-neutral-100: #F1F5F9;
+  --color-neutral-200: #E2E8F0;
+  --color-neutral-300: #CBD5E1;
+  --color-neutral-400: #94A3B8;
+  --color-neutral-500: #64748B;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1E293B;
+  --color-neutral-900: #0F172A;
+
+  /* Semantic Colors */
+  --color-success-50: #ECFDF5;
+  --color-success-100: #D1FAE5;
+  --color-success-500: #10B981;
+  --color-success-700: #047857;
+
+  --color-warning-50: #FFFBEB;
+  --color-warning-100: #FEF3C7;
+  --color-warning-500: #F59E0B;
+  --color-warning-700: #B45309;
+
+  --color-error-50: #FEF2F2;
+  --color-error-100: #FEE2E2;
+  --color-error-500: #EF4444;
+  --color-error-700: #B91C1C;
+
+  --color-info-50: #EFF6FF;
+  --color-info-100: #DBEAFE;
+  --color-info-500: #3B82F6;
+  --color-info-700: #1D4ED8;
+
+  /* System Tokens - Light Mode */
+  --color-background-default: var(--color-neutral-0);
+  --color-background-subtle: var(--color-neutral-50);
+  --color-background-muted: var(--color-neutral-100);
+
+  --color-surface-default: var(--color-neutral-0);
+  --color-surface-raised: var(--color-neutral-50);
+  --color-surface-overlay: var(--color-neutral-100);
+
+  --color-text-primary: var(--color-neutral-900);
+  --color-text-secondary: var(--color-neutral-700);
+  --color-text-tertiary: var(--color-neutral-600);
+  --color-text-disabled: var(--color-neutral-400);
+  --color-text-inverse: var(--color-neutral-0);
+
+  --color-border-default: var(--color-neutral-200);
+  --color-border-subtle: var(--color-neutral-100);
+  --color-border-strong: var(--color-neutral-300);
+  --color-border-focus: var(--color-primary-500);
+}
+
+/* ==========================================================================
+   NATURAL HARMONY PALETTE (GREEN)
+   Dark Mode - Calm, natural, organic
+   ========================================================================== */
+
+.natural-harmony.dark {
+  /* Primary Colors - Emerald/Green Scale (Lighter for Dark Mode) */
+  --color-primary-50: #064E3B;
+  --color-primary-100: #065F46;
+  --color-primary-200: #047857;
+  --color-primary-300: #059669;
+  --color-primary-400: #10B981;
+  --color-primary-500: #34D399;
+  --color-primary-600: #6EE7B7;
+  --color-primary-700: #A7F3D0;
+  --color-primary-800: #D1FAE5;
+  --color-primary-900: #ECFDF5;
+
+  /* Neutral Colors - Inverted for Dark Mode */
+  --color-neutral-0: #0F172A;
+  --color-neutral-50: #1E293B;
+  --color-neutral-100: #334155;
+  --color-neutral-200: #475569;
+  --color-neutral-300: #64748B;
+  --color-neutral-400: #94A3B8;
+  --color-neutral-500: #CBD5E1;
+  --color-neutral-600: #E2E8F0;
+  --color-neutral-700: #F1F5F9;
+  --color-neutral-800: #F8FAFC;
+  --color-neutral-900: #FFFFFF;
+
+  /* Semantic Colors - Optimized for Dark Background */
+  --color-success-50: #064E3B;
+  --color-success-100: #065F46;
+  --color-success-500: #34D399;
+  --color-success-700: #A7F3D0;
+
+  --color-warning-50: #78350F;
+  --color-warning-100: #92400E;
+  --color-warning-500: #FBBF24;
+  --color-warning-700: #FDE68A;
+
+  --color-error-50: #7F1D1D;
+  --color-error-100: #991B1B;
+  --color-error-500: #F87171;
+  --color-error-700: #FECACA;
+
+  --color-info-50: #1E3A8A;
+  --color-info-100: #1E40AF;
+  --color-info-500: #60A5FA;
+  --color-info-700: #BFDBFE;
+
+  /* System Tokens - Dark Mode */
+  --color-background-default: var(--color-neutral-0);
+  --color-background-subtle: var(--color-neutral-50);
+  --color-background-muted: var(--color-neutral-100);
+
+  --color-surface-default: var(--color-neutral-50);
+  --color-surface-raised: var(--color-neutral-100);
+  --color-surface-overlay: var(--color-neutral-200);
+
+  --color-text-primary: var(--color-neutral-900);
+  --color-text-secondary: var(--color-neutral-700);
+  --color-text-tertiary: var(--color-neutral-600);
+  --color-text-disabled: var(--color-neutral-400);
+  --color-text-inverse: var(--color-neutral-0);
+
+  --color-border-default: var(--color-neutral-200);
+  --color-border-subtle: var(--color-neutral-100);
+  --color-border-strong: var(--color-neutral-300);
+  --color-border-focus: var(--color-primary-400);
+}
