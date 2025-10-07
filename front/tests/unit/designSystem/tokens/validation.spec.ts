@@ -337,4 +337,147 @@ describe('Token Validation', () => {
       });
     });
   });
+
+  // NEW: Palette Switcher Feature Tests (T001)
+  describe('Palette Token Completeness', () => {
+    const palettes = [
+      'corporate-trust',
+      'creative-energy',
+      'natural-harmony',
+      'warm-welcome',
+      'minimalist',
+    ];
+    const modes = ['light', 'dark'];
+
+    it('should have validateTokenCompleteness function defined', () => {
+      // This test will fail until we implement the function in T004
+      const { validateTokenCompleteness } = require('@/designSystem/tokens/validation');
+      expect(validateTokenCompleteness).toBeDefined();
+      expect(typeof validateTokenCompleteness).toBe('function');
+    });
+
+    it('should validate that all 10 variations have identical token names', () => {
+      const { validateTokenCompleteness } = require('@/designSystem/tokens/validation');
+
+      // Mock variations with complete token sets
+      const mockVariations = palettes.flatMap((palette) =>
+        modes.map((mode) => ({
+          palette,
+          mode,
+          tokens: {
+            '--color-primary-500': '#000000',
+            '--color-neutral-0': '#FFFFFF',
+            '--color-text-primary': '#000000',
+            '--color-background-default': '#FFFFFF',
+          },
+        }))
+      );
+
+      const result = validateTokenCompleteness(mockVariations);
+      expect(result.valid).toBe(true);
+      expect(result.missingTokens).toBeUndefined();
+      expect(result.extraTokens).toBeUndefined();
+    });
+
+    it('should fail when a variation is missing tokens', () => {
+      const { validateTokenCompleteness } = require('@/designSystem/tokens/validation');
+
+      // Create variations where one is incomplete
+      const incompleteVariations = palettes.flatMap((palette) =>
+        modes.map((mode) => ({
+          palette,
+          mode,
+          tokens:
+            palette === 'creative-energy' && mode === 'dark'
+              ? {
+                  '--color-primary-500': '#000000',
+                  // Missing other tokens
+                }
+              : {
+                  '--color-primary-500': '#000000',
+                  '--color-neutral-0': '#FFFFFF',
+                  '--color-text-primary': '#000000',
+                  '--color-background-default': '#FFFFFF',
+                },
+        }))
+      );
+
+      const result = validateTokenCompleteness(incompleteVariations);
+      expect(result.valid).toBe(false);
+      expect(result.missingTokens).toBeDefined();
+      expect(result.missingTokens?.length).toBeGreaterThan(0);
+      expect(result.missingTokens?.[0].variation).toBe('creative-energy.dark');
+      expect(result.missingTokens?.[0].missing).toContain('--color-neutral-0');
+    });
+
+    it('should detect extra tokens in a variation', () => {
+      const { validateTokenCompleteness } = require('@/designSystem/tokens/validation');
+
+      // Create variations where one has extra tokens
+      const variationsWithExtra = palettes.flatMap((palette) =>
+        modes.map((mode) => ({
+          palette,
+          mode,
+          tokens:
+            palette === 'minimalist' && mode === 'light'
+              ? {
+                  '--color-primary-500': '#000000',
+                  '--color-neutral-0': '#FFFFFF',
+                  '--color-text-primary': '#000000',
+                  '--color-background-default': '#FFFFFF',
+                  '--color-extra-token': '#123456', // Extra token
+                }
+              : {
+                  '--color-primary-500': '#000000',
+                  '--color-neutral-0': '#FFFFFF',
+                  '--color-text-primary': '#000000',
+                  '--color-background-default': '#FFFFFF',
+                },
+        }))
+      );
+
+      const result = validateTokenCompleteness(variationsWithExtra);
+      expect(result.valid).toBe(false);
+      expect(result.extraTokens).toBeDefined();
+      expect(result.extraTokens?.length).toBeGreaterThan(0);
+      expect(result.extraTokens?.[0].variation).toBe('minimalist.light');
+      expect(result.extraTokens?.[0].extra).toContain('--color-extra-token');
+    });
+
+    it('should handle multiple variations missing different tokens', () => {
+      const { validateTokenCompleteness } = require('@/designSystem/tokens/validation');
+
+      // Create variations where multiple are incomplete
+      const multipleIncomplete = palettes.flatMap((palette) =>
+        modes.map((mode) => {
+          const baseTokens = {
+            '--color-primary-500': '#000000',
+            '--color-neutral-0': '#FFFFFF',
+            '--color-text-primary': '#000000',
+            '--color-background-default': '#FFFFFF',
+          };
+
+          if (palette === 'creative-energy' && mode === 'dark') {
+            return { palette, mode, tokens: { '--color-primary-500': '#000000' } };
+          }
+          if (palette === 'natural-harmony' && mode === 'light') {
+            return {
+              palette,
+              mode,
+              tokens: {
+                '--color-primary-500': '#000000',
+                '--color-neutral-0': '#FFFFFF',
+              },
+            };
+          }
+          return { palette, mode, tokens: baseTokens };
+        })
+      );
+
+      const result = validateTokenCompleteness(multipleIncomplete);
+      expect(result.valid).toBe(false);
+      expect(result.missingTokens).toBeDefined();
+      expect(result.missingTokens?.length).toBe(2);
+    });
+  });
 });
