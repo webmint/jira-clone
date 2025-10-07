@@ -84,44 +84,43 @@ When creating this spec from a user prompt:
 
 ### Primary User Story
 
-As a user of the application, I want to switch between different visual color palettes so that I can customize the appearance of the interface to match my preferences or accessibility needs. The palettes are predefined in the design system and should apply consistently across the entire application.
+As a design system maintainer, I want to structure the design system to support multiple switchable color palettes so that applications using the design system can implement palette switching functionality. The design system should provide the infrastructure (tokens, CSS variables, palette definitions) that applications can leverage to switch themes dynamically.
 
 ### Acceptance Scenarios
 
-1. **Given** the application is loaded with a default palette, **When** the user opens the palette switcher, **Then** all available palettes defined in the design system are displayed as options
-2. **Given** the user is viewing the palette switcher, **When** the user selects a different palette, **Then** the application immediately applies the new palette to all UI elements
-3. **Given** the user has selected a custom palette, **When** the user refreshes the page [NEEDS CLARIFICATION: should preference persist?], **Then** the selected palette [may or may not] remain active
-4. **Given** a palette is being switched, **When** the transition occurs, **Then** [NEEDS CLARIFICATION: should it be instant or smoothly animated?]
-5. **Given** the user navigates between different sections of the app, **When** viewing content, **Then** the selected palette remains consistently applied
+1. **Given** the design system exists, **When** multiple palettes are defined, **Then** each palette contains a complete set of design tokens (colors, backgrounds, borders, shadows, etc.)
+2. **Given** palettes are defined in the design system, **When** a developer inspects the structure, **Then** palettes are organized in a way that allows programmatic switching (e.g., via CSS variables, data attributes, or class names)
+3. **Given** a component uses design tokens, **When** a different palette is activated, **Then** all token references automatically resolve to the new palette's values
+4. **Given** [NEEDS CLARIFICATION: how many palettes should be defined?], **When** reviewing the design system, **Then** each palette is fully documented with its purpose and token values
+5. **Given** the design system is used in an application, **When** the application switches palettes, **Then** all components render correctly without requiring individual component changes
 
 ### Edge Cases
 
-- What happens when a palette is invalid or missing design tokens?
-- How does the system handle browser theme preferences (light/dark mode)?
-- What is the fallback behavior if no palette is selected?
-- Should the palette switcher be accessible to all users or require specific permissions?
-- How does palette switching affect accessibility (contrast ratios, WCAG compliance)?
+- What happens when a palette is missing some design tokens?
+- Should there be a fallback/default palette defined?
+- How should the design system handle custom or user-defined palettes?
+- Should palette definitions support inheritance or composition?
+- How does each palette ensure accessibility compliance (contrast ratios, WCAG compliance)?
 
 ## Requirements _(mandatory)_
 
 ### Functional Requirements
 
-- **FR-001**: Design system MUST define multiple color palettes with complete token sets (colors, backgrounds, borders, shadows, etc.)
-- **FR-002**: System MUST provide a palette switcher UI component accessible to users
-- **FR-003**: System MUST allow users to select from all available palettes defined in the design system
-- **FR-004**: System MUST apply the selected palette immediately across all application UI elements
-- **FR-005**: System MUST ensure palette changes affect all components consistently (buttons, forms, cards, navigation, etc.)
-- **FR-006**: System MUST [NEEDS CLARIFICATION: persist user palette preference? If yes, where - localStorage, server, cookies?]
-- **FR-007**: Design system MUST [NEEDS CLARIFICATION: how many palettes? Light/dark only, or multiple themes like blue, green, high-contrast?]
-- **FR-008**: Palette switcher MUST [NEEDS CLARIFICATION: where should it be located in the UI? Header, settings page, floating widget?]
-- **FR-009**: Palette switching MUST [NEEDS CLARIFICATION: include transition animations or apply instantly?]
-- **FR-010**: System MUST ensure all palettes meet accessibility standards (WCAG contrast requirements)
-- **FR-011**: System MUST provide a default palette when no preference is set or available
+- **FR-001**: Design system MUST define [NEEDS CLARIFICATION: how many palettes? Light/dark only, or multiple themes?] with complete token sets (colors, backgrounds, borders, shadows, text, etc.)
+- **FR-002**: Design system MUST organize palette definitions in a structure that enables programmatic switching
+- **FR-003**: Each palette MUST include all tokens required for complete UI rendering (no missing tokens)
+- **FR-004**: Design system MUST provide a mechanism (e.g., CSS custom properties, data attributes) that allows applications to switch between palettes
+- **FR-005**: Design system MUST document each palette's purpose, use cases, and token values
+- **FR-006**: Design system MUST ensure all defined palettes meet WCAG accessibility standards (contrast requirements)
+- **FR-007**: Design system MUST designate one palette as the default/fallback
+- **FR-008**: Palette structure MUST allow Storybook to preview components in all available palettes
+- **FR-009**: Design system MUST [NEEDS CLARIFICATION: should palettes support composition/inheritance, or be completely independent?]
+- **FR-010**: Token naming convention MUST support palette switching without component code changes
 
 ### Key Entities _(include if feature involves data)_
 
-- **Palette**: A complete set of design tokens defining colors, backgrounds, borders, and visual properties for the entire application. Each palette has a unique identifier and name.
-- **User Preference**: The user's selected palette choice, which determines the active visual theme. Relationship: User (1) → (0..1) Palette preference.
+- **Palette**: A complete set of design tokens defining colors, backgrounds, borders, text, shadows, and other visual properties. Each palette has a unique identifier, name, and purpose documentation.
+- **Design Token**: An atomic design value (color, spacing, typography, etc.) that belongs to one or more palettes. Tokens are the building blocks that palettes organize and define.
 
 ---
 
@@ -138,11 +137,11 @@ _GATE: Automated checks run during main() execution_
 
 ### Requirement Completeness
 
-- [ ] No [NEEDS CLARIFICATION] markers remain (7 clarifications needed)
+- [ ] No [NEEDS CLARIFICATION] markers remain (4 clarifications needed)
 - [ ] Requirements are testable and unambiguous (pending clarifications)
-- [ ] Success criteria are measurable (partially - needs clarification on persistence and UI location)
-- [x] Scope is clearly bounded (palette switching within design system)
-- [x] Dependencies and assumptions identified (depends on existing design system)
+- [ ] Success criteria are measurable (partially - needs clarification on palette count and switching mechanism)
+- [x] Scope is clearly bounded (design system infrastructure for palette switching)
+- [x] Dependencies and assumptions identified (updates to existing design system)
 
 ---
 
@@ -152,12 +151,12 @@ _Updated by main() during processing_
 
 - [x] User description parsed
 - [x] Key concepts extracted
-- [x] Ambiguities marked (7 clarification markers)
-- [x] User scenarios defined
-- [x] Requirements generated
+- [x] Ambiguities marked (4 clarification markers)
+- [x] User scenarios defined (focused on design system preparation)
+- [x] Requirements generated (focused on design system infrastructure)
 - [x] Entities identified
 - [ ] Review checklist passed (pending clarifications)
-- [ ] GitHub issue created for spec review
+- [x] GitHub issue created for spec review (#88)
 
 ## GitHub Integration
 
@@ -177,13 +176,10 @@ _Updated by main() during processing_
 
 **Key Clarifications Needed**:
 
-1. How many palettes should be available? (e.g., light/dark, or multiple themes)
-2. Should palette preference persist across sessions?
-3. Where should the switcher be accessible in the UI?
-4. Should palette transitions be animated or instant?
-5. Where should preferences be stored if persisted?
-6. Should all users have access or is it permission-based?
-7. How should browser/OS theme preferences integrate with palette selection?
+1. How many palettes should be defined in the design system? (e.g., light/dark only, or multiple themes)
+2. Should palettes support composition/inheritance, or be completely independent?
+3. What is the preferred mechanism for palette switching? (CSS custom properties, data attributes, CSS classes, etc.)
+4. Should the design system include palette-specific component variants, or should all components work universally with any palette?
 
 **After Review**:
 
