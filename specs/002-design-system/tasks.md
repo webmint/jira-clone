@@ -77,8 +77,8 @@ This task breakdown implements a comprehensive design system foundation with 5 p
 ## Phase 3.8: Testing & Validation
 
 - [x] **T030** Write token validation tests using Zod schemas in tests/unit/tokens/validation.spec.ts
-- [ ] **T031** Write WCAG contrast ratio tests for all 5 color palettes (verify 7:1 for normal text) in tests/unit/tokens/contrast.spec.ts
-- [ ] **T032** Write theme switching integration tests (light/dark mode, CSS variable updates) in tests/unit/composables/useTheme.spec.ts
+- [x] **T031** Write WCAG contrast ratio tests for all 5 color palettes (verify 7:1 for normal text) in tests/unit/tokens/contrast.spec.ts
+- [x] **T032** Write theme switching integration tests (light/dark mode, CSS variable updates) in tests/unit/composables/useTheme.spec.ts
 
 ## Dependencies
 
