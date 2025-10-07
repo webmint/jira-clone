@@ -1,35 +1,29 @@
 <!--
 Sync Impact Report:
-Version: 2.6.0 → 2.7.0 (MINOR - corrected git workflow, added sequential task enforcement, Husky handling)
+Version: 2.9.3 → 2.9.4 (PATCH - clarified spec issue status update)
 Modified Principles:
-  - Article III, Section 3.1: Corrected git workflow - single spec branch for spec+plan+tasks
-  - Article III, Section 3.1: Added sequential task execution (MANDATORY)
-  - Article III, Section 3.1: Added Husky pre-commit hook failure protocol (MANDATORY approval)
-  - Article III, Section 3.1: Task branches from spec branch, not feature branch
+  - Article III, Section 3.1: Implementation Requirements (Per Task) - Step 6 updated
+  - After merge confirmed: Explicitly move parent spec issue to "Done" status on project board
+  - Clarifies timing: spec issue moved to "Done" BEFORE requesting sub-issue cleanup approval
+  - Ensures proper sequencing of cleanup operations
 Added Sections:
-  - Implementation Requirements (Per Task) with 6 steps
-  - Pre-commit Hook Failure Protocol
-  - Sequential execution enforcement: cannot start new task until previous merged
-  - Husky hook failures require user approval before fixes
+  - Explicit step to move spec issue to "Done" after merge verification
+  - Merge verification commands
 Removed Sections:
   - None
 Templates Status:
-  ✅ spec-template.md - Stays on spec branch after approval, no merge to main
-  ✅ plan-template.md - Commits to spec branch, no push until tasks approved
-  ✅ tasks-template.md - Commits to spec branch, pushes after approval
-  ✅ tasks-template.md - Task branches from spec branch with sequential enforcement
-  ✅ WORKFLOW.md - Updated with Husky handling and sequential task workflow
+  ✅ WORKFLOW.md - Updated Step 14 to explicitly show spec issue status update
+  ✅ WORKFLOW.md - Split Step 14 into two steps (Step 14: merge, Step 15: sub-issue cleanup)
+  ✅ WORKFLOW.md - Updated overview diagram to show spec issue status update
 Follow-up TODOs:
-  - Ensure Husky pre-commit hooks configured in repository
-  - Test sequential task enforcement in practice
-  - Verify spec branch workflow with real feature
+  - None - change is documentation clarification only
 -->
 
 # Jira Clone Project Constitution
 
-**Version**: 2.7.0
+**Version**: 2.9.4
 **Ratified**: 2025-10-04
-**Last Amended**: 2025-10-05
+**Last Amended**: 2025-10-07
 **Status**: Active
 
 ---
@@ -186,15 +180,33 @@ Feature Branch → Task Sub-branches → Implementation → User Approval → PR
    - Create branch: `spec/[###-name]` from `main`
    - Commit spec.md to spec branch
    - Push spec branch to origin
-3. Create GitHub issue for spec:
+3. **Create GitHub issue immediately** (as soon as spec is defined):
+   - Title: Short, clear feature name
+   - Description: Brief, clear summary from spec (NOT full spec content)
    - Assign to: Architecture Agent
    - Labels: `feature`, `spec`, priority (P1/P2/P3)
-   - Add to project board: "📐 Spec & Design" column
-4. All ambiguities marked with `[NEEDS CLARIFICATION]`
-5. All requirements must be testable
-6. User scenarios defined with acceptance criteria
-7. ⚠️ **MANDATORY APPROVAL GATE**: User must review and explicitly approve spec
-8. **After approval**: Proceed to `/plan` (stay on spec branch)
+   - Add to project board with status: "Backlog"
+4. **⚠️ MANDATORY SPEC SIZE EVALUATION** (immediately after spec creation):
+   - Evaluate spec complexity and estimate implementation size
+   - **Size indicators** (any 2+ means "too large"):
+     - More than 5 user scenarios
+     - More than 3 major feature areas
+     - Estimated 15+ tasks
+     - Multiple database entities (3+)
+     - Multiple API endpoints across different resources (10+)
+     - Cross-cutting concerns (auth + data + UI + workflows)
+   - **If spec appears too large**: MUST notify user with:
+     - Current spec scope assessment
+     - Suggested breakdown into smaller specs
+     - Reasoning for each suggested split
+     - Estimated task count for current spec vs. split specs
+   - **User decides**: Whether to proceed as-is or split into smaller specs
+   - **If user chooses to split**: Discard current spec, create multiple smaller specs sequentially
+5. All ambiguities marked with `[NEEDS CLARIFICATION]`
+6. All requirements must be testable
+7. User scenarios defined with acceptance criteria
+8. ⚠️ **MANDATORY APPROVAL GATE**: User must review and explicitly approve spec
+9. **After approval**: Proceed to `/plan` (stay on spec branch)
 
 **Planning Requirements:**
 
@@ -234,13 +246,15 @@ Feature Branch → Task Sub-branches → Implementation → User Approval → PR
 8. **Git workflow**:
    - Work on spec branch: `spec/[###-name]` (same branch from /specify)
    - Commit tasks.md and tasks/ folder to spec branch
-9. Create GitHub issue for EACH task:
-   - Assignee: Responsible agent (GitHub username)
-   - Labels: `feature`, `spec`, priority
-   - Add to project board: "📋 Backlog" column
-   - Link to task file in git
-10. ⚠️ **MANDATORY APPROVAL GATE**: User must review and explicitly approve tasks
-11. **After approval**:
+9. ⚠️ **MANDATORY APPROVAL GATE**: User must review and explicitly approve tasks
+10. **After approval**:
+    - Create GitHub sub-issue for EACH task:
+      - Title: `[T###] Task description`
+      - Description: Full task content from task file
+      - Assignee: Responsible agent (GitHub username)
+      - Labels: `feature`, `spec`, agent label, priority
+      - **Parent issue**: Link as sub-issue to parent spec issue
+      - Add to project board with status: "Backlog"
     - Push spec branch to origin (with spec + plan + tasks)
     - **Do NOT create PR to main yet**
     - Proceed to `/implement` (implementation starts from spec branch)
@@ -272,9 +286,14 @@ Feature Branch → Task Sub-branches → Implementation → User Approval → PR
 6. **After ALL tasks complete**:
    - All task PRs merged to spec branch
    - Run full test suite on spec branch
-   - ⚠️ **MANDATORY APPROVAL GATE**: User must approve entire feature
+   - **MANDATORY**: Call documentation-writer agent to document new features and update changed documentation
+   - ⚠️ **MANDATORY APPROVAL GATE**: User must approve entire feature (including documentation)
    - Create final PR: `spec/[###-name]` → `main`
-   - Wait for PR merge and feature completion
+   - **After final PR review complete**: Request user approval to delete all remote task branches (cleanup)
+   - Merge PR to main
+   - **After merge confirmed**: Move parent spec issue to "Done" status on project board
+   - **After spec issue moved to Done**: Request user approval to delete all sub-issues from project board (cleanup)
+   - Feature completion
 
 **Pre-commit Hook Failure Protocol:**
 
@@ -361,24 +380,26 @@ When git commit fails due to Husky pre-commit hooks:
 **Feature Specification Phase:**
 
 1. Create feature spec in `.specify/specs/[###-feature-name]/spec.md`
-2. Create GitHub issue for specification review:
-   - Title: `[Spec] Feature Name`
+2. **Create GitHub issue immediately** (as soon as spec is defined):
+   - Title: Short, clear feature name (e.g., `User Authentication System`)
+   - Description: Brief, clear summary from spec (NOT full spec content)
    - Labels: `feature`, `spec`, priority label
    - Assign to: Architecture Agent role
+   - Add to project board with status: "Backlog"
    - Link to spec file in description
 3. Wait for spec approval before proceeding
 
 **Task Planning Phase:**
 
 1. After spec approved, run `/tasks` to generate tasks.md
-2. Create GitHub issues for EACH task:
+2. Wait for user approval of tasks
+3. **After approval**, create GitHub sub-issues for EACH task:
    - Title: `[T###] Task description`
-   - Labels: `feature`, agent label (e.g., `agent:backend`), priority
+   - Description: Full task content from task file
+   - Labels: `feature`, `spec`, agent label (e.g., `agent:backend`), priority
    - Assign to: Responsible agent role
-   - Link to: Parent spec issue
-3. Create feature branch from `main`:
-   - Format: `feature/###-feature-name`
-   - Example: `feature/001-user-authentication`
+   - **Parent issue**: Link as sub-issue to parent spec issue
+   - Add to project board with status: "Backlog"
 
 **Implementation Phase:**
 
@@ -941,32 +962,37 @@ The Design System documented in `docs/design/DESIGN_SYSTEM.md` is **authoritativ
 
 ### Section 12.1: Project Board Structure
 
-**Required Columns**:
+**Required Columns (Status field values)**:
 
-1. **📋 Backlog** - All planned issues (new issues start here)
-2. **📐 Spec & Design** - Specification and design work
-3. **⚙️ Common Types** - Common package tasks
-4. **🔧 Backend Dev** - Backend implementation
-5. **🎨 Frontend Dev** - Frontend implementation
-6. **🧪 Testing** - Testing & QA tasks
-7. **👀 Review** - Code review (PRs move here automatically)
-8. **✅ Done** - Completed work (closed issues/PRs)
+1. **Backlog** - All new issues and tasks start here
+2. **In progress** - Currently being worked on
+3. **Testing** - Implementation complete, testing in progress
+4. **Review** - PR created, awaiting code review and approval
+5. **Done** - Completed and merged
 
-### Section 12.2: Issue Movement Rules
+### Section 12.2: Issue Movement Rules (MANDATORY)
 
-**Automated**:
+**Parent Spec Issue Movement:**
 
-- New issue created → "📋 Backlog"
-- Spec issue created → "📐 Spec & Design"
-- Task assigned to agent → Move to agent's column
-- PR opened → "👀 Review"
-- PR merged or issue closed → "✅ Done"
+1. **Backlog** → Issue created immediately when spec is defined (during `/specify`)
+2. **In progress** → Moved after spec approval (when starting `/plan`)
+3. **Testing** → Moved after all task sub-issues are complete
+4. **Review** → Moved when final PR created (spec branch → main)
+5. **Done** → Moved when final PR merged to main
 
-**Manual**:
+**Task Sub-Issue Movement:**
 
-- When starting a task → Move from Backlog to appropriate dev column
-- When blocked → Add "blocked" label, stays in current column
-- When ready for review → "👀 Review"
+1. **Backlog** → Sub-issue created after tasks approval (post `/tasks` approval)
+2. **In progress** → Moved when task implementation begins (create task branch)
+3. **Testing** → Moved after implementation complete, before requesting commit approval (Step 4: tests passing, coverage met)
+4. **Review** → Moved when task PR created (task branch → spec branch)
+5. **Done** → Moved when task PR merged to spec branch
+
+**Automation Rules:**
+
+- All issues/sub-issues created → Start in "Backlog"
+- Issue must be moved through columns during development (MANDATORY)
+- Cannot skip columns (must go: Backlog → In progress → Testing → Review → Done)
 
 ### Section 12.3: Label Requirements
 
@@ -1221,6 +1247,12 @@ Before merge, ALL must be ✅:
 
 ## Appendix B: Version History
 
+- **v2.9.4** (2025-10-07) - Clarified workflow: Explicitly move parent spec issue to "Done" status after PR merge confirmed (Article III, Section 3.1, step 6)
+- **v2.9.3** (2025-10-07) - Added MANDATORY documentation step: Call documentation-writer agent after all tasks complete, before final PR (Article III, Section 3.1, step 6)
+- **v2.9.2** (2025-10-07) - Added cleanup step: Request user approval to delete sub-issues from project board after spec PR merge (Article III, Section 3.1, step 6)
+- **v2.9.1** (2025-10-07) - Added cleanup step: Request user approval to delete remote task branches after final PR approval (Article III, Section 3.1, step 6)
+- **v2.9.0** (2025-10-07) - Added MANDATORY spec size evaluation to prevent large specs and big code changes (Article III, Section 3.1)
+- **v2.8.0** (2025-10-07) - Updated GitHub workflow: Spec = parent issue (Backlog), Tasks = sub-issues created after approval (Article III, Section 3.1, 3.4)
 - **v2.7.0** (2025-10-05) - Corrected git workflow (single spec branch), sequential tasks, Husky handling
 - **v2.6.0** (2025-10-05) - Added Storybook integration for Design Agent workflow (Article V, Section 5.3)
 - **v2.5.0** (2025-10-05) - Added git workflow, agent assignment, GitHub project board (Article XII)

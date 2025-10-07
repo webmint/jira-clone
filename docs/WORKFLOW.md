@@ -1,9 +1,14 @@
 # Development Workflow
 
-**Constitution Version**: 2.8.0
-**Last Updated**: 2025-10-06
+**Constitution Version**: 2.9.4
+**Last Updated**: 2025-10-07
 
-This document describes the complete development workflow from feature idea to production merge, including GitHub integration, individual task files, git commit workflow with Husky pre-commit hooks, **strict sequential task enforcement**, **pr-reviewer agent integration**, agent assignment, GitHub project board, and **6 MANDATORY user approval gates**.
+This document describes the complete development workflow from feature idea to production merge, including GitHub integration, individual task files, git commit workflow with Husky pre-commit hooks, **strict sequential task enforcement**, **pr-reviewer agent integration**, **documentation-writer agent integration**, agent assignment, GitHub project board, and **7 MANDATORY user approval gates**.
+
+**GitHub Issue Structure**:
+
+- **Spec → Parent Issue**: Created immediately when spec is defined, added to "Backlog"
+- **Tasks → Sub-Issues**: Created after user approval, linked as children to parent spec issue
 
 ---
 
@@ -12,7 +17,9 @@ This document describes the complete development workflow from feature idea to p
 ```
 Feature Idea
     ↓
-/specify → spec.md + spec branch + GitHub Issue #X (Spec)
+/specify → spec.md + spec branch + GitHub Issue #X (Parent Issue, status: Backlog)
+    ↓
+⚠️ MANDATORY SPEC SIZE EVALUATION (notify if too large, suggest split)
     ↓
 ⚠️ APPROVAL GATE 1: User Reviews & Approves Spec (MANDATORY)
     ↓
@@ -20,9 +27,11 @@ Feature Idea
     ↓
 ⚠️ APPROVAL GATE 2: User Reviews & Approves Plan (MANDATORY)
     ↓
-/tasks → tasks.md + GitHub Issues #Y1, #Y2, ... (committed to spec branch)
+/tasks → tasks.md + tasks/*.md (committed to spec branch, NO GitHub issues yet)
     ↓
 ⚠️ APPROVAL GATE 3: User Reviews & Approves Tasks (MANDATORY)
+    ↓
+Create GitHub Sub-Issues #Y1, #Y2, ... (linked to parent #X, status: Backlog)
     ↓
 Push spec branch (spec + plan + tasks)
     ↓
@@ -44,13 +53,23 @@ Push spec branch (spec + plan + tasks)
     ↓
 All Tasks Complete
     ↓
+⚠️ DOCUMENTATION UPDATE: Call documentation-writer agent (MANDATORY)
+    ↓
+⚠️ APPROVAL GATE 5: User Approves Feature + Documentation (MANDATORY)
+    ↓
 Create PR (Spec Branch → Main, closes Spec Issue #X)
     ↓
 Code Review with pr-reviewer Agent (Full Feature)
     ↓
-⚠️ APPROVAL GATE 5: User Approves Final PR (MANDATORY)
+⚠️ APPROVAL GATE 6: User Approves Final PR (MANDATORY)
+    ↓
+⚠️ CLEANUP: Delete remote task branches (optional, user approval)
     ↓
 Merge to Main
+    ↓
+Move Parent Spec Issue to "Done" (automatic)
+    ↓
+⚠️ CLEANUP: Delete sub-issues from project board (optional, user approval)
 ```
 
 ---
@@ -68,14 +87,16 @@ Merge to Main
 
 - `.specify/specs/###-feature-name/spec.md`
 - **Git commits**:
-  - Creates temporary branch: `spec/###-feature-name`
-  - Commits spec.md to temporary branch
+  - Creates spec branch: `spec/###-feature-name`
+  - Commits spec.md to spec branch
   - Pushes to origin
-- GitHub Issue created: `[Spec] Feature Name`
+- **GitHub Issue created immediately** (parent issue):
+  - Title: Short, clear feature name (e.g., `User Authentication System`)
+  - Description: Brief, clear summary from spec (NOT full spec content)
   - Labels: `feature`, `spec`, priority (e.g., `P1-high`)
   - Assigned to: Architecture Agent
-  - Added to project board: "📐 Spec & Design" column
-  - Status: Open, awaiting review
+  - **Added to project board with status: "Backlog"**
+  - Link to spec file in description
 
 **Example**:
 
@@ -86,19 +107,81 @@ Merge to Main
 Creates:
 
 - `.specify/specs/001-user-authentication/spec.md`
-- Temporary branch: `spec/001-user-authentication`
-- GitHub Issue #5: `[Spec] User Authentication System`
-- Project board: Issue added to "📐 Spec & Design" column
+- Spec branch: `spec/001-user-authentication`
+- GitHub Issue #5: `User Authentication System` (parent issue)
+  - Description: "Implement user authentication with email/password and role-based permissions for secure access control."
+  - Project board: Issue added to "Backlog" column
+  - Link: `.specify/specs/001-user-authentication/spec.md`
 
-### 1.2 ⚠️ APPROVAL GATE 1: Review & Approve Specification (MANDATORY)
+### 1.2 ⚠️ MANDATORY SPEC SIZE EVALUATION
+
+**Immediately after spec creation, evaluate spec size to avoid large specs and big code changes.**
+
+**Size Indicators** (any 2+ means spec is "too large"):
+
+- More than 5 user scenarios
+- More than 3 major feature areas
+- Estimated 15+ tasks
+- Multiple database entities (3+)
+- Multiple API endpoints across different resources (10+)
+- Cross-cutting concerns (auth + data + UI + workflows)
+
+**If spec appears too large, MUST notify user**:
+
+```
+⚠️ SPEC SIZE EVALUATION
+
+Current spec scope:
+- User scenarios: 8
+- Major feature areas: 4 (Auth, User Management, Permissions, Audit)
+- Estimated tasks: 25-30
+- Database entities: 5 (User, Role, Permission, Session, AuditLog)
+- API endpoints: 18 across 4 resources
+- Cross-cutting: Yes (auth + data + UI + workflows)
+
+Assessment: **TOO LARGE** (5/6 indicators exceeded)
+
+Suggested breakdown into smaller specs:
+
+**Spec 001a: Basic Authentication**
+- User registration and login
+- JWT tokens and sessions
+- Estimated: 8-10 tasks
+- Scope: Auth endpoints + Session entity + Login UI
+
+**Spec 001b: Role-Based Permissions**
+- Role and Permission entities
+- RBAC middleware
+- Admin UI for role management
+- Estimated: 8-10 tasks
+
+**Spec 001c: Audit Logging**
+- AuditLog entity
+- Audit middleware
+- Audit log UI
+- Estimated: 6-8 tasks
+
+Proceeding as-is will result in:
+- 25-30 task PRs (harder to review)
+- Longer feature branch lifetime (merge conflicts risk)
+- Harder to test incrementally
+
+Would you like to:
+1. Proceed with current spec as-is
+2. Split into smaller specs (recommended)
+```
+
+**User decides** whether to proceed or split. If splitting, discard current spec and create multiple smaller specs sequentially.
+
+### 1.3 ⚠️ APPROVAL GATE 1: Review & Approve Specification (MANDATORY)
 
 **The /specify command STOPS here and WAITS for your approval!**
 
 **User Action Required**:
 
 1. Review spec file at `.specify/specs/###-feature-name/spec.md`
-2. Review GitHub Issue #X (check project board)
-3. Review temporary branch: `spec/###-feature-name`
+2. Review GitHub Issue #X (check project board, currently in "Backlog")
+3. Review spec branch: `spec/###-feature-name`
 4. Check that:
    - [ ] Requirements are clear and complete
    - [ ] Scope is well-defined and bounded
@@ -116,7 +199,13 @@ Creates:
 
 **IMPORTANT**: `/plan` command CANNOT run until you explicitly approve the spec!
 
-**After approval**: Stays on spec branch, proceeds to /plan (spec branch NOT merged yet)
+**After approval**:
+
+1. Move spec issue to "In progress":
+   ```bash
+   gh issue edit #5 --add-project-v2-item-field "Status=In progress"
+   ```
+2. Stay on spec branch, proceed to /plan (spec branch NOT merged yet)
 
 ---
 
@@ -193,7 +282,7 @@ Creates:
 
 ## Phase 3: Task Generation
 
-### 3.1 Generate Tasks and Create GitHub Issues
+### 3.1 Generate Tasks
 
 ```bash
 /tasks
@@ -208,20 +297,12 @@ Creates:
    - **Agent assignment** (MANDATORY based on file paths)
    - Dependencies (blocks/blocked by)
    - Acceptance criteria checklist
-   - GitHub issue link
    - Sub-branch name
    - Approval tracking
 4. **Git commits**:
    - Tasks committed to spec branch
    - Commit message: "feat: generate tasks for [feature-name]"
    - NOT pushed yet (waiting for approval)
-5. GitHub Issues created for EACH task:
-   - Title: `[T###] Task description`
-   - **Body**: Full task content from task file (description, files to modify, dependencies, acceptance criteria, implementation notes, testing requirements)
-   - Labels: `feature`, `spec`, agent label (e.g., `agent:backend`), priority
-   - **Assigned to**: Responsible agent role (MANDATORY)
-   - Linked to: Parent spec issue + task file path
-   - **Added to project board**: "📋 Backlog" column
 
 **Example**:
 
@@ -238,12 +319,7 @@ Creates:
   - `tasks/T003-backend-dtos.md` (Agent: backend)
   - ... (20+ task files)
 - Git: All committed to spec branch (NOT pushed yet)
-- GitHub Issues (all added to "📋 Backlog"):
-  - #10: `[T001] Create User entity model` → assigned to backend agent
-  - #11: `[T002] Create UsersService` → assigned to backend agent
-  - #12: `[T003] Backend DTOs` → assigned to backend agent
-  - ... (20+ issues)
-- Project board: All tasks in "📋 Backlog" column
+- **NOTE**: GitHub sub-issues NOT created yet (created after approval in step 3.2)
 
 **Agent Assignment Rules**:
 
@@ -264,8 +340,6 @@ Creates:
 1. Review deliverables:
    - `tasks.md` - Complete task breakdown (summary)
    - `tasks/` folder - Individual task files (detailed)
-   - Feature branch: `feature/###-name` (created)
-   - GitHub issues for all tasks (check issue tracker)
 
 2. Check that:
    - [ ] Task breakdown is complete and logical
@@ -274,8 +348,6 @@ Creates:
    - [ ] Task ordering makes sense (tests before implementation)
    - [ ] No tasks are missing or duplicated
    - [ ] **Agent assignments are correct** (based on file paths)
-   - [ ] GitHub issues created for all tasks
-   - [ ] All issues added to project board "📋 Backlog"
 
 **To Approve**:
 
@@ -290,12 +362,42 @@ Creates:
 
 **After approval**:
 
-```bash
-# Push spec branch with ALL changes (spec + plan + tasks)
-git push origin spec/###-feature-name
-```
+1. **Create GitHub sub-issues for EACH task**:
+   - Title: `[T###] Task description`
+   - Description: Full task content from task file (description, files to modify, dependencies, acceptance criteria, implementation notes, testing requirements)
+   - Labels: `feature`, `spec`, agent label (e.g., `agent:backend`), priority
+   - **Assigned to**: Responsible agent role (MANDATORY)
+   - **Parent issue**: Link as sub-issue to parent spec issue #X
+   - **Added to project board with status**: "Backlog"
 
-Spec branch now contains all planning artifacts, ready for implementation.
+   Example:
+
+   ```bash
+   # For each task, create sub-issue and link to parent
+   gh issue create --title "[T001] Create User entity model" \
+     --body "$(cat .specify/specs/001-user-authentication/tasks/T001-user-entity.md)" \
+     --label "feature,spec,agent:backend,P1-high" \
+     --assignee @backend-agent
+
+   # Link as sub-issue to parent issue #5
+   gh issue develop #10 --parent #5
+
+   # Add to project board
+   gh project item-add 1 --owner webmint --url https://github.com/webmint/jira-clone/issues/10
+   ```
+
+2. **Push spec branch with ALL changes**:
+   ```bash
+   # Push spec branch with ALL changes (spec + plan + tasks)
+   git push origin spec/###-feature-name
+   ```
+
+**Result after approval**:
+
+- All task sub-issues created and linked to parent spec issue
+- All sub-issues added to project board in "Backlog" column
+- Spec branch pushed with all planning artifacts
+- Ready for implementation
 
 ---
 
@@ -344,16 +446,13 @@ git checkout -b spec/001-user-authentication/T014-auth-endpoints
 # Push branch to establish remote tracking
 git push -u origin spec/001-user-authentication/T014-auth-endpoints
 
-# Link branch to GitHub issue and move to "In Progress" column
+# Link branch to GitHub issue
 gh issue develop #14 --branch spec/001-user-authentication/T014-auth-endpoints
-gh issue edit #14 --add-label "in-progress"
 
-# Move issue to appropriate "In Progress" column on project board
-# Based on agent assignment:
-# - agent:backend → "🔧 Backend Dev"
-# - agent:frontend → "🎨 Frontend Dev"
-# - agent:common → "⚙️ Common Types"
-# - agent:testing → "🧪 Testing"
+# Move issue to "In progress" status on project board
+gh project item-edit --project-id <PROJECT_ID> --field-id <STATUS_FIELD_ID> --item-id <ITEM_ID> --single-select-option-id "ba69d1b4"
+# Or using simpler command if available:
+# gh issue edit #14 --add-project-v2-item-field "Status=In progress"
 ```
 
 #### Step 3: Implement Task
@@ -436,9 +535,16 @@ git commit -m "feat: implement auth controller endpoints"
 
 **If hooks PASS**: Commit succeeds, proceed to next step
 
+**After successful commit, move issue to "Testing"**:
+
+```bash
+# Move issue to "Testing" status (implementation complete, ready for PR)
+gh issue edit #14 --add-project-v2-item-field "Status=Testing"
+```
+
 #### Step 6: Create Pull Request and Move to Review
 
-**After successful commit**:
+**After testing verified, create PR**:
 
 ```bash
 # Create PR following .github/pull_request_template.md
@@ -480,8 +586,8 @@ Closes #14
 EOF
 )"
 
-# Move issue to "👀 Review" column on project board
-gh issue edit #14 --remove-label "in-progress" --add-label "review"
+# Move issue to "Review" status on project board
+gh issue edit #14 --add-project-v2-item-field "Status=Review"
 ```
 
 **IMPORTANT**: PR must follow `.github/pull_request_template.md` format (MANDATORY)
@@ -573,8 +679,8 @@ Waiting for your approval to merge (or request changes based on pr-reviewer find
 # Merge PR (via GitHub or gh CLI)
 gh pr merge XX --squash
 
-# Move issue to "✅ Done" column on project board
-gh issue edit #14 --remove-label "review" --add-label "done"
+# Move issue to "Done" status and close
+gh issue edit #14 --add-project-v2-item-field "Status=Done"
 gh issue close #14
 
 # Step 1: Checkout spec branch
@@ -731,6 +837,114 @@ Waiting for your final approval to merge.
 
 **MANDATORY**: Cannot merge to main until user explicitly approves!
 
+#### Step 13: ⚠️ **CLEANUP - DELETE REMOTE TASK BRANCHES** (After final PR approval)
+
+**After final PR approved, request approval to delete all remote task branches**:
+
+```
+All tasks for spec 001-user-authentication have been completed and merged.
+
+Remote task branches to be deleted:
+- spec/001-user-authentication/T001-user-entity
+- spec/001-user-authentication/T002-users-service
+- spec/001-user-authentication/T003-backend-dtos
+- spec/001-user-authentication/T004-auth-controller
+... (total: 44 branches)
+
+These branches are no longer needed as all changes have been merged to spec branch.
+
+Approve deletion of remote task branches?
+```
+
+**User responds**:
+
+- ✅ "Approved, delete branches"
+- ❌ "Keep branches" → Skip cleanup
+
+**If approved, delete all remote task branches**:
+
+```bash
+# Delete each remote task branch
+git push origin --delete spec/001-user-authentication/T001-user-entity
+git push origin --delete spec/001-user-authentication/T002-users-service
+git push origin --delete spec/001-user-authentication/T003-backend-dtos
+# ... for all task branches
+```
+
+**Result**: Repository cleaned up, only spec branch and main remain.
+
+#### Step 14: ⚠️ **MERGE PR TO MAIN** (After branch cleanup approval)
+
+**After branch cleanup (or skip), merge the final PR**:
+
+```bash
+# Merge final PR to main
+gh pr merge YY --squash
+```
+
+**Verify merge completed successfully**:
+
+```bash
+# Verify PR is merged
+gh pr view YY
+
+# Switch to main branch and pull
+git checkout main
+git pull origin main
+
+# Verify spec changes are in main
+git log --oneline -5
+```
+
+**After merge confirmed, move parent spec issue to "Done" on project board**:
+
+```bash
+# Move parent spec issue #5 to "Done" status
+gh issue edit #5 --add-project-v2-item-field "Status=Done"
+```
+
+#### Step 15: ⚠️ **CLEANUP SUB-ISSUES** (After spec issue moved to Done)
+
+**After parent spec issue moved to "Done", request approval to delete all sub-issues from project board**:
+
+```
+Spec 001-user-authentication has been merged to main.
+
+Sub-issues (tasks) to be deleted from project board:
+- #10: [T001] Create User entity model
+- #11: [T002] Create UsersService
+- #12: [T003] Backend DTOs
+- #13: [T004] Auth controller
+... (total: 44 sub-issues)
+
+These sub-issues are now complete and no longer needed on the project board.
+The parent issue #5 will remain in "Done" status as a record of the feature.
+
+Approve deletion of sub-issues from project board?
+```
+
+**User responds**:
+
+- ✅ "Approved, delete sub-issues"
+- ❌ "Keep sub-issues" → Skip cleanup
+
+**If approved, delete all sub-issues from project board and close them**:
+
+```bash
+# For each sub-issue, remove from project and close
+gh issue close #10 --reason completed
+gh issue close #11 --reason completed
+gh issue close #12 --reason completed
+# ... for all sub-issues
+```
+
+**Result**:
+
+- Final PR merged to main
+- Parent spec issue moved to "Done" (kept as feature record)
+- All sub-issues closed and removed from board (cleanup)
+- Feature complete and project board clean
+
 ---
 
 ## Phase 5: Final Integration
@@ -756,7 +970,74 @@ npm run test:e2e
 npm run build
 ```
 
-### 5.2 ⚠️ **WAIT FOR USER APPROVAL** (MANDATORY)
+### 5.2 ⚠️ **DOCUMENTATION UPDATE** (MANDATORY)
+
+**After all tasks complete and tests pass, call documentation-writer agent**:
+
+```typescript
+// Use Task tool to invoke documentation-writer agent
+Task({
+  subagent_type: 'documentation-writer',
+  description: 'Document feature changes',
+  prompt: `Feature 001-user-authentication is complete. Please:
+
+1. Review all changes in the spec branch
+2. Identify new features, components, APIs, and code that need documentation
+3. Update existing documentation that has changed
+4. Create new documentation as needed:
+   - README updates for new features
+   - API documentation for new endpoints
+   - Component documentation for new UI components
+   - Architecture Decision Records (ADRs) if applicable
+   - Usage examples and guides
+
+Files to review:
+- All files changed in spec/001-user-authentication branch
+- Backend endpoints: auth controller, users service, entities
+- Frontend components: login, registration, user management
+- Common types and DTOs
+
+Please document comprehensively and update all relevant docs.`,
+});
+```
+
+**The documentation-writer agent will**:
+
+- Review all code changes in the spec branch
+- Identify what needs documentation (new features, APIs, components)
+- Create/update documentation files:
+  - README files
+  - API documentation
+  - Component documentation (props, usage)
+  - ADRs for architectural decisions
+  - Usage examples
+- Commit documentation changes to spec branch
+- Report what was documented
+
+**After documentation-writer completes**:
+
+```bash
+# Review documentation changes
+git diff origin/main...HEAD -- "*.md" "docs/"
+
+# If documentation changes exist, commit them
+git add .
+git commit -m "docs: update documentation for user authentication feature
+
+- Add API documentation for auth endpoints
+- Document new Vue components
+- Update README with authentication setup
+- Add ADR for authentication strategy
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+
+# Push documentation updates
+git push origin spec/001-user-authentication
+```
+
+### 5.3 ⚠️ **WAIT FOR USER APPROVAL** (MANDATORY)
 
 **Post message to user**:
 
@@ -778,6 +1059,12 @@ Test Results:
 
 Quality Gates: ✅ All passed
 
+Documentation Updates:
+- API documentation for auth endpoints
+- Component documentation for login/registration UI
+- README updated with authentication setup guide
+- ADR-001: User Authentication Strategy
+
 Waiting for approval to create final PR to main.
 ```
 
@@ -785,8 +1072,9 @@ Waiting for approval to create final PR to main.
 
 - ✅ "Approved, create PR to main"
 - ❌ "Please test X scenario first" → Test, fix if needed, request approval again
+- ❌ "Update documentation for X" → Make changes, request approval again
 
-### 5.3 Create Final PR to Main
+### 5.4 Create Final PR to Main
 
 **After user approval**:
 
@@ -826,28 +1114,31 @@ main (protected)
 
 ## GitHub Project Board
 
-### Required Columns (in order)
+### Status Column Values
 
-1. **📋 Backlog** - All new tasks start here after /tasks
-2. **📐 Spec & Design** - Spec issues, design work, architecture decisions
-3. **⚙️ Common Types** - Shared types, DTOs, interfaces across workspaces
-4. **🔧 Backend Dev** - Backend tasks in progress
-5. **🎨 Frontend Dev** - Frontend tasks in progress
-6. **🧪 Testing** - Test-only tasks in progress
-7. **👀 Review** - Tasks with open PRs awaiting review
-8. **✅ Done** - Completed and merged tasks
+1. **Backlog** - All new issues and tasks start here
+2. **In progress** - Currently being worked on
+3. **Testing** - Implementation complete, testing in progress
+4. **Review** - PR created, awaiting code review and approval
+5. **Done** - Completed and merged
 
-**Workflow**:
+### Issue Movement Workflow
 
-- Spec issues → "📐 Spec & Design"
-- Task issues → "📋 Backlog" initially (created during `/tasks`)
-- Move to appropriate dev column when starting task (Step 2):
-  - `agent:backend` → "🔧 Backend Dev"
-  - `agent:frontend` → "🎨 Frontend Dev"
-  - `agent:common` → "⚙️ Common Types"
-  - `agent:testing` → "🧪 Testing"
-- Move to "👀 Review" when PR created (Step 6)
-- Move to "✅ Done" when PR merged and issue closed (Step 9)
+**Parent Spec Issue:**
+
+- **Backlog** → Created during `/specify`
+- **In progress** → Moved after spec approval (when starting `/plan`)
+- **Testing** → Moved after all task sub-issues complete
+- **Review** → Moved when final PR created (spec→main)
+- **Done** → **Explicitly moved after PR merge to main is confirmed** (Step 14)
+
+**Task Sub-Issues:**
+
+- **Backlog** → Created after `/tasks` approval
+- **In progress** → Moved when task implementation begins (Step 2)
+- **Testing** → Moved after implementation complete, tests passing (Step 4)
+- **Review** → Moved when task PR created (Step 6)
+- **Done** → Moved when task PR merged to spec branch (Step 9)
 
 ---
 
@@ -912,16 +1203,31 @@ main (protected)
 - All quality checks passing
 - PR follows template format
 
-### Gate 5: After All Tasks Complete (Final PR to Main)
+### Gate 5: After All Tasks Complete + Documentation (BEFORE FINAL PR)
 
-**Required**: User must approve entire feature before merging to main
+**Required**: User must approve entire feature including documentation before creating final PR
+**What to review**:
+
+- Full feature functionality
+- All tests passing across all workspaces
+- **Documentation completeness** (created by documentation-writer agent):
+  - API documentation for new endpoints
+  - Component documentation for new UI components
+  - README updates
+  - ADRs for architectural decisions
+  - Usage examples and guides
+- Documentation accuracy and clarity
+
+### Gate 6: After Final PR Created (BEFORE MERGE to Main)
+
+**Required**: User must approve final PR after pr-reviewer agent comprehensive review
 **What to review**:
 
 - Final PR from spec branch to main
 - pr-reviewer agent comprehensive feature review
-- Full feature functionality
-- All tests passing across all workspaces
-- Documentation completeness
+- Breaking changes analysis
+- Migration guide if needed
+- All quality gates passing
 
 ---
 
@@ -958,18 +1264,68 @@ Types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
 
 ## Constitution Reference
 
-This workflow is mandated by Constitution v2.8.0:
+This workflow is mandated by Constitution v2.9.4:
 
-- Article III, Section 3.1: Specification-First Process (with git workflow + 6 approval gates)
+- Article III, Section 3.1: Specification-First Process (with git workflow + spec size evaluation + 7 approval gates + documentation step + branch cleanup + spec issue status update + sub-issue cleanup)
 - Article III, Section 3.4: GitHub Integration & Branch Strategy
 - Article III, Section 3.5: Issue and PR Protocol
 - Article IV, Section 4.4: Git Standards
-- Article XII: GitHub Project Board (8 columns)
+- Article XII: GitHub Project Board (5 status columns)
+
+**Key Changes in v2.9.4**:
+
+- **Explicit Spec Issue Status Update**: After spec PR merged to main, explicitly move parent spec issue to "Done" status
+  - Added merge verification step to confirm PR merge
+  - Spec issue moved to "Done" BEFORE requesting sub-issue cleanup
+  - Ensures proper sequencing of cleanup operations
+  - Split into two steps: Step 14 (merge + status update), Step 15 (sub-issue cleanup)
+  - Updated overview diagram to show spec issue status update
+
+**Key Changes in v2.9.3**:
+
+- **MANDATORY Documentation Step**: After all tasks complete, call documentation-writer agent before final PR
+  - Agent reviews all code changes in spec branch
+  - Creates/updates: README, API docs, component docs, ADRs, usage examples
+  - Commits documentation changes to spec branch
+  - Documentation reviewed and approved with feature (Gate 5)
+  - Ensures all new features properly documented before merge
+  - Phase 5, Section 5.2 in workflow
+
+**Key Changes in v2.9.2**:
+
+- **Sub-Issue Cleanup**: After spec PR merge to main, request user approval to delete all sub-issues from project board
+  - Keeps project board clean after spec completion
+  - Parent spec issue remains in "Done" as feature record
+  - User can approve or skip cleanup
+  - Step 14 in Phase 4 workflow
+
+**Key Changes in v2.9.1**:
+
+- **Remote Task Branch Cleanup**: After final PR approval, request user approval to delete all remote task branches
+  - Keeps repository clean after spec completion
+  - User can approve or skip cleanup
+  - Step 13 in Phase 4 workflow
+
+**Key Changes in v2.9.0**:
+
+- **MANDATORY Spec Size Evaluation**: Added evaluation step immediately after spec creation to avoid large specs and big code changes
+  - 6 size indicators: user scenarios, feature areas, estimated tasks, DB entities, API endpoints, cross-cutting concerns
+  - MUST notify user if spec appears too large (2+ indicators exceeded)
+  - MUST suggest breakdown into smaller specs with reasoning
+  - User decides whether to proceed or split
+  - Goal: Prevent large PRs, reduce merge conflicts, enable incremental testing
 
 **Key Changes in v2.8.0**:
 
-- **Approval Gate 4a (NEW)**: User must approve implementation BEFORE committing (mandatory review of code changes, test results, coverage)
-- **Approval Gate 4b (NEW)**: User must approve PR BEFORE merging (after pr-reviewer agent code review)
+- **GitHub Issue Workflow Updated**:
+  - **Spec → Parent Issue**: GitHub issue created IMMEDIATELY when spec is defined (not after approval)
+  - **Issue Status**: Parent issue added to project board with status "Backlog" (not "Spec & Design")
+  - **Issue Description**: Brief, clear summary from spec (NOT full spec content)
+  - **Tasks → Sub-Issues**: GitHub sub-issues created AFTER user approval (not during /tasks)
+  - **Sub-Issue Linking**: All task sub-issues linked as children to parent spec issue
+  - **Sub-Issue Status**: All sub-issues added to project board with status "Backlog"
+- **Approval Gate 4a**: User must approve implementation BEFORE committing (mandatory review of code changes, test results, coverage)
+- **Approval Gate 4b**: User must approve PR BEFORE merging (after pr-reviewer agent code review)
 - **PR-Reviewer Agent Integration**: Automated comprehensive code review using `pr-reviewer` agent for ALL PRs (task PRs and final spec→main PR)
   - Invoked via Task tool with `subagent_type: "pr-reviewer"`
   - Provides structured review: Executive Summary, Critical Issues, Major Concerns, Minor Suggestions, Positive Highlights, Testing Assessment, Documentation Review
