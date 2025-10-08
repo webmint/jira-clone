@@ -6,8 +6,8 @@
  */
 
 import { computed } from 'vue';
-import * as REF from '../tokens/reference.tokens';
-import { getToken, resolveToken } from '../tokens/utils';
+import * as REF from '../tokens/reference.tokens.ts';
+import { getToken, resolveToken } from '../tokens/utils.ts';
 
 /**
  * Type-safe token access composable

@@ -42,13 +42,13 @@ Tests should FAIL initially (no implementation yet).
 
 **Acceptance Criteria**:
 
-- [ ] Test file created with all test cases
-- [ ] Tests cover all props
-- [ ] Tests cover click event
-- [ ] Tests cover all 3 slots
-- [ ] Tests verify accessibility attributes
-- [ ] All tests initially FAIL (RED phase of TDD)
-- [ ] Test coverage structure ready for 80%+ target
+- [X] Test file created with all test cases
+- [X] Tests cover all props
+- [X] Tests cover click event
+- [X] Tests cover all 3 slots
+- [X] Tests verify accessibility attributes
+- [X] All tests initially FAIL (RED phase of TDD)
+- [X] Test coverage structure ready for 80%+ target
 
 ---
 

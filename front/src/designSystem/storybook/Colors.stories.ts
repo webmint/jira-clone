@@ -34,7 +34,7 @@ const ColorSwatch = defineComponent({
     hex: { type: String, required: true },
     textColor: { type: String, default: '#000000' },
   },
-  setup(props) {
+  setup(props: { name: string; hex: string; textColor: string }) {
     return () =>
       h(
         'div',
@@ -89,7 +89,7 @@ const PaletteSection = defineComponent({
     subtitle: { type: String, required: true },
     colors: { type: Object, required: true },
   },
-  setup(props) {
+  setup(props: { title: string; subtitle: string; colors: Record<string, string> }) {
     return () =>
       h(
         'div',

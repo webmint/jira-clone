@@ -8,7 +8,7 @@
  * Architecture: Reference → System → Component
  */
 
-import * as REF from './reference.tokens';
+import * as REF from './reference.tokens.ts';
 
 /* ==========================================================================
    COLOR SEMANTIC TOKENS

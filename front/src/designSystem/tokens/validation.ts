@@ -11,7 +11,7 @@ import { z } from 'zod';
    PALETTE VALIDATION FUNCTIONS (T004, T005)
    ========================================================================== */
 
-import { getCSSVariableForPalette, getContrastRatio } from './utils';
+import { getCSSVariableForPalette, getContrastRatio } from './utils.ts';
 
 /* ==========================================================================
    TYPOGRAPHY SCHEMAS

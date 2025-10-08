@@ -6,7 +6,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import * as REF from '@/designSystem/tokens/reference.tokens';
+import * as REF from '@/designSystem/tokens/reference.tokens.ts';
 import {
   fontSizeSchema,
   spacingSchema,
@@ -17,7 +17,8 @@ import {
   transitionDurationSchema,
   transitionTimingSchema,
   validateTokenCompleteness,
-} from '@/designSystem/tokens/validation';
+  type PaletteVariation,
+} from '@/designSystem/tokens/validation.ts';
 
 describe('Token Validation', () => {
   describe('Typography Tokens', () => {
@@ -354,8 +355,8 @@ describe('Token Validation', () => {
       'natural-harmony',
       'warm-welcome',
       'minimalist',
-    ];
-    const modes = ['light', 'dark'];
+    ] as const;
+    const modes = ['light', 'dark'] as const;
 
     it('should have validateTokenCompleteness function defined', () => {
       // This test will fail until we implement the function in T004
@@ -365,7 +366,7 @@ describe('Token Validation', () => {
 
     it('should validate that all 10 variations have identical token names', () => {
       // Mock variations with complete token sets
-      const mockVariations = palettes.flatMap((palette) =>
+      const mockVariations: PaletteVariation[] = palettes.flatMap((palette) =>
         modes.map((mode) => ({
           palette,
           mode,
@@ -386,23 +387,25 @@ describe('Token Validation', () => {
 
     it('should fail when a variation is missing tokens', () => {
       // Create variations where one is incomplete
-      const incompleteVariations = palettes.flatMap((palette) =>
-        modes.map((mode) => ({
-          palette,
-          mode,
-          tokens:
-            palette === 'creative-energy' && mode === 'dark'
-              ? {
-                  '--color-primary-500': '#000000',
-                  // Missing other tokens
-                }
-              : {
-                  '--color-primary-500': '#000000',
-                  '--color-neutral-0': '#FFFFFF',
-                  '--color-text-primary': '#000000',
-                  '--color-background-default': '#FFFFFF',
-                },
-        }))
+      const incompleteVariations: PaletteVariation[] = palettes.flatMap((palette) =>
+        modes.map(
+          (mode): PaletteVariation => ({
+            palette,
+            mode,
+            tokens:
+              palette === 'creative-energy' && mode === 'dark'
+                ? {
+                    '--color-primary-500': '#000000',
+                    // Missing other tokens
+                  }
+                : {
+                    '--color-primary-500': '#000000',
+                    '--color-neutral-0': '#FFFFFF',
+                    '--color-text-primary': '#000000',
+                    '--color-background-default': '#FFFFFF',
+                  },
+          })
+        )
       );
 
       const result = validateTokenCompleteness(incompleteVariations);
@@ -415,26 +418,28 @@ describe('Token Validation', () => {
 
     it('should detect extra tokens in a variation', () => {
       // Create variations where one has extra tokens
-      const variationsWithExtra = palettes.flatMap((palette) =>
-        modes.map((mode) => ({
-          palette,
-          mode,
-          tokens:
-            palette === 'minimalist' && mode === 'light'
-              ? {
-                  '--color-primary-500': '#000000',
-                  '--color-neutral-0': '#FFFFFF',
-                  '--color-text-primary': '#000000',
-                  '--color-background-default': '#FFFFFF',
-                  '--color-extra-token': '#123456', // Extra token
-                }
-              : {
-                  '--color-primary-500': '#000000',
-                  '--color-neutral-0': '#FFFFFF',
-                  '--color-text-primary': '#000000',
-                  '--color-background-default': '#FFFFFF',
-                },
-        }))
+      const variationsWithExtra: PaletteVariation[] = palettes.flatMap((palette) =>
+        modes.map(
+          (mode): PaletteVariation => ({
+            palette,
+            mode,
+            tokens:
+              palette === 'minimalist' && mode === 'light'
+                ? {
+                    '--color-primary-500': '#000000',
+                    '--color-neutral-0': '#FFFFFF',
+                    '--color-text-primary': '#000000',
+                    '--color-background-default': '#FFFFFF',
+                    '--color-extra-token': '#123456', // Extra token
+                  }
+                : {
+                    '--color-primary-500': '#000000',
+                    '--color-neutral-0': '#FFFFFF',
+                    '--color-text-primary': '#000000',
+                    '--color-background-default': '#FFFFFF',
+                  },
+          })
+        )
       );
 
       const result = validateTokenCompleteness(variationsWithExtra);
@@ -447,8 +452,8 @@ describe('Token Validation', () => {
 
     it('should handle multiple variations missing different tokens', () => {
       // Create variations where multiple are incomplete
-      const multipleIncomplete = palettes.flatMap((palette) =>
-        modes.map((mode) => {
+      const multipleIncomplete: PaletteVariation[] = palettes.flatMap((palette) =>
+        modes.map((mode): PaletteVariation => {
           const baseTokens = {
             '--color-primary-500': '#000000',
             '--color-neutral-0': '#FFFFFF',

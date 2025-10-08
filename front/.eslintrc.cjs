@@ -2,7 +2,6 @@
 // eslint-disable-next-line
 require('@rushstack/eslint-patch/modern-module-resolution');
 module.exports = {
-  root: true,
   env: {
     browser: true,
     es2021: true,
@@ -40,7 +39,7 @@ module.exports = {
       {
         js: 'never',
         jsx: 'never',
-        ts: 'never',
+        ts: 'always',
         tsx: 'never',
         vue: 'always',
       },
@@ -70,7 +69,7 @@ module.exports = {
       node: {
         alias: {
           map: [
-            ['@', './src'],
+            ['@/', './src'],
             ['~@', './src'],
           ],
         },
@@ -78,14 +77,5 @@ module.exports = {
       },
     },
   },
-  overrides: [
-    {
-      files: ['**/*.spec.ts', '**/*.test.ts'],
-      rules: {
-        'import/no-unresolved': 'off',
-        'import/extensions': 'off',
-      },
-    },
-  ],
   ignorePatterns: ['dist', 'node_modules', '*.config.js', '*.config.ts'],
 };

@@ -5,7 +5,7 @@
  * Provides type-safe access to token values.
  */
 
-import * as REF from './reference.tokens';
+import * as REF from './reference.tokens.ts';
 
 /* ==========================================================================
    TOKEN ACCESS UTILITIES
