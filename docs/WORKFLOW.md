@@ -440,19 +440,29 @@ git pull origin spec/001-user-authentication
 #### Step 2: Create Task Sub-branch and Link to Issue
 
 ```bash
+# Option A: Use gh issue develop to create and link branch in one command
+gh issue develop 14 -n spec/001-user-authentication/T014-auth-endpoints -c
+
+# This command will:
+# 1. Create branch spec/001-user-authentication/T014-auth-endpoints from current branch
+# 2. Link it to issue #14 automatically
+# 3. Checkout the branch (-c flag)
+
+# Then push to establish remote tracking
+git push -u origin spec/001-user-authentication/T014-auth-endpoints
+
+# Option B: Manual approach (if gh issue develop unavailable)
 # Create sub-branch for task from spec branch
 git checkout -b spec/001-user-authentication/T014-auth-endpoints
 
 # Push branch to establish remote tracking
 git push -u origin spec/001-user-authentication/T014-auth-endpoints
 
-# Link branch to GitHub issue
-gh issue develop #14 --branch spec/001-user-authentication/T014-auth-endpoints
+# Note: Branch will be linked to issue when PR is created with "Closes #14" in description
 
 # Move issue to "In progress" status on project board
-gh project item-edit --project-id <PROJECT_ID> --field-id <STATUS_FIELD_ID> --item-id <ITEM_ID> --single-select-option-id "ba69d1b4"
-# Or using simpler command if available:
-# gh issue edit #14 --add-project-v2-item-field "Status=In progress"
+gh issue edit 14 --add-assignee @me
+# Manual: Move issue card to "In progress" column on GitHub project board UI
 ```
 
 #### Step 3: Implement Task
