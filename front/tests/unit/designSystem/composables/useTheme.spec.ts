@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 /**
  * Theme Switching Tests
  *
@@ -5,9 +7,9 @@
  * system preference detection, and localStorage persistence.
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { createApp } from 'vue';
-import { useTheme } from '@/designSystem/composables/useTheme';
+import { useTheme } from '@/designSystem/composables/useTheme.ts';
 
 /**
  * Helper to test composables with proper component context

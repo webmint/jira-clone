@@ -8,6 +8,12 @@
 import { z } from 'zod';
 
 /* ==========================================================================
+   PALETTE VALIDATION FUNCTIONS (T004, T005)
+   ========================================================================== */
+
+import { getCSSVariableForPalette, getContrastRatio } from './utils.ts';
+
+/* ==========================================================================
    TYPOGRAPHY SCHEMAS
    ========================================================================== */
 
@@ -21,7 +27,9 @@ export const fontFamilySchema = z.string().min(1).describe('CSS font-family valu
  * Font size validation
  * Must be valid CSS size (rem, px, em, etc.)
  */
-export const fontSizeSchema = z.string().regex(/^\d+(\.\d+)?(rem|px|em|%)$/, 'Invalid CSS size unit');
+export const fontSizeSchema = z
+  .string()
+  .regex(/^\d+(\.\d+)?(rem|px|em|%)$/, 'Invalid CSS size unit');
 
 /**
  * Font weight validation
@@ -235,12 +243,6 @@ export function validateTransitionTokens(tokens: unknown) {
   return transitionTokensSchema.safeParse(tokens);
 }
 
-/* ==========================================================================
-   PALETTE VALIDATION FUNCTIONS (T004, T005)
-   ========================================================================== */
-
-import { getCSSVariableForPalette, getContrastRatio } from './utils';
-
 /**
  * Palette variation interface
  */
@@ -313,11 +315,12 @@ export interface ContrastValidationResult {
  * }
  * ```
  */
-export function validateTokenCompleteness(
-  variations: PaletteVariation[],
-): TokenCompletenessResult {
+export function validateTokenCompleteness(variations: PaletteVariation[]): TokenCompletenessResult {
   if (!variations || variations.length === 0) {
-    return { valid: false, missingTokens: [{ variation: 'none', missing: ['No variations provided'] }] };
+    return {
+      valid: false,
+      missingTokens: [{ variation: 'none', missing: ['No variations provided'] }],
+    };
   }
 
   // Step 1: Find the intersection of tokens (tokens present in ALL variations)
@@ -358,14 +361,10 @@ export function validateTokenCompleteness(
     const variationTokens = Object.keys(variation.tokens);
 
     // Find missing tokens (in unionTokens but not in this variation)
-    const missing = unionTokens.filter(
-      (token) => !variationTokens.includes(token),
-    );
+    const missing = unionTokens.filter((token) => !variationTokens.includes(token));
 
     // Find extra tokens (in this variation but not in expectedTokens/intersection)
-    const extra = variationTokens.filter(
-      (token) => !expectedTokens.includes(token),
-    );
+    const extra = variationTokens.filter((token) => !expectedTokens.includes(token));
 
     if (missing.length > 0) {
       missingTokens.push({ variation: variationName, missing: missing.sort() });
@@ -405,9 +404,7 @@ export function validateTokenCompleteness(
  * ]);
  * ```
  */
-export function validateContrastRatios(
-  checks: ContrastCheck[],
-): ContrastValidationResult {
+export function validateContrastRatios(checks: ContrastCheck[]): ContrastValidationResult {
   const failures: ContrastValidationResult['failures'] = [];
 
   checks.forEach((check) => {
@@ -428,16 +425,8 @@ export function validateContrastRatios(
       }
 
       // Get computed color values for the specific variation
-      const foregroundValue = getCSSVariableForPalette(
-        check.foregroundToken,
-        palette,
-        mode,
-      );
-      const backgroundValue = getCSSVariableForPalette(
-        check.backgroundToken,
-        palette,
-        mode,
-      );
+      const foregroundValue = getCSSVariableForPalette(check.foregroundToken, palette, mode);
+      const backgroundValue = getCSSVariableForPalette(check.backgroundToken, palette, mode);
 
       // Skip if values are empty (tokens not defined yet)
       if (!foregroundValue || !backgroundValue) {

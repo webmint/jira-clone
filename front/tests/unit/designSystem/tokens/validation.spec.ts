@@ -6,7 +6,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import * as REF from '@/designSystem/tokens/reference.tokens';
+import * as REF from '@/designSystem/tokens/reference.tokens.ts';
 import {
   fontSizeSchema,
   spacingSchema,
@@ -16,15 +16,9 @@ import {
   opacitySchema,
   transitionDurationSchema,
   transitionTimingSchema,
-  typographyTokensSchema,
-  spacingTokensSchema,
-  effectTokensSchema,
-  layoutTokensSchema,
-  transitionTokensSchema,
-  designTokensSchema,
   validateTokenCompleteness,
-  validateContrastRatios,
-} from '@/designSystem/tokens/validation';
+  type PaletteVariation,
+} from '@/designSystem/tokens/validation.ts';
 
 describe('Token Validation', () => {
   describe('Typography Tokens', () => {
@@ -44,7 +38,7 @@ describe('Token Validation', () => {
 
     describe('Font Size', () => {
       it('should validate all font sizes', () => {
-        Object.entries(REF.FONT_SIZE).forEach(([key, value]) => {
+        Object.entries(REF.FONT_SIZE).forEach(([_key, value]) => {
           const result = fontSizeSchema.safeParse(value);
           expect(result.success).toBe(true);
         });
@@ -125,7 +119,7 @@ describe('Token Validation', () => {
 
   describe('Spacing Tokens', () => {
     it('should validate all spacing values', () => {
-      Object.entries(REF.SPACING).forEach(([key, value]) => {
+      Object.entries(REF.SPACING).forEach(([_key, value]) => {
         const result = spacingSchema.safeParse(value);
         expect(result.success).toBe(true);
       });
@@ -143,17 +137,33 @@ describe('Token Validation', () => {
     });
 
     it('should have all required spacing values', () => {
-      const requiredKeys = ['NONE', '0_5', '1', '1_5', '2', '2_5', '3', '4', '5', '6', '7', '8', '10', '12', '16', '20'];
+      const requiredKeys = [
+        'NONE',
+        '0_5',
+        '1',
+        '1_5',
+        '2',
+        '2_5',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '10',
+        '12',
+        '16',
+        '20',
+      ];
       requiredKeys.forEach((key) => {
         expect(REF.SPACING[key as keyof typeof REF.SPACING]).toBeDefined();
       });
     });
-
   });
 
   describe('Shadow Tokens', () => {
     it('should validate all shadow values', () => {
-      Object.entries(REF.SHADOW).forEach(([key, value]) => {
+      Object.entries(REF.SHADOW).forEach(([_key, value]) => {
         const result = shadowSchema.safeParse(value);
         expect(result.success).toBe(true);
       });
@@ -180,7 +190,7 @@ describe('Token Validation', () => {
 
   describe('Border Radius Tokens', () => {
     it('should validate all border radius values', () => {
-      Object.entries(REF.BORDER_RADIUS).forEach(([key, value]) => {
+      Object.entries(REF.BORDER_RADIUS).forEach(([_key, value]) => {
         const result = borderRadiusSchema.safeParse(value);
         expect(result.success).toBe(true);
       });
@@ -196,12 +206,11 @@ describe('Token Validation', () => {
       expect(REF.BORDER_RADIUS['2XL']).toBeDefined();
       expect(REF.BORDER_RADIUS.FULL).toBe('9999px');
     });
-
   });
 
   describe('Z-Index Tokens', () => {
     it('should validate all z-index values', () => {
-      Object.entries(REF.Z_INDEX).forEach(([key, value]) => {
+      Object.entries(REF.Z_INDEX).forEach(([_key, value]) => {
         const result = zIndexSchema.safeParse(value);
         expect(result.success).toBe(true);
       });
@@ -228,7 +237,7 @@ describe('Token Validation', () => {
 
   describe('Opacity Tokens', () => {
     it('should validate all opacity values', () => {
-      Object.entries(REF.OPACITY).forEach(([key, value]) => {
+      Object.entries(REF.OPACITY).forEach(([_key, value]) => {
         const result = opacitySchema.safeParse(value);
         expect(result.success).toBe(true);
       });
@@ -254,13 +263,12 @@ describe('Token Validation', () => {
         expect(numValue).toBeLessThanOrEqual(1);
       });
     });
-
   });
 
   describe('Transition Tokens', () => {
     describe('Duration', () => {
       it('should validate all duration values', () => {
-        Object.entries(REF.TRANSITION_DURATION).forEach(([key, value]) => {
+        Object.entries(REF.TRANSITION_DURATION).forEach(([_key, value]) => {
           const result = transitionDurationSchema.safeParse(value);
           expect(result.success).toBe(true);
         });
@@ -277,7 +285,7 @@ describe('Token Validation', () => {
 
     describe('Timing', () => {
       it('should validate all timing values', () => {
-        Object.entries(REF.TRANSITION_TIMING).forEach(([key, value]) => {
+        Object.entries(REF.TRANSITION_TIMING).forEach(([_key, value]) => {
           const result = transitionTimingSchema.safeParse(value);
           expect(result.success).toBe(true);
         });
@@ -297,7 +305,6 @@ describe('Token Validation', () => {
         expect(REF.TRANSITION_TIMING.EASE_IN_OUT).toContain('cubic-bezier');
       });
     });
-
   });
 
   describe('Complete Token Schema', () => {
@@ -348,8 +355,8 @@ describe('Token Validation', () => {
       'natural-harmony',
       'warm-welcome',
       'minimalist',
-    ];
-    const modes = ['light', 'dark'];
+    ] as const;
+    const modes = ['light', 'dark'] as const;
 
     it('should have validateTokenCompleteness function defined', () => {
       // This test will fail until we implement the function in T004
@@ -359,7 +366,7 @@ describe('Token Validation', () => {
 
     it('should validate that all 10 variations have identical token names', () => {
       // Mock variations with complete token sets
-      const mockVariations = palettes.flatMap((palette) =>
+      const mockVariations: PaletteVariation[] = palettes.flatMap((palette) =>
         modes.map((mode) => ({
           palette,
           mode,
@@ -380,23 +387,25 @@ describe('Token Validation', () => {
 
     it('should fail when a variation is missing tokens', () => {
       // Create variations where one is incomplete
-      const incompleteVariations = palettes.flatMap((palette) =>
-        modes.map((mode) => ({
-          palette,
-          mode,
-          tokens:
-            palette === 'creative-energy' && mode === 'dark'
-              ? {
-                  '--color-primary-500': '#000000',
-                  // Missing other tokens
-                }
-              : {
-                  '--color-primary-500': '#000000',
-                  '--color-neutral-0': '#FFFFFF',
-                  '--color-text-primary': '#000000',
-                  '--color-background-default': '#FFFFFF',
-                },
-        }))
+      const incompleteVariations: PaletteVariation[] = palettes.flatMap((palette) =>
+        modes.map(
+          (mode): PaletteVariation => ({
+            palette,
+            mode,
+            tokens:
+              palette === 'creative-energy' && mode === 'dark'
+                ? {
+                    '--color-primary-500': '#000000',
+                    // Missing other tokens
+                  }
+                : {
+                    '--color-primary-500': '#000000',
+                    '--color-neutral-0': '#FFFFFF',
+                    '--color-text-primary': '#000000',
+                    '--color-background-default': '#FFFFFF',
+                  },
+          })
+        )
       );
 
       const result = validateTokenCompleteness(incompleteVariations);
@@ -409,26 +418,28 @@ describe('Token Validation', () => {
 
     it('should detect extra tokens in a variation', () => {
       // Create variations where one has extra tokens
-      const variationsWithExtra = palettes.flatMap((palette) =>
-        modes.map((mode) => ({
-          palette,
-          mode,
-          tokens:
-            palette === 'minimalist' && mode === 'light'
-              ? {
-                  '--color-primary-500': '#000000',
-                  '--color-neutral-0': '#FFFFFF',
-                  '--color-text-primary': '#000000',
-                  '--color-background-default': '#FFFFFF',
-                  '--color-extra-token': '#123456', // Extra token
-                }
-              : {
-                  '--color-primary-500': '#000000',
-                  '--color-neutral-0': '#FFFFFF',
-                  '--color-text-primary': '#000000',
-                  '--color-background-default': '#FFFFFF',
-                },
-        }))
+      const variationsWithExtra: PaletteVariation[] = palettes.flatMap((palette) =>
+        modes.map(
+          (mode): PaletteVariation => ({
+            palette,
+            mode,
+            tokens:
+              palette === 'minimalist' && mode === 'light'
+                ? {
+                    '--color-primary-500': '#000000',
+                    '--color-neutral-0': '#FFFFFF',
+                    '--color-text-primary': '#000000',
+                    '--color-background-default': '#FFFFFF',
+                    '--color-extra-token': '#123456', // Extra token
+                  }
+                : {
+                    '--color-primary-500': '#000000',
+                    '--color-neutral-0': '#FFFFFF',
+                    '--color-text-primary': '#000000',
+                    '--color-background-default': '#FFFFFF',
+                  },
+          })
+        )
       );
 
       const result = validateTokenCompleteness(variationsWithExtra);
@@ -441,8 +452,8 @@ describe('Token Validation', () => {
 
     it('should handle multiple variations missing different tokens', () => {
       // Create variations where multiple are incomplete
-      const multipleIncomplete = palettes.flatMap((palette) =>
-        modes.map((mode) => {
+      const multipleIncomplete: PaletteVariation[] = palettes.flatMap((palette) =>
+        modes.map((mode): PaletteVariation => {
           const baseTokens = {
             '--color-primary-500': '#000000',
             '--color-neutral-0': '#FFFFFF',

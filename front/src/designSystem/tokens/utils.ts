@@ -5,7 +5,7 @@
  * Provides type-safe access to token values.
  */
 
-import * as REF from './reference.tokens';
+import * as REF from './reference.tokens.ts';
 
 /* ==========================================================================
    TOKEN ACCESS UTILITIES
@@ -20,10 +20,10 @@ import * as REF from './reference.tokens';
  * getToken('SPACING', '4') // returns '2rem'
  * ```
  */
-export function getToken<
-  T extends keyof typeof REF,
-  K extends keyof (typeof REF)[T],
->(category: T, key: K): (typeof REF)[T][K] {
+export function getToken<T extends keyof typeof REF, K extends keyof (typeof REF)[T]>(
+  category: T,
+  key: K
+): (typeof REF)[T][K] {
   return REF[category][key];
 }
 
@@ -68,7 +68,7 @@ export function resolveToken(path: string): string | number {
  */
 export function getCSSVariable(
   variableName: string,
-  element: HTMLElement = document.documentElement,
+  element: HTMLElement = document.documentElement
 ): string {
   const varName = variableName.startsWith('--') ? variableName : `--${variableName}`;
   return getComputedStyle(element).getPropertyValue(varName).trim();
@@ -84,7 +84,7 @@ export function getCSSVariable(
 export function setCSSVariable(
   variableName: string,
   value: string,
-  element: HTMLElement = document.documentElement,
+  element: HTMLElement = document.documentElement
 ): void {
   const varName = variableName.startsWith('--') ? variableName : `--${variableName}`;
   element.style.setProperty(varName, value);
@@ -98,7 +98,7 @@ export function setCSSVariable(
  */
 export function removeCSSVariable(
   variableName: string,
-  element: HTMLElement = document.documentElement,
+  element: HTMLElement = document.documentElement
 ): void {
   const varName = variableName.startsWith('--') ? variableName : `--${variableName}`;
   element.style.removeProperty(varName);
@@ -143,9 +143,7 @@ export function pxToRem(pxValue: string | number, rootFontSize = 16): string {
  * // returns { XS: '0.75rem', SM: '0.875rem', ... }
  * ```
  */
-export function getTokensByCategory<T extends keyof typeof REF>(
-  category: T,
-): (typeof REF)[T] {
+export function getTokensByCategory<T extends keyof typeof REF>(category: T): (typeof REF)[T] {
   return REF[category];
 }
 
@@ -184,11 +182,7 @@ export function hasToken(category: string, key: string): boolean {
  * // returns "#FFFFFF"
  * ```
  */
-export function getCSSVariableForPalette(
-  tokenName: string,
-  palette: string,
-  mode: string,
-): string {
+export function getCSSVariableForPalette(tokenName: string, palette: string, mode: string): string {
   // Create a temporary element
   const tempElement = document.createElement('div');
 
@@ -215,34 +209,6 @@ export function getCSSVariableForPalette(
     // Always clean up
     document.body.removeChild(tempElement);
   }
-}
-
-/**
- * Calculate WCAG contrast ratio between two hex colors
- * Implements the WCAG 2.1 relative luminance formula
- * https://www.w3.org/TR/WCAG21/#dfn-relative-luminance
- *
- * @param foreground - Foreground hex color (e.g., "#0F172A")
- * @param background - Background hex color (e.g., "#FFFFFF")
- * @returns Contrast ratio (range: 1.0 to 21.0)
- *
- * @example
- * ```ts
- * getContrastRatio('#0F172A', '#FFFFFF')
- * // returns 15.68 (passes WCAG AAA)
- * ```
- */
-export function getContrastRatio(foreground: string, background: string): number {
-  const rgb1 = hexToRgb(foreground);
-  const rgb2 = hexToRgb(background);
-
-  const lum1 = getRelativeLuminance(rgb1.r, rgb1.g, rgb1.b);
-  const lum2 = getRelativeLuminance(rgb2.r, rgb2.g, rgb2.b);
-
-  const lighter = Math.max(lum1, lum2);
-  const darker = Math.min(lum1, lum2);
-
-  return (lighter + 0.05) / (darker + 0.05);
 }
 
 /**
@@ -283,9 +249,37 @@ function getRelativeLuminance(r: number, g: number, b: number): number {
   // Convert to 0-1 range and apply gamma correction
   const [rs, gs, bs] = [r, g, b].map((component) => {
     const val = component / 255;
-    return val <= 0.03928 ? val / 12.92 : Math.pow((val + 0.055) / 1.055, 2.4);
+    return val <= 0.03928 ? val / 12.92 : ((val + 0.055) / 1.055) ** 2.4;
   });
 
   // Apply WCAG luminance weights
   return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+}
+
+/**
+ * Calculate WCAG contrast ratio between two hex colors
+ * Implements the WCAG 2.1 relative luminance formula
+ * https://www.w3.org/TR/WCAG21/#dfn-relative-luminance
+ *
+ * @param foreground - Foreground hex color (e.g., "#0F172A")
+ * @param background - Background hex color (e.g., "#FFFFFF")
+ * @returns Contrast ratio (range: 1.0 to 21.0)
+ *
+ * @example
+ * ```ts
+ * getContrastRatio('#0F172A', '#FFFFFF')
+ * // returns 15.68 (passes WCAG AAA)
+ * ```
+ */
+export function getContrastRatio(foreground: string, background: string): number {
+  const rgb1 = hexToRgb(foreground);
+  const rgb2 = hexToRgb(background);
+
+  const lum1 = getRelativeLuminance(rgb1.r, rgb1.g, rgb1.b);
+  const lum2 = getRelativeLuminance(rgb2.r, rgb2.g, rgb2.b);
+
+  const lighter = Math.max(lum1, lum2);
+  const darker = Math.min(lum1, lum2);
+
+  return (lighter + 0.05) / (darker + 0.05);
 }

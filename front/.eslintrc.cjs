@@ -1,5 +1,7 @@
+/* eslint-env node */
+// eslint-disable-next-line
+require('@rushstack/eslint-patch/modern-module-resolution');
 module.exports = {
-  root: true,
   env: {
     browser: true,
     es2021: true,
@@ -31,16 +33,23 @@ module.exports = {
     'vue/define-emits-declaration': ['error', 'type-based'],
     'vue/define-props-declaration': ['error', 'type-based'],
     'vue/no-template-target-blank': 'off',
-    'import/extensions': ['error', 'ignorePackages', {
-      js: 'never',
-      jsx: 'never',
-      ts: 'never',
-      tsx: 'never',
-      vue: 'always',
-    }],
-    'import/no-extraneous-dependencies': ['error', {
-      devDependencies: ['**/*.spec.ts', '**/*.test.ts', '**/vite.config.ts'],
-    }],
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'always',
+        tsx: 'never',
+        vue: 'always',
+      },
+    ],
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: ['**/*.spec.ts', '**/*.test.ts', '**/vite.config.ts'],
+      },
+    ],
     'import/prefer-default-export': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
   },
@@ -58,6 +67,12 @@ module.exports = {
         project: './tsconfig.json',
       },
       node: {
+        alias: {
+          map: [
+            ['@/', './src'],
+            ['~@', './src'],
+          ],
+        },
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
       },
     },

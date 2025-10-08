@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.app.json",
+  "include": ["vitest.config.*", "src/**/*", "tests/**/*"],
+  "compilerOptions": {
+    "types": ["vitest/globals", "jsdom", "node"],
+    "lib": ["esnext", "dom"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}
+
+
+

@@ -43,7 +43,12 @@ export const ShadowScale: Story = {
     setup() {
       const shadows = [
         { name: 'NONE', value: 'none', token: 'SHADOW.NONE', use: 'Flush elements' },
-        { name: 'SM', value: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', token: 'SHADOW.SM', use: 'Subtle hover' },
+        {
+          name: 'SM',
+          value: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+          token: 'SHADOW.SM',
+          use: 'Subtle hover',
+        },
         {
           name: 'BASE',
           value: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
@@ -68,12 +73,21 @@ export const ShadowScale: Story = {
           token: 'SHADOW.XL',
           use: 'Maximum elevation',
         },
-        { name: 'INNER', value: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)', token: 'SHADOW.INNER', use: 'Input fields' },
+        {
+          name: 'INNER',
+          value: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
+          token: 'SHADOW.INNER',
+          use: 'Input fields',
+        },
       ];
 
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '1000px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Shadow Scale'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Shadow Scale'
+          ),
           h(
             'div',
             {
@@ -95,14 +109,18 @@ export const ShadowScale: Story = {
                   },
                 },
                 [
-                  h(
-                    'div',
-                    { style: { marginBottom: '1rem' } },
-                    [
-                      h('div', { style: { fontSize: '1rem', fontWeight: '600', color: '#111827' } }, shadow.name),
-                      h('div', { style: { fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' } }, shadow.use),
-                    ],
-                  ),
+                  h('div', { style: { marginBottom: '1rem' } }, [
+                    h(
+                      'div',
+                      { style: { fontSize: '1rem', fontWeight: '600', color: '#111827' } },
+                      shadow.name
+                    ),
+                    h(
+                      'div',
+                      { style: { fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' } },
+                      shadow.use
+                    ),
+                  ]),
                   h('div', {
                     style: {
                       width: '100%',
@@ -126,11 +144,11 @@ export const ShadowScale: Story = {
                         borderRadius: '0.25rem',
                       },
                     },
-                    shadow.token,
+                    shadow.token
                   ),
-                ],
-              ),
-            ),
+                ]
+              )
+            )
           ),
         ]);
     },
@@ -147,7 +165,11 @@ export const InteractiveElevation: Story = {
     setup() {
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '800px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Interactive Elevation'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Interactive Elevation'
+          ),
           h(
             'div',
             {
@@ -179,9 +201,17 @@ export const InteractiveElevation: Story = {
                   },
                 },
                 [
-                  h('h3', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.5rem' } }, 'Hover Me'),
-                  h('p', { style: { fontSize: '0.875rem', color: '#6b7280' } }, 'BASE → MD on hover'),
-                ],
+                  h(
+                    'h3',
+                    { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.5rem' } },
+                    'Hover Me'
+                  ),
+                  h(
+                    'p',
+                    { style: { fontSize: '0.875rem', color: '#6b7280' } },
+                    'BASE → MD on hover'
+                  ),
+                ]
               ),
               h(
                 'div',
@@ -190,7 +220,8 @@ export const InteractiveElevation: Story = {
                     padding: '1.5rem',
                     backgroundColor: '#ffffff',
                     borderRadius: '0.75rem',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+                    boxShadow:
+                      '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
                     transition: 'box-shadow 200ms ease',
                     cursor: 'pointer',
                   },
@@ -204,11 +235,15 @@ export const InteractiveElevation: Story = {
                   },
                 },
                 [
-                  h('h3', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.5rem' } }, 'Hover Me'),
+                  h(
+                    'h3',
+                    { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.5rem' } },
+                    'Hover Me'
+                  ),
                   h('p', { style: { fontSize: '0.875rem', color: '#6b7280' } }, 'MD → LG on hover'),
-                ],
+                ]
               ),
-            ],
+            ]
           ),
         ]);
     },
@@ -225,7 +260,11 @@ export const ComponentExamples: Story = {
     setup() {
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '1200px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Component Examples'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Component Examples'
+          ),
           h(
             'div',
             {
@@ -248,18 +287,28 @@ export const ComponentExamples: Story = {
                   },
                 },
                 [
-                  h('h3', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' } }, 'Card'),
+                  h(
+                    'h3',
+                    { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' } },
+                    'Card'
+                  ),
                   h(
                     'p',
                     { style: { fontSize: '0.875rem', color: '#6b7280', marginBottom: '1rem' } },
-                    'Standard card with BASE shadow for subtle elevation.',
+                    'Standard card with BASE shadow for subtle elevation.'
                   ),
                   h(
                     'div',
-                    { style: { fontSize: '0.75rem', color: '#9ca3af', fontFamily: "'Roboto Mono', monospace" } },
-                    'SHADOW.BASE',
+                    {
+                      style: {
+                        fontSize: '0.75rem',
+                        color: '#9ca3af',
+                        fontFamily: "'Roboto Mono', monospace",
+                      },
+                    },
+                    'SHADOW.BASE'
                   ),
-                ],
+                ]
               ),
               // Dropdown with MD shadow
               h(
@@ -269,22 +318,33 @@ export const ComponentExamples: Story = {
                     padding: '1.5rem',
                     backgroundColor: '#ffffff',
                     borderRadius: '0.75rem',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
+                    boxShadow:
+                      '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
                   },
                 },
                 [
-                  h('h3', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' } }, 'Dropdown'),
+                  h(
+                    'h3',
+                    { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' } },
+                    'Dropdown'
+                  ),
                   h(
                     'p',
                     { style: { fontSize: '0.875rem', color: '#6b7280', marginBottom: '1rem' } },
-                    'Dropdown menu with MD shadow for clear separation.',
+                    'Dropdown menu with MD shadow for clear separation.'
                   ),
                   h(
                     'div',
-                    { style: { fontSize: '0.75rem', color: '#9ca3af', fontFamily: "'Roboto Mono', monospace" } },
-                    'SHADOW.MD',
+                    {
+                      style: {
+                        fontSize: '0.75rem',
+                        color: '#9ca3af',
+                        fontFamily: "'Roboto Mono', monospace",
+                      },
+                    },
+                    'SHADOW.MD'
                   ),
-                ],
+                ]
               ),
               // Modal with LG shadow
               h(
@@ -294,24 +354,35 @@ export const ComponentExamples: Story = {
                     padding: '1.5rem',
                     backgroundColor: '#ffffff',
                     borderRadius: '0.75rem',
-                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
+                    boxShadow:
+                      '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
                   },
                 },
                 [
-                  h('h3', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' } }, 'Modal'),
+                  h(
+                    'h3',
+                    { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' } },
+                    'Modal'
+                  ),
                   h(
                     'p',
                     { style: { fontSize: '0.875rem', color: '#6b7280', marginBottom: '1rem' } },
-                    'Modal dialog with LG shadow for maximum prominence.',
+                    'Modal dialog with LG shadow for maximum prominence.'
                   ),
                   h(
                     'div',
-                    { style: { fontSize: '0.75rem', color: '#9ca3af', fontFamily: "'Roboto Mono', monospace" } },
-                    'SHADOW.LG',
+                    {
+                      style: {
+                        fontSize: '0.75rem',
+                        color: '#9ca3af',
+                        fontFamily: "'Roboto Mono', monospace",
+                      },
+                    },
+                    'SHADOW.LG'
                   ),
-                ],
+                ]
               ),
-            ],
+            ]
           ),
         ]);
     },
@@ -328,7 +399,11 @@ export const InnerShadow: Story = {
     setup() {
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '600px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Inner Shadow'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Inner Shadow'
+          ),
           h(
             'div',
             {
@@ -339,7 +414,18 @@ export const InnerShadow: Story = {
               },
             },
             [
-              h('label', { style: { display: 'block', fontSize: '0.875rem', fontWeight: '500', marginBottom: '0.5rem' } }, 'Input Field'),
+              h(
+                'label',
+                {
+                  style: {
+                    display: 'block',
+                    fontSize: '0.875rem',
+                    fontWeight: '500',
+                    marginBottom: '0.5rem',
+                  },
+                },
+                'Input Field'
+              ),
               h('input', {
                 type: 'text',
                 placeholder: 'Type something...',
@@ -367,9 +453,9 @@ export const InnerShadow: Story = {
                     fontFamily: "'Roboto Mono', monospace",
                   },
                 },
-                'boxShadow: SHADOW.INNER',
+                'boxShadow: SHADOW.INNER'
               ),
-            ],
+            ]
           ),
         ]);
     },
