@@ -44,18 +44,58 @@ export const BorderRadiusScale: Story = {
     setup() {
       const radii = [
         { name: 'NONE', value: '0', px: '0px', token: 'BORDER_RADIUS.NONE', use: 'Sharp edges' },
-        { name: 'SM', value: '0.125rem', px: '2px', token: 'BORDER_RADIUS.SM', use: 'Subtle corners' },
-        { name: 'BASE', value: '0.25rem', px: '4px', token: 'BORDER_RADIUS.BASE', use: 'Default rounding' },
-        { name: 'MD', value: '0.375rem', px: '6px', token: 'BORDER_RADIUS.MD', use: 'Medium rounding' },
-        { name: 'LG', value: '0.5rem', px: '8px', token: 'BORDER_RADIUS.LG', use: 'Large rounding' },
+        {
+          name: 'SM',
+          value: '0.125rem',
+          px: '2px',
+          token: 'BORDER_RADIUS.SM',
+          use: 'Subtle corners',
+        },
+        {
+          name: 'BASE',
+          value: '0.25rem',
+          px: '4px',
+          token: 'BORDER_RADIUS.BASE',
+          use: 'Default rounding',
+        },
+        {
+          name: 'MD',
+          value: '0.375rem',
+          px: '6px',
+          token: 'BORDER_RADIUS.MD',
+          use: 'Medium rounding',
+        },
+        {
+          name: 'LG',
+          value: '0.5rem',
+          px: '8px',
+          token: 'BORDER_RADIUS.LG',
+          use: 'Large rounding',
+        },
         { name: 'XL', value: '0.75rem', px: '12px', token: 'BORDER_RADIUS.XL', use: 'Extra large' },
-        { name: '2XL', value: '1rem', px: '16px', token: 'BORDER_RADIUS["2XL"]', use: 'Very large' },
-        { name: 'FULL', value: '9999px', px: '9999px', token: 'BORDER_RADIUS.FULL', use: 'Pills, circles' },
+        {
+          name: '2XL',
+          value: '1rem',
+          px: '16px',
+          token: 'BORDER_RADIUS["2XL"]',
+          use: 'Very large',
+        },
+        {
+          name: 'FULL',
+          value: '9999px',
+          px: '9999px',
+          token: 'BORDER_RADIUS.FULL',
+          use: 'Pills, circles',
+        },
       ];
 
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '1000px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Border Radius Scale'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Border Radius Scale'
+          ),
           h(
             'div',
             {
@@ -78,14 +118,18 @@ export const BorderRadiusScale: Story = {
                   },
                 },
                 [
-                  h(
-                    'div',
-                    { style: { marginBottom: '1rem' } },
-                    [
-                      h('div', { style: { fontSize: '1rem', fontWeight: '600', color: '#111827' } }, radius.name),
-                      h('div', { style: { fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' } }, `${radius.value} / ${radius.px}`),
-                    ],
-                  ),
+                  h('div', { style: { marginBottom: '1rem' } }, [
+                    h(
+                      'div',
+                      { style: { fontSize: '1rem', fontWeight: '600', color: '#111827' } },
+                      radius.name
+                    ),
+                    h(
+                      'div',
+                      { style: { fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' } },
+                      `${radius.value} / ${radius.px}`
+                    ),
+                  ]),
                   h('div', {
                     style: {
                       width: '100px',
@@ -95,7 +139,11 @@ export const BorderRadiusScale: Story = {
                       borderRadius: radius.value,
                     },
                   }),
-                  h('div', { style: { fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.5rem' } }, radius.use),
+                  h(
+                    'div',
+                    { style: { fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.5rem' } },
+                    radius.use
+                  ),
                   h(
                     'code',
                     {
@@ -109,11 +157,11 @@ export const BorderRadiusScale: Story = {
                         borderRadius: '0.25rem',
                       },
                     },
-                    radius.token,
+                    radius.token
                   ),
-                ],
-              ),
-            ),
+                ]
+              )
+            )
           ),
         ]);
     },
@@ -130,7 +178,11 @@ export const ComponentExamples: Story = {
     setup() {
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '1200px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Component Examples'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Component Examples'
+          ),
           h(
             'div',
             {
@@ -152,7 +204,11 @@ export const ComponentExamples: Story = {
                   },
                 },
                 [
-                  h('div', { style: { fontSize: '0.875rem', fontWeight: '500', marginBottom: '1rem' } }, 'Button'),
+                  h(
+                    'div',
+                    { style: { fontSize: '0.875rem', fontWeight: '500', marginBottom: '1rem' } },
+                    'Button'
+                  ),
                   h(
                     'button',
                     {
@@ -168,7 +224,7 @@ export const ComponentExamples: Story = {
                         cursor: 'pointer',
                       },
                     },
-                    'Click me',
+                    'Click me'
                   ),
                   h(
                     'div',
@@ -180,9 +236,9 @@ export const ComponentExamples: Story = {
                         fontFamily: "'Roboto Mono', monospace",
                       },
                     },
-                    'BORDER_RADIUS.MD',
+                    'BORDER_RADIUS.MD'
                   ),
-                ],
+                ]
               ),
               // Card with LG radius
               h(
@@ -196,11 +252,15 @@ export const ComponentExamples: Story = {
                   },
                 },
                 [
-                  h('div', { style: { fontSize: '0.875rem', fontWeight: '500', marginBottom: '0.5rem' } }, 'Card'),
+                  h(
+                    'div',
+                    { style: { fontSize: '0.875rem', fontWeight: '500', marginBottom: '0.5rem' } },
+                    'Card'
+                  ),
                   h(
                     'p',
                     { style: { fontSize: '0.875rem', color: '#6b7280', marginBottom: '1rem' } },
-                    'Card with LG border radius.',
+                    'Card with LG border radius.'
                   ),
                   h(
                     'div',
@@ -211,9 +271,9 @@ export const ComponentExamples: Story = {
                         fontFamily: "'Roboto Mono', monospace",
                       },
                     },
-                    'BORDER_RADIUS.LG',
+                    'BORDER_RADIUS.LG'
                   ),
-                ],
+                ]
               ),
               // Badge with FULL radius
               h(
@@ -226,7 +286,11 @@ export const ComponentExamples: Story = {
                   },
                 },
                 [
-                  h('div', { style: { fontSize: '0.875rem', fontWeight: '500', marginBottom: '1rem' } }, 'Badge'),
+                  h(
+                    'div',
+                    { style: { fontSize: '0.875rem', fontWeight: '500', marginBottom: '1rem' } },
+                    'Badge'
+                  ),
                   h(
                     'span',
                     {
@@ -240,7 +304,7 @@ export const ComponentExamples: Story = {
                         borderRadius: '9999px',
                       },
                     },
-                    'New',
+                    'New'
                   ),
                   h(
                     'div',
@@ -252,11 +316,11 @@ export const ComponentExamples: Story = {
                         fontFamily: "'Roboto Mono', monospace",
                       },
                     },
-                    'BORDER_RADIUS.FULL',
+                    'BORDER_RADIUS.FULL'
                   ),
-                ],
+                ]
               ),
-            ],
+            ]
           ),
         ]);
     },
@@ -273,7 +337,11 @@ export const CircleExamples: Story = {
     setup() {
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '800px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Circle Examples'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Circle Examples'
+          ),
           h(
             'div',
             {
@@ -284,7 +352,11 @@ export const CircleExamples: Story = {
               },
             },
             [
-              h('h3', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '1.5rem' } }, 'Avatars'),
+              h(
+                'h3',
+                { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '1.5rem' } },
+                'Avatars'
+              ),
               h(
                 'div',
                 {
@@ -309,10 +381,14 @@ export const CircleExamples: Story = {
                       fontWeight: '600',
                       fontSize: '0.875rem',
                     },
-                  }),
-                ),
+                  })
+                )
               ),
-              h('h3', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '1.5rem' } }, 'Pills'),
+              h(
+                'h3',
+                { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '1.5rem' } },
+                'Pills'
+              ),
               h(
                 'div',
                 {
@@ -338,11 +414,11 @@ export const CircleExamples: Story = {
                         borderRadius: '9999px',
                       },
                     },
-                    tag,
-                  ),
-                ),
+                    tag
+                  )
+                )
               ),
-            ],
+            ]
           ),
         ]);
     },
@@ -359,7 +435,11 @@ export const MixedRadius: Story = {
     setup() {
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '600px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Mixed Radius'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Mixed Radius'
+          ),
           h(
             'div',
             {
@@ -388,12 +468,12 @@ export const MixedRadius: Story = {
                   h(
                     'h3',
                     { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.5rem' } },
-                    'Card with Image',
+                    'Card with Image'
                   ),
                   h(
                     'p',
                     { style: { fontSize: '0.875rem', color: '#6b7280', marginBottom: '1rem' } },
-                    'Container has XL radius, but inner elements are square due to overflow hidden.',
+                    'Container has XL radius, but inner elements are square due to overflow hidden.'
                   ),
                   h(
                     'button',
@@ -410,11 +490,11 @@ export const MixedRadius: Story = {
                         cursor: 'pointer',
                       },
                     },
-                    'Learn More',
+                    'Learn More'
                   ),
-                ],
+                ]
               ),
-            ],
+            ]
           ),
         ]);
     },

@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import vue from '@vitejs/plugin-vue';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
   plugins: [vue()],
@@ -9,8 +9,12 @@ export default defineConfig({
     environment: 'happy-dom',
   },
   resolve: {
+    // alias: {
+    //   '@': fileURLToPath(new URL('./src', import.meta.url)),
+    // },
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@/': new URL('./src/', import.meta.url).pathname,
+      '~@/': new URL('./src/', import.meta.url).pathname,
     },
   },
 });

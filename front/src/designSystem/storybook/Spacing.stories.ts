@@ -59,7 +59,11 @@ export const SpacingScale: Story = {
 
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '1000px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Spacing Scale'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Spacing Scale'
+          ),
           h(
             'div',
             { style: { display: 'flex', flexDirection: 'column', gap: '1rem' } },
@@ -85,14 +89,14 @@ export const SpacingScale: Story = {
                       h(
                         'span',
                         { style: { fontSize: '0.875rem', fontWeight: '600', color: '#111827' } },
-                        spacing.name,
+                        spacing.name
                       ),
                       h(
                         'span',
                         { style: { fontSize: '0.75rem', color: '#6b7280' } },
-                        `${spacing.value} / ${spacing.px}`,
+                        `${spacing.value} / ${spacing.px}`
                       ),
-                    ],
+                    ]
                   ),
                   h('div', {
                     style: {
@@ -116,11 +120,11 @@ export const SpacingScale: Story = {
                         marginLeft: 'auto',
                       },
                     },
-                    spacing.token,
+                    spacing.token
                   ),
-                ],
-              ),
-            ),
+                ]
+              )
+            )
           ),
         ]);
     },
@@ -144,10 +148,20 @@ export const PaddingExamples: Story = {
 
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '800px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Padding Examples'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Padding Examples'
+          ),
           h(
             'div',
-            { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' } },
+            {
+              style: {
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '1.5rem',
+              },
+            },
             examples.map((example) =>
               h(
                 'div',
@@ -172,10 +186,10 @@ export const PaddingExamples: Story = {
                       h(
                         'div',
                         { style: { fontSize: '0.875rem', fontWeight: '600', color: '#111827' } },
-                        example.name,
+                        example.name
                       ),
                       h('div', { style: { fontSize: '0.75rem', color: '#6b7280' } }, example.use),
-                    ],
+                    ]
                   ),
                   h(
                     'div',
@@ -197,8 +211,8 @@ export const PaddingExamples: Story = {
                           color: '#1e40af',
                         },
                       },
-                      `Padding: ${example.spacing}`,
-                    ),
+                      `Padding: ${example.spacing}`
+                    )
                   ),
                   h(
                     'div',
@@ -218,12 +232,12 @@ export const PaddingExamples: Story = {
                           fontFamily: "'Roboto Mono', monospace",
                         },
                       },
-                      example.token,
-                    ),
+                      example.token
+                    )
                   ),
-                ],
-              ),
-            ),
+                ]
+              )
+            )
           ),
         ]);
     },
@@ -247,7 +261,11 @@ export const GapExamples: Story = {
 
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '800px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Gap Examples'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Gap Examples'
+          ),
           h(
             'div',
             { style: { display: 'flex', flexDirection: 'column', gap: '2rem' } },
@@ -263,18 +281,14 @@ export const GapExamples: Story = {
                   },
                 },
                 [
-                  h(
-                    'div',
-                    { style: { marginBottom: '1rem' } },
-                    [
-                      h(
-                        'div',
-                        { style: { fontSize: '0.875rem', fontWeight: '600', color: '#111827' } },
-                        example.name,
-                      ),
-                      h('div', { style: { fontSize: '0.75rem', color: '#6b7280' } }, example.use),
-                    ],
-                  ),
+                  h('div', { style: { marginBottom: '1rem' } }, [
+                    h(
+                      'div',
+                      { style: { fontSize: '0.875rem', fontWeight: '600', color: '#111827' } },
+                      example.name
+                    ),
+                    h('div', { style: { fontSize: '0.75rem', color: '#6b7280' } }, example.use),
+                  ]),
                   h(
                     'div',
                     {
@@ -294,8 +308,8 @@ export const GapExamples: Story = {
                           borderRadius: '0.5rem',
                           flexShrink: 0,
                         },
-                      }),
-                    ),
+                      })
+                    )
                   ),
                   h(
                     'div',
@@ -309,12 +323,12 @@ export const GapExamples: Story = {
                           fontFamily: "'Roboto Mono', monospace",
                         },
                       },
-                      `gap: ${example.spacing} (${example.token})`,
-                    ),
+                      `gap: ${example.spacing} (${example.token})`
+                    )
                   ),
-                ],
-              ),
-            ),
+                ]
+              )
+            )
           ),
         ]);
     },
@@ -331,7 +345,11 @@ export const StackLayout: Story = {
     setup() {
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '600px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Stack Layout'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Stack Layout'
+          ),
           h(
             'div',
             {
@@ -346,12 +364,19 @@ export const StackLayout: Story = {
               h(
                 'h3',
                 { style: { fontSize: '1.25rem', fontWeight: '600', marginBottom: '1rem' } },
-                'Card Title (gap: 1rem)',
+                'Card Title (gap: 1rem)'
               ),
               h(
                 'p',
-                { style: { fontSize: '1rem', color: '#6b7280', lineHeight: '1.5', marginBottom: '1.5rem' } },
-                'Card description with normal spacing. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                {
+                  style: {
+                    fontSize: '1rem',
+                    color: '#6b7280',
+                    lineHeight: '1.5',
+                    marginBottom: '1.5rem',
+                  },
+                },
+                'Card description with normal spacing. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
               ),
               h(
                 'div',
@@ -374,7 +399,7 @@ export const StackLayout: Story = {
                         fontSize: '0.875rem',
                       },
                     },
-                    'List item 1 (gap: 0.75rem)',
+                    'List item 1 (gap: 0.75rem)'
                   ),
                   h(
                     'div',
@@ -386,7 +411,7 @@ export const StackLayout: Story = {
                         fontSize: '0.875rem',
                       },
                     },
-                    'List item 2',
+                    'List item 2'
                   ),
                   h(
                     'div',
@@ -398,9 +423,9 @@ export const StackLayout: Story = {
                         fontSize: '0.875rem',
                       },
                     },
-                    'List item 3',
+                    'List item 3'
                   ),
-                ],
+                ]
               ),
               h(
                 'div',
@@ -426,7 +451,7 @@ export const StackLayout: Story = {
                         cursor: 'pointer',
                       },
                     },
-                    'Primary',
+                    'Primary'
                   ),
                   h(
                     'button',
@@ -443,11 +468,11 @@ export const StackLayout: Story = {
                         cursor: 'pointer',
                       },
                     },
-                    'Secondary',
+                    'Secondary'
                   ),
-                ],
+                ]
               ),
-            ],
+            ]
           ),
           h(
             'div',
@@ -470,7 +495,7 @@ export const StackLayout: Story = {
                 h('li', {}, 'List to buttons: 1.5rem (SPACING["3"])'),
                 h('li', {}, 'Between buttons: 0.75rem (SPACING["1_5"])'),
               ]),
-            ],
+            ]
           ),
         ]);
     },
@@ -487,7 +512,11 @@ export const GridLayout: Story = {
     setup() {
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '1000px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Grid Layout'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Grid Layout'
+          ),
           h(
             'div',
             {
@@ -522,16 +551,16 @@ export const GridLayout: Story = {
                   h(
                     'h4',
                     { style: { fontSize: '1rem', fontWeight: '600', marginBottom: '0.5rem' } },
-                    `Card ${i + 1}`,
+                    `Card ${i + 1}`
                   ),
                   h(
                     'p',
                     { style: { fontSize: '0.875rem', color: '#6b7280', lineHeight: '1.5' } },
-                    'Card content with internal spacing.',
+                    'Card content with internal spacing.'
                   ),
-                ],
-              ),
-            ),
+                ]
+              )
+            )
           ),
           h(
             'div',
@@ -546,9 +575,13 @@ export const GridLayout: Story = {
               },
             },
             [
-              h('code', { style: { fontFamily: "'Roboto Mono', monospace" } }, 'gap: 1.5rem (SPACING["3"])'),
+              h(
+                'code',
+                { style: { fontFamily: "'Roboto Mono', monospace" } },
+                'gap: 1.5rem (SPACING["3"])'
+              ),
               h('span', { style: { marginLeft: '0.5rem' } }, '— Grid gap between cards'),
-            ],
+            ]
           ),
         ]);
     },
@@ -592,7 +625,11 @@ export const UsageGuidelines: Story = {
 
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '900px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Usage Guidelines'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Usage Guidelines'
+          ),
           h(
             'div',
             { style: { display: 'flex', flexDirection: 'column', gap: '1rem' } },
@@ -611,27 +648,33 @@ export const UsageGuidelines: Story = {
                 [
                   h(
                     'div',
-                    { style: { display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' } },
+                    {
+                      style: {
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        marginBottom: '0.75rem',
+                      },
+                    },
                     [
                       h(
                         'h3',
                         { style: { fontSize: '1.125rem', fontWeight: '600', color: '#111827' } },
-                        guideline.category,
+                        guideline.category
                       ),
-                      h(
-                        'div',
-                        { style: { fontSize: '0.875rem', color: '#6b7280' } },
-                        [
-                          h('span', { style: { fontWeight: '500' } }, guideline.range),
-                          h('span', { style: { marginLeft: '0.5rem' } }, `(${guideline.values})`),
-                        ],
-                      ),
-                    ],
+                      h('div', { style: { fontSize: '0.875rem', color: '#6b7280' } }, [
+                        h('span', { style: { fontWeight: '500' } }, guideline.range),
+                        h('span', { style: { marginLeft: '0.5rem' } }, `(${guideline.values})`),
+                      ]),
+                    ]
                   ),
-                  h('p', { style: { fontSize: '0.875rem', color: '#6b7280', lineHeight: '1.6' } }, guideline.use),
-                ],
-              ),
-            ),
+                  h(
+                    'p',
+                    { style: { fontSize: '0.875rem', color: '#6b7280', lineHeight: '1.6' } },
+                    guideline.use
+                  ),
+                ]
+              )
+            )
           ),
           h(
             'div',
@@ -647,17 +690,39 @@ export const UsageGuidelines: Story = {
             [
               h(
                 'h3',
-                { style: { fontSize: '1rem', fontWeight: '600', color: '#1e40af', marginBottom: '0.75rem' } },
-                'Pro Tips',
+                {
+                  style: {
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    color: '#1e40af',
+                    marginBottom: '0.75rem',
+                  },
+                },
+                'Pro Tips'
               ),
-              h('ul', { style: { fontSize: '0.875rem', color: '#1e40af', lineHeight: '1.75', paddingLeft: '1.25rem' } }, [
-                h('li', {}, 'Use consistent spacing from the scale rather than arbitrary values'),
-                h('li', {}, 'Prefer rem units for better accessibility and user font size preferences'),
-                h('li', {}, 'Follow the 8-point grid system for visual rhythm'),
-                h('li', {}, 'Use larger spacing for important content groupings'),
-                h('li', {}, 'Maintain consistent spacing within similar component types'),
-              ]),
-            ],
+              h(
+                'ul',
+                {
+                  style: {
+                    fontSize: '0.875rem',
+                    color: '#1e40af',
+                    lineHeight: '1.75',
+                    paddingLeft: '1.25rem',
+                  },
+                },
+                [
+                  h('li', {}, 'Use consistent spacing from the scale rather than arbitrary values'),
+                  h(
+                    'li',
+                    {},
+                    'Prefer rem units for better accessibility and user font size preferences'
+                  ),
+                  h('li', {}, 'Follow the 8-point grid system for visual rhythm'),
+                  h('li', {}, 'Use larger spacing for important content groupings'),
+                  h('li', {}, 'Maintain consistent spacing within similar component types'),
+                ]
+              ),
+            ]
           ),
         ]);
     },

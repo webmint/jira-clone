@@ -36,7 +36,7 @@ export function useTokens() {
    */
   function token<T extends keyof typeof REF, K extends keyof (typeof REF)[T]>(
     category: T,
-    key: K,
+    key: K
   ): (typeof REF)[T][K] {
     return getToken(category, key);
   }

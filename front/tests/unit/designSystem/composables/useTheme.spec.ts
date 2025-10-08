@@ -5,7 +5,7 @@
  * system preference detection, and localStorage persistence.
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { createApp } from 'vue';
 import { useTheme } from '@/designSystem/composables/useTheme';
 

@@ -65,7 +65,7 @@ const ColorSwatch = defineComponent({
                 color: '#374151',
               },
             },
-            props.name,
+            props.name
           ),
           h(
             'div',
@@ -76,9 +76,9 @@ const ColorSwatch = defineComponent({
                 fontFamily: 'monospace',
               },
             },
-            props.hex,
+            props.hex
           ),
-        ],
+        ]
       );
   },
 });
@@ -103,8 +103,16 @@ const PaletteSection = defineComponent({
           },
         },
         [
-          h('h3', { style: { marginBottom: '0.25rem', fontSize: '1.25rem', fontWeight: '600' } }, props.title),
-          h('p', { style: { marginBottom: '1.5rem', fontSize: '0.875rem', color: '#6b7280' } }, props.subtitle),
+          h(
+            'h3',
+            { style: { marginBottom: '0.25rem', fontSize: '1.25rem', fontWeight: '600' } },
+            props.title
+          ),
+          h(
+            'p',
+            { style: { marginBottom: '1.5rem', fontSize: '0.875rem', color: '#6b7280' } },
+            props.subtitle
+          ),
           h(
             'div',
             {
@@ -115,10 +123,10 @@ const PaletteSection = defineComponent({
               },
             },
             Object.entries(props.colors).map(([name, hex]) =>
-              h(ColorSwatch, { key: name, name, hex: hex as string }),
-            ),
+              h(ColorSwatch, { key: name, name, hex: hex as string })
+            )
           ),
-        ],
+        ]
       );
   },
 });
@@ -195,7 +203,7 @@ export const CorporateTrust: Story = {
         h(
           'div',
           { style: { padding: '2rem', backgroundColor: '#f9fafb', minHeight: '100vh' } },
-          sections.map((section) => h(PaletteSection, { key: section.title, ...section })),
+          sections.map((section) => h(PaletteSection, { key: section.title, ...section }))
         );
     },
   }),
@@ -251,7 +259,7 @@ export const ModernTech: Story = {
         h(
           'div',
           { style: { padding: '2rem', backgroundColor: '#f9fafb', minHeight: '100vh' } },
-          sections.map((section) => h(PaletteSection, { key: section.title, ...section })),
+          sections.map((section) => h(PaletteSection, { key: section.title, ...section }))
         );
     },
   }),
@@ -307,7 +315,7 @@ export const SophisticatedLuxury: Story = {
         h(
           'div',
           { style: { padding: '2rem', backgroundColor: '#f9fafb', minHeight: '100vh' } },
-          sections.map((section) => h(PaletteSection, { key: section.title, ...section })),
+          sections.map((section) => h(PaletteSection, { key: section.title, ...section }))
         );
     },
   }),
@@ -347,7 +355,7 @@ export const CleanMinimal: Story = {
         h(
           'div',
           { style: { padding: '2rem', backgroundColor: '#f9fafb', minHeight: '100vh' } },
-          sections.map((section) => h(PaletteSection, { key: section.title, ...section })),
+          sections.map((section) => h(PaletteSection, { key: section.title, ...section }))
         );
     },
   }),
@@ -419,7 +427,7 @@ export const VibrantProfessional: Story = {
         h(
           'div',
           { style: { padding: '2rem', backgroundColor: '#f9fafb', minHeight: '100vh' } },
-          sections.map((section) => h(PaletteSection, { key: section.title, ...section })),
+          sections.map((section) => h(PaletteSection, { key: section.title, ...section }))
         );
     },
   }),
@@ -460,11 +468,15 @@ export const AccessibilityStandards: Story = {
             },
           },
           [
-            h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '1rem' } }, 'WCAG 2.1 AAA Compliance'),
+            h(
+              'h2',
+              { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '1rem' } },
+              'WCAG 2.1 AAA Compliance'
+            ),
             h(
               'p',
               { style: { marginBottom: '1.5rem', color: '#6b7280', lineHeight: '1.6' } },
-              'All color palettes in this design system meet the highest accessibility standards.',
+              'All color palettes in this design system meet the highest accessibility standards.'
             ),
             h(
               'div',
@@ -478,14 +490,22 @@ export const AccessibilityStandards: Story = {
                 },
               },
               [
-                h('h3', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' } }, 'Standards'),
+                h(
+                  'h3',
+                  { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '0.75rem' } },
+                  'Standards'
+                ),
                 h('ul', { style: { listStyle: 'disc', paddingLeft: '1.5rem', color: '#374151' } }, [
-                  h('li', { style: { marginBottom: '0.5rem' } }, 'Normal text (< 18px): Minimum 7:1 contrast ratio'),
+                  h(
+                    'li',
+                    { style: { marginBottom: '0.5rem' } },
+                    'Normal text (< 18px): Minimum 7:1 contrast ratio'
+                  ),
                   h('li', {}, 'Large text (≥ 18px or ≥ 14px bold): Minimum 4.5:1 contrast ratio'),
                 ]),
-              ],
+              ]
             ),
-          ],
+          ]
         );
     },
   }),

@@ -9,6 +9,19 @@ import { describe, it, expect } from 'vitest';
 import { validateContrastRatios } from '@/designSystem/tokens/validation';
 
 /**
+ * Convert hex color to RGB
+ */
+function hexToRgb(hex: string): { r: number; g: number; b: number } {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (!result) throw new Error(`Invalid hex color: ${hex}`);
+  return {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16),
+  };
+}
+
+/**
  * Calculate relative luminance of an RGB color
  * https://www.w3.org/TR/WCAG20-TECHS/G17.html
  */
@@ -34,19 +47,6 @@ function getContrastRatio(hex1: string, hex2: string): number {
   const darker = Math.min(lum1, lum2);
 
   return (lighter + 0.05) / (darker + 0.05);
-}
-
-/**
- * Convert hex color to RGB
- */
-function hexToRgb(hex: string): { r: number; g: number; b: number } {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) throw new Error(`Invalid hex color: ${hex}`);
-  return {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16),
-  };
 }
 
 describe('WCAG Contrast Tests', () => {
