@@ -1,3 +1,4 @@
+import '../src/style.css';
 import '../src/designSystem/styles/tokens.css';
 
 import type { Preview, Decorator } from '@storybook/vue3';
