@@ -1,7 +1,7 @@
 import '../src/style.css';
 
-import type { Preview } from '@storybook/vue3';
-import { withThemeByClassName } from '@storybook/addon-themes';
+import type { Preview, Decorator } from '@storybook/vue3';
+import { h } from 'vue';
 
 /**
  * Global toolbar controls for palette and mode switching
@@ -39,6 +39,25 @@ export const globalTypes = {
       dynamicTitle: true,
     },
   },
+};
+
+/**
+ * Custom theme decorator for 2-dimensional palette switching
+ * Applies both palette and mode classes to story wrapper
+ */
+const withTheme: Decorator = (story, context) => {
+  const palette = context.globals.palette || 'corporate-trust';
+  const mode = context.globals.mode || 'light';
+
+  return () =>
+    h(
+      'div',
+      {
+        class: `${palette} ${mode}`,
+        style: { minHeight: '100vh', padding: '1rem' },
+      },
+      [h(story())]
+    );
 };
 
 const preview: Preview = {
@@ -83,15 +102,7 @@ const preview: Preview = {
       defaultViewport: 'mobile',
     },
   },
-  decorators: [
-    withThemeByClassName({
-      themes: {
-        light: 'light',
-        dark: 'dark',
-      },
-      defaultTheme: 'light',
-    }),
-  ],
+  decorators: [withTheme],
 };
 
 export default preview;
