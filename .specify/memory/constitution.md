@@ -164,6 +164,33 @@ This constitution establishes the foundational principles, standards, and govern
 
 ## Article III: Development Workflow
 
+### Section 3.0: Workflow Documentation Compliance (MANDATORY)
+
+**⚠️ ABSOLUTE REQUIREMENT:**
+
+ALL agents and developers MUST follow the detailed workflow specified in `docs/WORKFLOW.md` (Development Workflow document). This document provides comprehensive, step-by-step instructions for:
+
+- Specification creation and approval (Phase 1)
+- Implementation planning and approval (Phase 2)
+- Task generation and GitHub issue creation (Phase 3)
+- Per-task implementation with mandatory approval gates (Phase 4)
+- Final integration and merge to main (Phase 5)
+
+**Key mandatory requirements from WORKFLOW.md:**
+
+1. **7 Approval Gates**: User approval required at spec, plan, tasks, implementation (before commit), PR creation (before merge), documentation, and final PR
+2. **Sequential Task Execution**: Tasks MUST be completed one at a time in order
+3. **Task Branch Workflow**: Each task gets sub-branch from spec branch
+4. **PR Review with pr-reviewer Agent**: ALL PRs reviewed by pr-reviewer agent before user approval
+5. **Documentation Step**: documentation-writer agent MUST be called after all tasks complete
+6. **Husky Pre-commit Hooks**: User approval required before fixing hook failures
+7. **Branch Cleanup**: User approval required before deleting remote task branches
+8. **Sub-issue Cleanup**: User approval required before deleting sub-issues from project board
+
+**Violation of WORKFLOW.md is a constitution violation and will result in rejected PRs.**
+
+**Reference**: `docs/WORKFLOW.md` for complete detailed workflow.
+
 ### Section 3.1: Specification-First Process
 
 **Mandatory Workflow (NO STAGE MAY BE SKIPPED):**
