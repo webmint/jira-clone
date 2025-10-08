@@ -1,29 +1,29 @@
 <!--
 Sync Impact Report:
-Version: 2.9.3 → 2.9.4 (PATCH - clarified spec issue status update)
+Version: 2.9.4 → 2.10.0 (MINOR - mandatory branch naming convention)
 Modified Principles:
-  - Article III, Section 3.1: Implementation Requirements (Per Task) - Step 6 updated
-  - After merge confirmed: Explicitly move parent spec issue to "Done" status on project board
-  - Clarifies timing: spec issue moved to "Done" BEFORE requesting sub-issue cleanup approval
-  - Ensures proper sequencing of cleanup operations
+  - Article IV, Section 4.4: Git Standards (MANDATORY) - Branch naming made absolute requirement
+  - Changed prefix from "feature/" to "spec/" matching WORKFLOW.md
+  - Added explicit hierarchical structure requirement: spec/<feature-id>/<task-id>
+  - Made violation = constitution violation = PR rejection
 Added Sections:
-  - Explicit step to move spec issue to "Done" after merge verification
-  - Merge verification commands
+  - Mandatory branch naming requirements with examples
+  - Explicit consequences for non-compliance
+  - Multiple examples including current feature 004
 Removed Sections:
-  - None
+  - Old "feature/" prefix examples
 Templates Status:
-  ✅ WORKFLOW.md - Updated Step 14 to explicitly show spec issue status update
-  ✅ WORKFLOW.md - Split Step 14 into two steps (Step 14: merge, Step 15: sub-issue cleanup)
-  ✅ WORKFLOW.md - Updated overview diagram to show spec issue status update
+  ✅ WORKFLOW.md - Already uses spec/ prefix (no changes needed)
+  ⚠️  All agents must follow spec/ prefix for branches
 Follow-up TODOs:
-  - None - change is documentation clarification only
+  - Fix current task branch from T001-write-component-unit-tests to spec/004-uibutton-component-you/T001-write-component-unit-tests
 -->
 
 # Jira Clone Project Constitution
 
-**Version**: 2.9.4
+**Version**: 2.10.0
 **Ratified**: 2025-10-04
-**Last Amended**: 2025-10-07
+**Last Amended**: 2025-10-08
 **Status**: Active
 
 ---
@@ -591,20 +591,33 @@ jira-clone/
 - **Enums**: PascalCase with UPPER_CASE values (`Status.IN_PROGRESS`)
 - **Database Collections**: snake_case (`user_profiles`, `issue_comments`)
 
-### Section 4.4: Git Standards
+### Section 4.4: Git Standards (MANDATORY)
 
-**Branch Naming:**
+**⚠️ Branch Naming Convention (ABSOLUTE REQUIREMENT):**
+
+ALL branches MUST follow this EXACT naming pattern as defined in `docs/WORKFLOW.md`:
 
 ```
-feature/[###-feature-name]                    # Feature branch
-feature/[###-feature-name]/T###-[task-name]   # Task sub-branch
+spec/[###-feature-name]                    # Spec/Feature branch
+spec/[###-feature-name]/T###-[task-name]   # Task sub-branch
 ```
 
-Examples:
+**Examples:**
 
-- `feature/001-user-authentication` (feature branch)
-- `feature/001-user-authentication/T014-auth-endpoints` (task sub-branch)
-- `feature/002-project-board/T005-kanban-ui` (task sub-branch)
+- `spec/001-user-authentication` (spec branch)
+- `spec/001-user-authentication/T014-auth-endpoints` (task sub-branch)
+- `spec/002-project-board/T005-kanban-ui` (task sub-branch)
+- `spec/004-uibutton-component-you` (spec branch)
+- `spec/004-uibutton-component-you/T001-write-component-unit-tests` (task sub-branch)
+
+**MANDATORY REQUIREMENTS:**
+
+1. **Prefix**: ALL branches MUST start with `spec/` (not `feature/`)
+2. **Hierarchical Structure**: Task branches MUST be sub-branches: `spec/<feature-id>/<task-id>`
+3. **Naming Format**: Feature ID format: `###-feature-name`, Task ID format: `T###-task-name`
+4. **No Exceptions**: Any PR with incorrect branch naming will be REJECTED immediately
+
+**⚠️ VIOLATION = CONSTITUTION VIOLATION = PR REJECTION**
 
 **Commit Messages (Conventional Commits):**
 
@@ -1274,6 +1287,7 @@ Before merge, ALL must be ✅:
 
 ## Appendix B: Version History
 
+- **v2.10.0** (2025-10-08) - **MANDATORY branch naming convention**: Changed prefix from "feature/" to "spec/", made hierarchical structure absolute requirement, violation = PR rejection (Article IV, Section 4.4)
 - **v2.9.4** (2025-10-07) - Clarified workflow: Explicitly move parent spec issue to "Done" status after PR merge confirmed (Article III, Section 3.1, step 6)
 - **v2.9.3** (2025-10-07) - Added MANDATORY documentation step: Call documentation-writer agent after all tasks complete, before final PR (Article III, Section 3.1, step 6)
 - **v2.9.2** (2025-10-07) - Added cleanup step: Request user approval to delete sub-issues from project board after spec PR merge (Article III, Section 3.1, step 6)
