@@ -3,22 +3,27 @@ import { computed } from 'vue';
 
 interface Props {
   /** Button label text */
-  label: string;
+  label?: string;
   /** Visual style variant */
-  variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
+  variant?: 'filled' | 'outline' | 'text';
   /** Size variation */
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'small' | 'medium' | 'large' | 'xl';
   /** Disabled state */
   disabled?: boolean;
   /** Loading state */
   loading?: boolean;
+  /** ARIA label for accessibility (required for icon-only buttons) */
+  ariaLabel?: string;
+  /** Button type attribute */
+  type?: 'button' | 'submit' | 'reset';
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: 'primary',
-  size: 'md',
+  variant: 'filled',
+  size: 'medium',
   disabled: false,
   loading: false,
+  type: 'button',
 });
 
 const emit = defineEmits<{
@@ -36,17 +41,18 @@ const buttonClasses = computed(() => {
     'inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
 
   const variantClasses = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-600',
-    secondary:
+    filled: 'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-600',
+    outline:
       'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus-visible:ring-gray-400',
-    danger: 'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-600',
-    ghost: 'text-gray-700 hover:bg-gray-100 focus-visible:ring-gray-400',
+    text: 'text-gray-700 hover:bg-gray-100 focus-visible:ring-gray-400',
   };
 
   const sizeClasses = {
-    sm: 'px-3 py-1.5 text-sm rounded-md',
-    md: 'px-4 py-2 text-base rounded-lg',
-    lg: 'px-6 py-3 text-lg rounded-lg',
+    xs: 'px-2 py-1 text-xs rounded',
+    small: 'px-3 py-1.5 text-sm rounded-md',
+    medium: 'px-4 py-2 text-base rounded-lg',
+    large: 'px-6 py-3 text-lg rounded-lg',
+    xl: 'px-8 py-4 text-xl rounded-xl',
   };
 
   return [baseClasses, variantClasses[props.variant], sizeClasses[props.size]].join(' ');
@@ -54,9 +60,9 @@ const buttonClasses = computed(() => {
 </script>
 
 <template>
-  <button type="button" :class="buttonClasses" :disabled="disabled || loading" @click="handleClick">
+  <button :type="props.type" :class="buttonClasses" :disabled="props.disabled || props.loading" :aria-label="props.ariaLabel" @click="handleClick">
     <svg
-      v-if="loading"
+      v-if="props.loading"
       class="mr-2 h-4 w-4 animate-spin"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -70,6 +76,6 @@ const buttonClasses = computed(() => {
         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
       />
     </svg>
-    {{ label }}
+    {{ props.label }}
   </button>
 </template>
