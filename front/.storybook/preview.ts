@@ -61,6 +61,24 @@ const withTheme: Decorator = (story, context) => {
     );
 };
 
+// Suppress harmless Storybook global state errors
+// See: https://github.com/storybookjs/storybook/issues/20529
+if (typeof window !== 'undefined') {
+  const originalError = console.error;
+  console.error = (...args: unknown[]) => {
+    const message = args[0];
+    if (
+      typeof message === 'string' &&
+      (message.includes('received storyRenderPhaseChanged but was unable to determine the source') ||
+        message.includes('received storyFinished but was unable to determine the source'))
+    ) {
+      // Suppress these specific Storybook internal errors
+      return;
+    }
+    originalError.apply(console, args);
+  };
+}
+
 const preview: Preview = {
   globalTypes,
   parameters: {
