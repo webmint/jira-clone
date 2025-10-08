@@ -28,34 +28,34 @@ Extend the design system to support 5 color palettes (Corporate Trust/blue, Crea
 
 **CRITICAL: These tests MUST be written and MUST FAIL before ANY implementation**
 
-- [X] T001 [P] Write token completeness validation tests in `front/tests/unit/designSystem/tokens/validation.spec.ts`
-- [X] T002 [P] Write WCAG contrast validation tests in `front/tests/unit/designSystem/tokens/contrast.spec.ts`
+- [x] T001 [P] Write token completeness validation tests in `front/tests/unit/designSystem/tokens/validation.spec.ts`
+- [x] T002 [P] Write WCAG contrast validation tests in `front/tests/unit/designSystem/tokens/contrast.spec.ts`
 
 ## Phase 3.2: Core Implementation (ONLY after tests are failing)
 
 **Validation Functions**:
 
-- [X] T003 Implement helper functions in `front/src/designSystem/tokens/utils.ts` (getCSSVariable, getContrastRatio)
-- [X] T004 Implement validateTokenCompleteness in `front/src/designSystem/tokens/validation.ts` (depends on T003)
-- [X] T005 Implement validateContrastRatios in `front/src/designSystem/tokens/validation.ts` (depends on T003)
+- [x] T003 Implement helper functions in `front/src/designSystem/tokens/utils.ts` (getCSSVariable, getContrastRatio)
+- [x] T004 Implement validateTokenCompleteness in `front/src/designSystem/tokens/validation.ts` (depends on T003)
+- [x] T005 Implement validateContrastRatios in `front/src/designSystem/tokens/validation.ts` (depends on T003)
 
 **Palette Definitions** (can run in parallel after T003):
 
-- [X] T006 [P] Define Creative Energy palette (light + dark) in `front/src/designSystem/styles/tokens.css`
-- [ ] T007 [P] Define Natural Harmony palette (light + dark) in `front/src/designSystem/styles/tokens.css`
-- [ ] T008 [P] Define Warm Welcome palette (light + dark) in `front/src/designSystem/styles/tokens.css`
-- [ ] T009 [P] Define Minimalist palette (light + dark) in `front/src/designSystem/styles/tokens.css`
+- [x] T006 [P] Define Creative Energy palette (light + dark) in `front/src/designSystem/styles/tokens.css`
+- [x] T007 [P] Define Natural Harmony palette (light + dark) in `front/src/designSystem/styles/tokens.css`
+- [x] T008 [P] Define Warm Welcome palette (light + dark) in `front/src/designSystem/styles/tokens.css`
+- [x] T009 [P] Define Minimalist palette (light + dark) in `front/src/designSystem/styles/tokens.css`
 
 ## Phase 3.3: Storybook Integration
 
-- [ ] T010 Configure dual globalTypes (palette + mode) in `front/.storybook/preview.ts`
-- [ ] T011 Create withTheme decorator in `front/.storybook/preview.ts` (depends on T010)
+- [x] T010 Configure dual globalTypes (palette + mode) in `front/.storybook/preview.ts`
+- [x] T011 Create withTheme decorator in `front/.storybook/preview.ts` (depends on T010)
 
 ## Phase 3.4: Documentation & Polish
 
-- [ ] T012 [P] Document 2-dimensional palette system in `front/src/designSystem/README.md`
-- [ ] T013 [P] Create usage guide in `front/src/designSystem/docs/palette-guide.md`
-- [ ] T014 Add palette switching examples to Button story in `front/src/designSystem/components/Button/Button.stories.ts` (depends on T010-T011)
+- [x] T012 [P] Document 2-dimensional palette system in `front/src/designSystem/README.md`
+- [x] T013 [P] Create usage guide in `front/src/designSystem/docs/palette-guide.md`
+- [x] T014 Add palette switching examples to Button story in `front/src/components/atoms/Button/UiButton.stories.ts` (depends on T010-T011)
 
 ## Dependencies
 
