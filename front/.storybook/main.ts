@@ -10,8 +10,6 @@ const config: StorybookConfig = {
     '@storybook/addon-links',
     '@storybook/addon-interactions',
     '@storybook/addon-a11y',
-    '@storybook/addon-themes',
-    'storybook-design-token',
   ],
 
   framework: {
