@@ -154,10 +154,15 @@ console.log(
 
 **Steps**:
 
-1. Open DevTools → Console
+1. Open DevTools → Console (make sure you're in the preview iframe context)
 2. Run the following script to check token completeness:
 
 ```javascript
+// Get the preview iframe's document (where styles are loaded)
+const previewIframe = document.querySelector('#storybook-preview-iframe');
+const previewDoc = previewIframe ? previewIframe.contentWindow.document : document;
+const rootElement = previewDoc.documentElement;
+
 const palettes = [
   'corporate-trust',
   'creative-energy',
@@ -185,17 +190,61 @@ const results = {};
 
 palettes.forEach((palette) => {
   modes.forEach((mode) => {
-    document.documentElement.className = `${palette} ${mode}`;
+    rootElement.className = `${palette} ${mode}`;
     const variation = `${palette}.${mode}`;
     results[variation] = {};
 
+    requiredTokens.forEach((token) => {
+      const value = getComputedStyle(rootElement).getPropertyValue(token).trim();
+      results[variation][token] = value || 'MISSING';
+    });
+  });
+});
+
+console.table(results);
+```
+
+**Alternative**: Run directly in preview iframe console:
+
+1. Right-click on the preview area → Inspect Element
+2. This opens DevTools in the iframe context
+3. Run simplified script:
+
+```javascript
+const palettes = [
+  'corporate-trust',
+  'creative-energy',
+  'natural-harmony',
+  'warm-welcome',
+  'minimalist',
+];
+const modes = ['light', 'dark'];
+const requiredTokens = [
+  '--color-primary-500',
+  '--color-neutral-0',
+  '--color-neutral-900',
+  '--color-text-primary',
+  '--color-text-secondary',
+  '--color-background-default',
+  '--color-border-default',
+  '--color-success-500',
+  '--color-warning-500',
+  '--color-error-500',
+  '--color-info-500',
+];
+
+const results = {};
+palettes.forEach((palette) => {
+  modes.forEach((mode) => {
+    document.documentElement.className = `${palette} ${mode}`;
+    const variation = `${palette}.${mode}`;
+    results[variation] = {};
     requiredTokens.forEach((token) => {
       const value = getComputedStyle(document.documentElement).getPropertyValue(token).trim();
       results[variation][token] = value || 'MISSING';
     });
   });
 });
-
 console.table(results);
 ```
 
