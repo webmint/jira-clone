@@ -1,5 +1,8 @@
+/* eslint-env node */
+// eslint-disable-next-line
+require('@rushstack/eslint-patch/modern-module-resolution');
 module.exports = {
-  root: true,
+    root: true,
   env: {
     browser: true,
     es2021: true,

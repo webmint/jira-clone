@@ -1,5 +1,5 @@
 {
-  "name": "@jira-clone/front",
+  "name": "front",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,7 +12,8 @@
     "test:run": "vitest run",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test-storybook": "test-storybook"
+    "test-storybook": "test-storybook",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --config .eslintrc.cjs"
   },
   "dependencies": {
     "@vueuse/core": "^13.9.0",
@@ -20,6 +21,7 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@rushstack/eslint-patch": "^1.6.1",
     "@storybook/addon-a11y": "^8.6.14",
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/addon-interactions": "^8.6.14",
@@ -38,8 +40,9 @@
     "@vue/test-utils": "^2.4.3",
     "@vue/tsconfig": "^0.8.1",
     "autoprefixer": "^10.4.21",
+    "eslint": "8.57.1",
     "eslint-import-resolver-typescript": "^4.4.4",
-    "eslint-plugin-vue": "^10.5.0",
+    "eslint-plugin-vue": "9.32.0",
     "happy-dom": "^19.0.2",
     "postcss": "^8.5.6",
     "storybook": "^8.6.14",

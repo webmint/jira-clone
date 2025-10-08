@@ -22,10 +22,11 @@
     "@typescript-eslint/parser": "^6.21.0",
     "@vue/eslint-config-prettier": "^9.0.0",
     "concurrently": "^8.2.0",
-    "eslint": "^8.50.0",
+    "eslint": "8.57.1",
     "husky": "^8.0.3",
     "lint-staged": "^15.0.0",
     "prettier": "^3.0.0",
-    "typescript": "^5.2.0"
+    "typescript": "^5.2.0",
+    "eslint-plugin-vue": "9.32.0"
   }
 }
