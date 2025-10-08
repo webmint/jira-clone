@@ -6,6 +6,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+import { validateContrastRatios } from '@/designSystem/tokens/validation';
 
 /**
  * Calculate relative luminance of an RGB color
@@ -209,6 +210,153 @@ describe('WCAG Contrast Tests', () => {
     it('should calculate same color as 1:1', () => {
       const ratio = getContrastRatio(WHITE, WHITE);
       expect(ratio).toBe(1);
+    });
+  });
+
+  // NEW: Palette Switcher Feature Tests (T002)
+  describe('Multi-Palette WCAG AA Compliance', () => {
+    const palettes = [
+      'corporate-trust',
+      'creative-energy',
+      'natural-harmony',
+      'warm-welcome',
+      'minimalist',
+    ];
+    const modes = ['light', 'dark'];
+
+    it('should have validateContrastRatios function defined', () => {
+      // This test will fail until we implement the function in T005
+      expect(validateContrastRatios).toBeDefined();
+      expect(typeof validateContrastRatios).toBe('function');
+    });
+
+    palettes.forEach((palette) => {
+      modes.forEach((mode) => {
+        describe(`${palette}.${mode}`, () => {
+          it('text-primary on background-default meets AA (4.5:1)', () => {
+            const result = validateContrastRatios([
+              {
+                variation: `${palette}.${mode}`,
+                foregroundToken: '--color-text-primary',
+                backgroundToken: '--color-background-default',
+                minimumRatio: 4.5,
+              },
+            ]);
+
+            expect(result.valid).toBe(true);
+            expect(result.failures).toBeUndefined();
+          });
+
+          it('text-secondary on background-default meets AA (4.5:1)', () => {
+            const result = validateContrastRatios([
+              {
+                variation: `${palette}.${mode}`,
+                foregroundToken: '--color-text-secondary',
+                backgroundToken: '--color-background-default',
+                minimumRatio: 4.5,
+              },
+            ]);
+
+            expect(result.valid).toBe(true);
+            expect(result.failures).toBeUndefined();
+          });
+
+          it('text-tertiary on background-default meets AA (4.5:1)', () => {
+            const result = validateContrastRatios([
+              {
+                variation: `${palette}.${mode}`,
+                foregroundToken: '--color-text-tertiary',
+                backgroundToken: '--color-background-default',
+                minimumRatio: 4.5,
+              },
+            ]);
+
+            expect(result.valid).toBe(true);
+            expect(result.failures).toBeUndefined();
+          });
+
+          it('primary-500 on background-default meets AA for large text (3:1)', () => {
+            const result = validateContrastRatios([
+              {
+                variation: `${palette}.${mode}`,
+                foregroundToken: '--color-primary-500',
+                backgroundToken: '--color-background-default',
+                minimumRatio: 3.0,
+              },
+            ]);
+
+            expect(result.valid).toBe(true);
+            expect(result.failures).toBeUndefined();
+          });
+
+          it('border-default on background-default meets AA for UI components (3:1)', () => {
+            const result = validateContrastRatios([
+              {
+                variation: `${palette}.${mode}`,
+                foregroundToken: '--color-border-default',
+                backgroundToken: '--color-background-default',
+                minimumRatio: 3.0,
+              },
+            ]);
+
+            expect(result.valid).toBe(true);
+            expect(result.failures).toBeUndefined();
+          });
+        });
+      });
+    });
+
+    it('should fail when contrast ratio is insufficient', () => {
+      // Mock a check with insufficient contrast
+      const result = validateContrastRatios([
+        {
+          variation: 'corporate-trust.light',
+          foregroundToken: '--color-text-primary',
+          backgroundToken: '--color-background-default',
+          minimumRatio: 21.0, // Impossible requirement
+        },
+      ]);
+
+      expect(result.valid).toBe(false);
+      expect(result.failures).toBeDefined();
+      expect(result.failures?.length).toBeGreaterThan(0);
+    });
+
+    it('should provide detailed failure information', () => {
+      const result = validateContrastRatios([
+        {
+          variation: 'creative-energy.dark',
+          foregroundToken: '--color-text-primary',
+          backgroundToken: '--color-background-default',
+          minimumRatio: 21.0, // Impossible requirement
+        },
+      ]);
+
+      if (!result.valid && result.failures && result.failures.length > 0) {
+        const failure = result.failures[0];
+        expect(failure.variation).toBe('creative-energy.dark');
+        expect(failure.foreground).toBe('--color-text-primary');
+        expect(failure.background).toBe('--color-background-default');
+        expect(failure.foregroundValue).toBeDefined();
+        expect(failure.backgroundValue).toBeDefined();
+        expect(failure.ratio).toBeDefined();
+        expect(failure.required).toBe(21.0);
+      }
+    });
+
+    it('should validate multiple checks at once', () => {
+      const checks = palettes.flatMap((palette) =>
+        modes.map((mode) => ({
+          variation: `${palette}.${mode}`,
+          foregroundToken: '--color-text-primary',
+          backgroundToken: '--color-background-default',
+          minimumRatio: 4.5,
+        }))
+      );
+
+      const result = validateContrastRatios(checks);
+      expect(result.valid).toBe(true);
+      expect(result.failures).toBeUndefined();
     });
   });
 });

@@ -4,6 +4,9 @@ Auto-generated from all feature plans. Last updated: 2025-10-05
 
 ## Active Technologies
 
+- TypeScript 5.2+ + Vue 3.5, Vite 7.x, Tailwind CSS 4.0, Storybook 8.x (003-palette-switcher)
+- N/A (design system tokens stored in CSS/TypeScript files) (003-palette-switcher)
+
 - TypeScript 5.2+, CSS/Tailwind CSS 4.0 + Vue 3.5, Vite 7.x, Tailwind CSS 4.0, Storybook 8.x (002-design-system)
 - Design token files (JSON/TypeScript), CSS variable definitions, documentation (002-design-system)
 
@@ -25,6 +28,8 @@ npm test [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNO
 TypeScript 5.2+, Node.js (latest LTS): Follow standard conventions
 
 ## Recent Changes
+
+- 003-palette-switcher: Added TypeScript 5.2+ + Vue 3.5, Vite 7.x, Tailwind CSS 4.0, Storybook 8.x
 
 - 002-design-system: Added TypeScript 5.2+, CSS/Tailwind CSS 4.0 + Vue 3.5, Vite 7.x, Tailwind CSS 4.0, Storybook 8.x
 
