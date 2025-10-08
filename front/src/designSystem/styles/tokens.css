@@ -142,7 +142,7 @@
    ========================================================================== */
 
 :root,
-.light {
+.corporate-trust.light {
   /* Primary Colors - Corporate Trust (default palette) */
   --color-primary-50: #EFF6FF;
   --color-primary-100: #DBEAFE;
@@ -214,7 +214,7 @@
    DARK THEME
    ========================================================================== */
 
-.dark {
+.corporate-trust.dark {
   /* Primary Colors - Lighter shades for dark backgrounds */
   --color-primary-50: #EFF6FF;
   --color-primary-100: #DBEAFE;
