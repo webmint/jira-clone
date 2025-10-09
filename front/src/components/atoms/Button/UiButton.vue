@@ -232,10 +232,19 @@ onMounted(() => {
 /* Icon-only button (no text)
  * Uses :has() pseudo-class for icon-only detection
  * Browser support: Chrome 105+, Safari 15.4+, Firefox 103+ (all modern browsers from 2022+)
- * Applies square padding when button contains only icons without text content
+ * Applies square padding and removes icon margins when button contains only icons without text content
+ *
+ * Fallback for older browsers: Icon-only buttons will have horizontal padding instead of square,
+ * but functionality remains intact. Consider adding .btn-icon-only class for better support.
  */
 .btn:has(.btn-icon-left):not(:has(.btn-content)),
 .btn:has(.btn-icon-right):not(:has(.btn-content)) {
   padding: var(--spacing-2);
+}
+
+/* Remove icon margins for icon-only buttons to center the icon */
+.btn:has(.btn-icon-left):not(:has(.btn-content)) .btn-icon-left,
+.btn:has(.btn-icon-right):not(:has(.btn-content)) .btn-icon-right {
+  margin: 0;
 }
 </style>
