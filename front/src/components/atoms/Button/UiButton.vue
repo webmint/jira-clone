@@ -2,7 +2,10 @@
 import { computed } from 'vue';
 
 interface Props {
-  /** Button label text */
+  /**
+   * Button label text.
+   * Optional for icon-only buttons, but ariaLabel must be provided in that case.
+   */
   label?: string;
   /** Visual style variant */
   variant?: 'filled' | 'outline' | 'text';
@@ -12,7 +15,10 @@ interface Props {
   disabled?: boolean;
   /** Loading state */
   loading?: boolean;
-  /** ARIA label for accessibility (required for icon-only buttons) */
+  /**
+   * ARIA label for accessibility.
+   * REQUIRED when label is not provided (icon-only buttons) for WCAG 2.1 AAA compliance.
+   */
   ariaLabel?: string;
   /** Button type attribute */
   type?: 'button' | 'submit' | 'reset';
@@ -40,6 +46,8 @@ const buttonClasses = computed(() => {
   const baseClasses =
     'inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
 
+  // TODO(T003): Replace with semantic CSS classes using design system tokens
+  // These Tailwind utility classes are temporary placeholders
   const variantClasses = {
     filled: 'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-600',
     outline:
@@ -62,7 +70,7 @@ const buttonClasses = computed(() => {
 <template>
   <button :type="type" :class="buttonClasses" :disabled="disabled || loading" :aria-label="ariaLabel" @click="handleClick">
     <svg
-      v-if="props.loading"
+      v-if="loading"
       class="mr-2 h-4 w-4 animate-spin"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
