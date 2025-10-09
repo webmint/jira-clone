@@ -137,16 +137,18 @@ onMounted(() => {
 /* Variant: Outline */
 .btn-outline {
   background-color: transparent;
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border-default);
+  color: var(--color-primary-500);
+  border: 1px solid var(--color-primary-500);
 }
 
 .btn-outline:hover:not(:disabled) {
   background-color: var(--color-primary-50);
+  border-color: var(--color-primary-600);
 }
 
 .btn-outline:active:not(:disabled) {
   background-color: var(--color-primary-100);
+  border-color: var(--color-primary-700);
 }
 
 .btn-outline:focus-visible {
