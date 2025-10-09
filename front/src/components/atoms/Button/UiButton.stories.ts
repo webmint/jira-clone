@@ -132,6 +132,159 @@ export const ExtraLarge: Story = {
   },
 };
 
+/**
+ * All Sizes Comparison
+ *
+ * Visual comparison of all five button sizes showing padding and font-size progression.
+ * Sizes range from xs (compact) to xl (hero CTAs).
+ */
+export const AllSizes: Story = {
+  render: () => ({
+    components: { UiButton },
+    template: `
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+        <UiButton label="XS" size="xs" variant="filled" />
+        <UiButton label="Small" size="small" variant="filled" />
+        <UiButton label="Medium" size="medium" variant="filled" />
+        <UiButton label="Large" size="large" variant="filled" />
+        <UiButton label="XL" size="xl" variant="filled" />
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Visual comparison of all five button sizes showing padding and font-size progression.',
+      },
+    },
+  },
+};
+
+/**
+ * Sizes with Icons
+ *
+ * Demonstrates proper icon scaling for each button size.
+ * Icon sizes: XS/Small=16px, Medium=20px, Large/XL=24px.
+ */
+export const SizesWithIcons: Story = {
+  render: () => ({
+    components: { UiButton },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
+        <UiButton label="Save (XS)" size="xs" variant="filled">
+          <template #icon-left>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+          </template>
+        </UiButton>
+        <UiButton label="Save (Small)" size="small" variant="filled">
+          <template #icon-left>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+          </template>
+        </UiButton>
+        <UiButton label="Save (Medium)" size="medium" variant="filled">
+          <template #icon-left>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+          </template>
+        </UiButton>
+        <UiButton label="Save (Large)" size="large" variant="filled">
+          <template #icon-left>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+          </template>
+        </UiButton>
+        <UiButton label="Save (XL)" size="xl" variant="filled">
+          <template #icon-left>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+          </template>
+        </UiButton>
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Button sizes with appropriately scaled icons. Icon sizes: XS/Small=16px, Medium=20px, Large/XL=24px.',
+      },
+    },
+  },
+};
+
+/**
+ * Size × Variant Matrix
+ *
+ * Complete matrix showing all combinations of sizes and variants.
+ * Helps visualize how each size looks across different button styles.
+ */
+export const SizeVariantMatrix: Story = {
+  render: () => ({
+    components: { UiButton },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <div>
+          <h3 style="margin-bottom: 12px; font-weight: 600; color: var(--color-text-primary);">Filled Variant</h3>
+          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <UiButton label="XS" size="xs" variant="filled" />
+            <UiButton label="Small" size="small" variant="filled" />
+            <UiButton label="Medium" size="medium" variant="filled" />
+            <UiButton label="Large" size="large" variant="filled" />
+            <UiButton label="XL" size="xl" variant="filled" />
+          </div>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom: 12px; font-weight: 600; color: var(--color-text-primary);">Outline Variant</h3>
+          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <UiButton label="XS" size="xs" variant="outline" />
+            <UiButton label="Small" size="small" variant="outline" />
+            <UiButton label="Medium" size="medium" variant="outline" />
+            <UiButton label="Large" size="large" variant="outline" />
+            <UiButton label="XL" size="xl" variant="outline" />
+          </div>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom: 12px; font-weight: 600; color: var(--color-text-primary);">Text Variant</h3>
+          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <UiButton label="XS" size="xs" variant="text" />
+            <UiButton label="Small" size="small" variant="text" />
+            <UiButton label="Medium" size="medium" variant="text" />
+            <UiButton label="Large" size="large" variant="text" />
+            <UiButton label="XL" size="xl" variant="text" />
+          </div>
+        </div>
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Complete size matrix showing all combinations of sizes and variants (15 total).',
+      },
+    },
+  },
+};
+
 // State Stories
 export const Disabled: Story = {
   args: {
