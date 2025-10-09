@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, useSlots } from 'vue';
 
 interface Props {
   /**
@@ -38,6 +38,8 @@ const emit = defineEmits<{
   click: [event: MouseEvent];
 }>();
 
+const slots = useSlots();
+
 const handleClick = (event: MouseEvent) => {
   if (!props.disabled && !props.loading) {
     emit('click', event);
@@ -46,6 +48,22 @@ const handleClick = (event: MouseEvent) => {
 
 const buttonClasses = computed(() => {
   return ['btn', `btn-${props.variant}`, `btn-${props.size}`].join(' ');
+});
+
+// Development-time accessibility validation
+onMounted(() => {
+  if (import.meta.env.DEV) {
+    const hasTextContent = props.label || slots.default;
+    const hasIconOnly = (slots['icon-left'] || slots['icon-right']) && !hasTextContent;
+
+    if (hasIconOnly && !props.ariaLabel) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        '[UiButton] Icon-only buttons require ariaLabel prop for WCAG 2.1 AAA compliance. ' +
+          'Please provide an aria-label describing the button action.'
+      );
+    }
+  }
 });
 </script>
 
@@ -57,22 +75,30 @@ const buttonClasses = computed(() => {
     :aria-label="ariaLabel"
     @click="handleClick"
   >
-    <svg
-      v-if="loading"
-      class="mr-2 h-4 w-4 animate-spin"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-      <path
-        class="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-      />
-    </svg>
-    {{ label }}
+    <span v-if="loading || $slots['icon-left']" class="btn-icon-left">
+      <svg
+        v-if="loading"
+        class="h-4 w-4 animate-spin"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        />
+      </svg>
+      <slot v-if="!loading" name="icon-left" />
+    </span>
+    <span v-if="$slots.default || label" class="btn-content">
+      <slot>{{ label }}</slot>
+    </span>
+    <span v-if="$slots['icon-right']" class="btn-icon-right">
+      <slot name="icon-right" />
+    </span>
   </button>
 </template>
 
@@ -183,5 +209,31 @@ const buttonClasses = computed(() => {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+/* Icon spacing */
+.btn-icon-left {
+  display: inline-flex;
+  margin-right: var(--spacing-2);
+}
+
+.btn-icon-right {
+  display: inline-flex;
+  margin-left: var(--spacing-2);
+}
+
+.btn-content {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Icon-only button (no text)
+ * Uses :has() pseudo-class for icon-only detection
+ * Browser support: Chrome 105+, Safari 15.4+, Firefox 103+ (all modern browsers from 2022+)
+ * Applies square padding when button contains only icons without text content
+ */
+.btn:has(.btn-icon-left):not(:has(.btn-content)),
+.btn:has(.btn-icon-right):not(:has(.btn-content)) {
+  padding: var(--spacing-2);
 }
 </style>

@@ -439,3 +439,215 @@ export const AccessibilityDemo: Story = {
     `,
   }),
 };
+
+// Icon Slot Stories
+/**
+ * Button with Left Icon
+ *
+ * Demonstrates icon-left slot usage for placing icons before text.
+ * Common use cases: Save, Download, Add, etc.
+ */
+export const WithLeftIcon: Story = {
+  render: () => ({
+    components: { UiButton },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <h3 style="color: var(--color-text-primary); margin-bottom: 0.5rem;">
+            Buttons with Left Icons
+          </h3>
+          <p style="color: var(--color-text-secondary); margin-bottom: 1rem; font-size: 0.875rem;">
+            Icons positioned before text using the icon-left slot
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <UiButton label="Save" variant="filled" size="medium">
+            <template #icon-left>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+            </template>
+          </UiButton>
+          <UiButton label="Download" variant="outline" size="medium">
+            <template #icon-left>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </template>
+          </UiButton>
+          <UiButton label="Add Item" variant="text" size="medium">
+            <template #icon-left>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </template>
+          </UiButton>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+/**
+ * Button with Right Icon
+ *
+ * Demonstrates icon-right slot usage for placing icons after text.
+ * Common use cases: Next, Forward, External links, etc.
+ */
+export const WithRightIcon: Story = {
+  render: () => ({
+    components: { UiButton },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <h3 style="color: var(--color-text-primary); margin-bottom: 0.5rem;">
+            Buttons with Right Icons
+          </h3>
+          <p style="color: var(--color-text-secondary); margin-bottom: 1rem; font-size: 0.875rem;">
+            Icons positioned after text using the icon-right slot
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <UiButton label="Next" variant="filled" size="medium">
+            <template #icon-right>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </template>
+          </UiButton>
+          <UiButton label="External Link" variant="outline" size="medium">
+            <template #icon-right>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </template>
+          </UiButton>
+          <UiButton label="Forward" variant="text" size="medium">
+            <template #icon-right>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="13 17 18 12 13 7"></polyline>
+                <polyline points="6 17 11 12 6 7"></polyline>
+              </svg>
+            </template>
+          </UiButton>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+/**
+ * Icon-Only Buttons
+ *
+ * Demonstrates icon-only buttons without text labels.
+ * IMPORTANT: Icon-only buttons MUST have aria-label for accessibility (WCAG 2.1 AAA).
+ * The component will warn in development mode if aria-label is missing.
+ */
+export const IconOnly: Story = {
+  render: () => ({
+    components: { UiButton },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <h3 style="color: var(--color-text-primary); margin-bottom: 0.5rem;">
+            Icon-Only Buttons
+          </h3>
+          <p style="color: var(--color-text-secondary); margin-bottom: 1rem; font-size: 0.875rem;">
+            ⚠️ Icon-only buttons require <code>aria-label</code> for screen readers
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+          <UiButton aria-label="Close dialog" variant="filled" size="medium">
+            <template #icon-left>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </template>
+          </UiButton>
+          <UiButton aria-label="More options" variant="outline" size="medium">
+            <template #icon-left>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="1"></circle>
+                <circle cx="12" cy="5" r="1"></circle>
+                <circle cx="12" cy="19" r="1"></circle>
+              </svg>
+            </template>
+          </UiButton>
+          <UiButton aria-label="Settings" variant="text" size="medium">
+            <template #icon-left>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 1v6m0 6v6m7.07-13.07-4.24 4.24m0 6v0m4.24 4.24-4.24-4.24M23 12h-6m-6 0H1m13.07 7.07-4.24-4.24m0-6v0m-4.24-4.24L9.83 8.83"></path>
+              </svg>
+            </template>
+          </UiButton>
+          <span style="color: var(--color-text-tertiary); font-size: 0.75rem;">
+            ← All have aria-label for accessibility
+          </span>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+/**
+ * Buttons with Both Icons
+ *
+ * Demonstrates using both icon-left and icon-right slots simultaneously.
+ * Useful for complex button actions or download/export buttons.
+ */
+export const BothIcons: Story = {
+  render: () => ({
+    components: { UiButton },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <h3 style="color: var(--color-text-primary); margin-bottom: 0.5rem;">
+            Buttons with Both Icons
+          </h3>
+          <p style="color: var(--color-text-secondary); margin-bottom: 1rem; font-size: 0.875rem;">
+            Using icon-left and icon-right slots together
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <UiButton label="Download PDF" variant="filled" size="medium">
+            <template #icon-left>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </template>
+            <template #icon-right>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+            </template>
+          </UiButton>
+          <UiButton label="Search Files" variant="outline" size="medium">
+            <template #icon-left>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+            </template>
+            <template #icon-right>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </template>
+          </UiButton>
+        </div>
+      </div>
+    `,
+  }),
+};
