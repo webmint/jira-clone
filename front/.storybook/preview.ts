@@ -50,12 +50,27 @@ const withTheme: Decorator = (story, context) => {
   const palette = context.globals.palette || 'corporate-trust';
   const mode = context.globals.mode || 'light';
 
+  // Apply palette and mode classes directly to document root for reactivity
+  if (typeof document !== 'undefined') {
+    const html = document.documentElement;
+
+    // Remove all palette classes
+    html.classList.remove('corporate-trust', 'creative-energy', 'natural-harmony', 'warm-welcome', 'minimalist');
+    // Remove all mode classes
+    html.classList.remove('light', 'dark');
+
+    // Add current palette and mode
+    html.classList.add(palette, mode);
+  }
+
   return () =>
     h(
       'div',
       {
-        class: `${palette} ${mode}`,
-        style: { minHeight: '100vh', padding: '1rem' },
+        style: {
+          minHeight: '100vh',
+          padding: '1rem',
+        },
       },
       [h(story())]
     );
