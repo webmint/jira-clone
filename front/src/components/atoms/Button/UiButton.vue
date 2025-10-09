@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, useSlots } from 'vue';
 
 interface Props {
   /**
@@ -38,6 +38,8 @@ const emit = defineEmits<{
   click: [event: MouseEvent];
 }>();
 
+const slots = useSlots();
+
 const handleClick = (event: MouseEvent) => {
   if (!props.disabled && !props.loading) {
     emit('click', event);
@@ -46,6 +48,22 @@ const handleClick = (event: MouseEvent) => {
 
 const buttonClasses = computed(() => {
   return ['btn', `btn-${props.variant}`, `btn-${props.size}`].join(' ');
+});
+
+// Development-time accessibility validation
+onMounted(() => {
+  if (import.meta.env.DEV) {
+    const hasTextContent = props.label || slots.default;
+    const hasIconOnly = (slots['icon-left'] || slots['icon-right']) && !hasTextContent;
+
+    if (hasIconOnly && !props.ariaLabel) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        '[UiButton] Icon-only buttons require ariaLabel prop for WCAG 2.1 AAA compliance. ' +
+          'Please provide an aria-label describing the button action.'
+      );
+    }
+  }
 });
 </script>
 
@@ -209,7 +227,11 @@ const buttonClasses = computed(() => {
   align-items: center;
 }
 
-/* Icon-only button (no text) */
+/* Icon-only button (no text)
+ * Uses :has() pseudo-class for icon-only detection
+ * Browser support: Chrome 105+, Safari 15.4+, Firefox 103+ (all modern browsers from 2022+)
+ * Applies square padding when button contains only icons without text content
+ */
 .btn:has(.btn-icon-left):not(:has(.btn-content)),
 .btn:has(.btn-icon-right):not(:has(.btn-content)) {
   padding: var(--spacing-2);
