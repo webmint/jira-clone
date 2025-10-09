@@ -25,10 +25,12 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  label: undefined,
   variant: 'filled',
   size: 'medium',
   disabled: false,
   loading: false,
+  ariaLabel: undefined,
   type: 'button',
 });
 
@@ -43,32 +45,18 @@ const handleClick = (event: MouseEvent) => {
 };
 
 const buttonClasses = computed(() => {
-  const baseClasses =
-    'inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
-
-  // TODO(T003): Replace with semantic CSS classes using design system tokens
-  // These Tailwind utility classes are temporary placeholders
-  const variantClasses = {
-    filled: 'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-600',
-    outline:
-      'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus-visible:ring-gray-400',
-    text: 'text-gray-700 hover:bg-gray-100 focus-visible:ring-gray-400',
-  };
-
-  const sizeClasses = {
-    xs: 'px-2 py-1 text-xs rounded',
-    small: 'px-3 py-1.5 text-sm rounded-md',
-    medium: 'px-4 py-2 text-base rounded-lg',
-    large: 'px-6 py-3 text-lg rounded-lg',
-    xl: 'px-8 py-4 text-xl rounded-xl',
-  };
-
-  return [baseClasses, variantClasses[props.variant], sizeClasses[props.size]].join(' ');
+  return ['btn', `btn-${props.variant}`, `btn-${props.size}`].join(' ');
 });
 </script>
 
 <template>
-  <button :type="type" :class="buttonClasses" :disabled="disabled || loading" :aria-label="ariaLabel" @click="handleClick">
+  <button
+    :type="type"
+    :class="buttonClasses"
+    :disabled="disabled || loading"
+    :aria-label="ariaLabel"
+    @click="handleClick"
+  >
     <svg
       v-if="loading"
       class="mr-2 h-4 w-4 animate-spin"
@@ -87,3 +75,113 @@ const buttonClasses = computed(() => {
     {{ label }}
   </button>
 </template>
+
+<style scoped>
+/* Base button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-duration-base) var(--transition-timing-ease-in-out);
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+/* Variant: Filled */
+.btn-filled {
+  background-color: var(--color-primary-500);
+  color: var(--color-text-inverse);
+}
+
+.btn-filled:hover:not(:disabled) {
+  background-color: var(--color-primary-600);
+}
+
+.btn-filled:active:not(:disabled) {
+  background-color: var(--color-primary-700);
+}
+
+.btn-filled:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Variant: Outline */
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background-color: var(--color-primary-50);
+}
+
+.btn-outline:active:not(:disabled) {
+  background-color: var(--color-primary-100);
+}
+
+.btn-outline:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Variant: Text */
+.btn-text {
+  background-color: transparent;
+  color: var(--color-primary-500);
+}
+
+.btn-text:hover:not(:disabled) {
+  background-color: var(--color-primary-50);
+}
+
+.btn-text:active:not(:disabled) {
+  background-color: var(--color-primary-100);
+}
+
+.btn-text:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Sizes */
+.btn-xs {
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-xs);
+  border-radius: var(--border-radius-sm);
+}
+
+.btn-small {
+  padding: var(--spacing-1_5) var(--spacing-3);
+  font-size: var(--font-size-sm);
+  border-radius: var(--border-radius-md);
+}
+
+.btn-medium {
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: var(--font-size-base);
+  border-radius: var(--border-radius-lg);
+}
+
+.btn-large {
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: var(--font-size-lg);
+  border-radius: var(--border-radius-lg);
+}
+
+.btn-xl {
+  padding: var(--spacing-4) var(--spacing-8);
+  font-size: var(--font-size-xl);
+  border-radius: var(--border-radius-xl);
+}
+
+/* Disabled state */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+</style>
