@@ -25,10 +25,12 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  label: undefined,
   variant: 'filled',
   size: 'medium',
   disabled: false,
   loading: false,
+  ariaLabel: undefined,
   type: 'button',
 });
 
@@ -48,7 +50,13 @@ const buttonClasses = computed(() => {
 </script>
 
 <template>
-  <button :type="type" :class="buttonClasses" :disabled="disabled || loading" :aria-label="ariaLabel" @click="handleClick">
+  <button
+    :type="type"
+    :class="buttonClasses"
+    :disabled="disabled || loading"
+    :aria-label="ariaLabel"
+    @click="handleClick"
+  >
     <svg
       v-if="loading"
       class="mr-2 h-4 w-4 animate-spin"
@@ -74,8 +82,8 @@ const buttonClasses = computed(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 500;
-  transition: all 0.2s ease-in-out;
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-duration-base) var(--transition-timing-ease-in-out);
   cursor: pointer;
   border: none;
   outline: none;
@@ -102,17 +110,17 @@ const buttonClasses = computed(() => {
 
 /* Variant: Outline */
 .btn-outline {
-  background-color: var(--color-surface-raised);
+  background-color: transparent;
   color: var(--color-text-primary);
   border: 1px solid var(--color-border-default);
 }
 
 .btn-outline:hover:not(:disabled) {
-  background-color: var(--color-surface-hover);
+  background-color: var(--color-primary-50);
 }
 
 .btn-outline:active:not(:disabled) {
-  background-color: var(--color-surface-active);
+  background-color: var(--color-primary-100);
 }
 
 .btn-outline:focus-visible {
@@ -147,7 +155,7 @@ const buttonClasses = computed(() => {
 }
 
 .btn-small {
-  padding: var(--spacing-1-5) var(--spacing-3);
+  padding: var(--spacing-1_5) var(--spacing-3);
   font-size: var(--font-size-sm);
   border-radius: var(--border-radius-md);
 }

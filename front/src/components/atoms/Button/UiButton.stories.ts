@@ -10,12 +10,12 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'danger', 'ghost'],
+      options: ['filled', 'outline', 'text'],
       description: 'Visual style variant',
     },
     size: {
       control: 'radio',
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'small', 'medium', 'large', 'xl'],
       description: 'Button size',
     },
     disabled: {
@@ -40,60 +40,68 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Variant Stories
-export const Primary: Story = {
+export const Filled: Story = {
   args: {
-    label: 'Primary Button',
-    variant: 'primary',
-    size: 'md',
+    label: 'Filled Button',
+    variant: 'filled',
+    size: 'medium',
   },
 };
 
-export const Secondary: Story = {
+export const Outline: Story = {
   args: {
-    label: 'Secondary Button',
-    variant: 'secondary',
-    size: 'md',
+    label: 'Outline Button',
+    variant: 'outline',
+    size: 'medium',
   },
 };
 
-export const Danger: Story = {
+export const Text: Story = {
   args: {
-    label: 'Delete',
-    variant: 'danger',
-    size: 'md',
-  },
-};
-
-export const Ghost: Story = {
-  args: {
-    label: 'Ghost Button',
-    variant: 'ghost',
-    size: 'md',
+    label: 'Text Button',
+    variant: 'text',
+    size: 'medium',
   },
 };
 
 // Size Stories
+export const ExtraSmall: Story = {
+  args: {
+    label: 'XS',
+    variant: 'filled',
+    size: 'xs',
+  },
+};
+
 export const Small: Story = {
   args: {
     label: 'Small Button',
-    variant: 'primary',
-    size: 'sm',
+    variant: 'filled',
+    size: 'small',
   },
 };
 
 export const Medium: Story = {
   args: {
     label: 'Medium Button',
-    variant: 'primary',
-    size: 'md',
+    variant: 'filled',
+    size: 'medium',
   },
 };
 
 export const Large: Story = {
   args: {
     label: 'Large Button',
-    variant: 'primary',
-    size: 'lg',
+    variant: 'filled',
+    size: 'large',
+  },
+};
+
+export const ExtraLarge: Story = {
+  args: {
+    label: 'Extra Large Button',
+    variant: 'filled',
+    size: 'xl',
   },
 };
 
@@ -101,8 +109,8 @@ export const Large: Story = {
 export const Disabled: Story = {
   args: {
     label: 'Disabled Button',
-    variant: 'primary',
-    size: 'md',
+    variant: 'filled',
+    size: 'medium',
     disabled: true,
   },
 };
@@ -110,17 +118,17 @@ export const Disabled: Story = {
 export const Loading: Story = {
   args: {
     label: 'Loading...',
-    variant: 'primary',
-    size: 'md',
+    variant: 'filled',
+    size: 'medium',
     loading: true,
   },
 };
 
-export const LoadingSecondary: Story = {
+export const LoadingOutline: Story = {
   args: {
     label: 'Saving...',
-    variant: 'secondary',
-    size: 'md',
+    variant: 'outline',
+    size: 'medium',
     loading: true,
   },
 };
@@ -129,32 +137,24 @@ export const LoadingSecondary: Story = {
 export const SubmitForm: Story = {
   args: {
     label: 'Submit',
-    variant: 'primary',
-    size: 'lg',
+    variant: 'filled',
+    size: 'large',
   },
 };
 
 export const CancelAction: Story = {
   args: {
     label: 'Cancel',
-    variant: 'ghost',
-    size: 'md',
-  },
-};
-
-export const ConfirmDelete: Story = {
-  args: {
-    label: 'Confirm Delete',
-    variant: 'danger',
-    size: 'md',
+    variant: 'text',
+    size: 'medium',
   },
 };
 
 export const AddItem: Story = {
   args: {
     label: '+ Add Issue',
-    variant: 'secondary',
-    size: 'sm',
+    variant: 'outline',
+    size: 'small',
   },
 };
 
@@ -162,8 +162,8 @@ export const AddItem: Story = {
 export const ClickInteraction: Story = {
   args: {
     label: 'Click Me',
-    variant: 'primary',
-    size: 'md',
+    variant: 'filled',
+    size: 'medium',
     onClick: fn(),
   },
   play: async ({ args, canvasElement }) => {
@@ -185,8 +185,8 @@ export const ClickInteraction: Story = {
 export const KeyboardNavigation: Story = {
   args: {
     label: 'Tab to Me',
-    variant: 'primary',
-    size: 'md',
+    variant: 'filled',
+    size: 'medium',
     onClick: fn(),
   },
   play: async ({ args, canvasElement }) => {
@@ -206,8 +206,8 @@ export const KeyboardNavigation: Story = {
 export const DisabledNoClick: Story = {
   args: {
     label: 'Disabled - No Click',
-    variant: 'primary',
-    size: 'md',
+    variant: 'filled',
+    size: 'medium',
     disabled: true,
     onClick: fn(),
   },
@@ -227,8 +227,8 @@ export const DisabledNoClick: Story = {
 export const LoadingNoClick: Story = {
   args: {
     label: 'Loading...',
-    variant: 'primary',
-    size: 'md',
+    variant: 'filled',
+    size: 'medium',
     loading: true,
     onClick: fn(),
   },
@@ -291,21 +291,22 @@ export const PaletteSwitching: Story = {
         </div>
 
         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-          <UiButton label="Primary" variant="primary" size="md" />
-          <UiButton label="Secondary" variant="secondary" size="md" />
-          <UiButton label="Danger" variant="danger" size="md" />
-          <UiButton label="Ghost" variant="ghost" size="md" />
+          <UiButton label="Filled" variant="filled" size="medium" />
+          <UiButton label="Outline" variant="outline" size="medium" />
+          <UiButton label="Text" variant="text" size="medium" />
         </div>
 
         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-          <UiButton label="Small" variant="primary" size="sm" />
-          <UiButton label="Medium" variant="primary" size="md" />
-          <UiButton label="Large" variant="primary" size="lg" />
+          <UiButton label="XS" variant="filled" size="xs" />
+          <UiButton label="Small" variant="filled" size="small" />
+          <UiButton label="Medium" variant="filled" size="medium" />
+          <UiButton label="Large" variant="filled" size="large" />
+          <UiButton label="XL" variant="filled" size="xl" />
         </div>
 
         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-          <UiButton label="Disabled" variant="primary" size="md" disabled />
-          <UiButton label="Loading..." variant="primary" size="md" loading />
+          <UiButton label="Disabled" variant="filled" size="medium" disabled />
+          <UiButton label="Loading..." variant="filled" size="medium" loading />
         </div>
       </div>
     `,
@@ -352,7 +353,7 @@ export const SemanticTokenDemo: Story = {
             <li>Orange (#F59E0B) in Warm Welcome</li>
             <li>Gray (#64748B) in Minimalist</li>
           </ul>
-          <UiButton label="Adaptive Primary Button" variant="primary" size="lg" />
+          <UiButton label="Adaptive Filled Button" variant="filled" size="large" />
         </div>
 
         <div style="
@@ -362,15 +363,15 @@ export const SemanticTokenDemo: Story = {
           border-radius: 0.5rem;
         ">
           <h4 style="color: var(--color-text-primary); margin: 0 0 0.5rem 0;">
-            State Colors (Consistent Across Palettes)
+            All Variants (Consistent Across Palettes)
           </h4>
           <p style="color: var(--color-text-secondary); margin: 0 0 1rem 0; font-size: 0.875rem;">
-            Semantic state colors remain consistent regardless of palette:
+            All variants adapt to the current palette:
           </p>
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <UiButton label="Delete (Danger)" variant="danger" size="md" />
-            <UiButton label="Secondary" variant="secondary" size="md" />
-            <UiButton label="Ghost" variant="ghost" size="md" />
+            <UiButton label="Filled" variant="filled" size="medium" />
+            <UiButton label="Outline" variant="outline" size="medium" />
+            <UiButton label="Text" variant="text" size="medium" />
           </div>
         </div>
       </div>
@@ -407,9 +408,9 @@ export const AccessibilityDemo: Story = {
             All button variants maintain proper contrast in every palette and mode.
           </p>
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
-            <UiButton label="Primary (≥4.5:1)" variant="primary" size="md" />
-            <UiButton label="Secondary (≥4.5:1)" variant="secondary" size="md" />
-            <UiButton label="Danger (≥4.5:1)" variant="danger" size="md" />
+            <UiButton label="Filled (≥4.5:1)" variant="filled" size="medium" />
+            <UiButton label="Outline (≥4.5:1)" variant="outline" size="medium" />
+            <UiButton label="Text (≥4.5:1)" variant="text" size="medium" />
             <span style="color: var(--color-text-tertiary); font-size: 0.75rem;">
               ← Try in dark mode!
             </span>
@@ -429,9 +430,9 @@ export const AccessibilityDemo: Story = {
             Focus states are clearly visible in all palettes and modes.
           </p>
           <div style="display: flex; gap: 0.5rem;">
-            <UiButton label="Tab to me" variant="primary" size="md" />
-            <UiButton label="Then here" variant="secondary" size="md" />
-            <UiButton label="Finally here" variant="ghost" size="md" />
+            <UiButton label="Tab to me" variant="filled" size="medium" />
+            <UiButton label="Then here" variant="outline" size="medium" />
+            <UiButton label="Finally here" variant="text" size="medium" />
           </div>
         </div>
       </div>
