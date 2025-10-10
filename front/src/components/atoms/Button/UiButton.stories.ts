@@ -832,6 +832,211 @@ export const AccessibilityDemo: Story = {
   }),
 };
 
+/**
+ * Palette Adaptation (KEY VALIDATION STORY)
+ *
+ * This is the MOST IMPORTANT story for validating the feature specification requirement:
+ * "Buttons must automatically adapt to palette switcher."
+ *
+ * Use the Storybook toolbar to switch palettes and observe instant color changes.
+ */
+export const PaletteAdaptation: Story = {
+  render: () => ({
+    components: { UiButton },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 32px;">
+        <!-- Instructions -->
+        <div style="padding: 16px; background: #e0f2fe; border-radius: 8px; border-left: 4px solid #0284c7;">
+          <h3 style="margin: 0 0 8px 0; font-weight: 600; color: #0c4a6e;">🎨 Palette Switching Test</h3>
+          <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #0c4a6e;">
+            Use the <strong>Palette</strong> and <strong>Mode</strong> controls in the Storybook toolbar to switch between palettes and observe automatic button color adaptation.
+            <br />
+            <strong>Expected behavior:</strong> All buttons update colors instantly without page reload.
+          </p>
+        </div>
+
+        <!-- Filled Variant Showcase -->
+        <div>
+          <h3 style="margin-bottom: 12px; font-weight: 600; color: var(--color-text-primary);">Filled Variant (Primary Color Adaptation)</h3>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <UiButton label="Save Changes" variant="filled" size="medium" />
+            <UiButton label="Create Account" variant="filled" size="large" />
+            <UiButton label="Submit" variant="filled" size="small" />
+          </div>
+          <p style="margin-top: 8px; color: var(--color-text-secondary); font-size: 14px;">
+            Background uses <code>var(--color-primary-500)</code> which changes per palette.
+          </p>
+        </div>
+
+        <!-- Outline Variant Showcase -->
+        <div>
+          <h3 style="margin-bottom: 12px; font-weight: 600; color: var(--color-text-primary);">Outline Variant (Border & Text Adaptation)</h3>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <UiButton label="Cancel" variant="outline" size="medium" />
+            <UiButton label="Learn More" variant="outline" size="large" />
+            <UiButton label="Export" variant="outline" size="small" />
+          </div>
+          <p style="margin-top: 8px; color: var(--color-text-secondary); font-size: 14px;">
+            Border and text use <code>var(--color-primary-500)</code>, hover uses <code>var(--color-primary-50)</code>.
+          </p>
+        </div>
+
+        <!-- Text Variant Showcase -->
+        <div>
+          <h3 style="margin-bottom: 12px; font-weight: 600; color: var(--color-text-primary);">Text Variant (Text Color Adaptation)</h3>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <UiButton label="Skip" variant="text" size="medium" />
+            <UiButton label="Dismiss" variant="text" size="large" />
+            <UiButton label="Edit" variant="text" size="small" />
+          </div>
+          <p style="margin-top: 8px; color: var(--color-text-secondary); font-size: 14px;">
+            Text color uses <code>var(--color-primary-500)</code>, hover uses <code>var(--color-primary-50)</code>.
+          </p>
+        </div>
+
+        <!-- All Variants Together -->
+        <div>
+          <h3 style="margin-bottom: 12px; font-weight: 600; color: var(--color-text-primary);">All Variants (Side-by-Side Comparison)</h3>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <UiButton label="Primary Action" variant="filled" />
+            <UiButton label="Secondary Action" variant="outline" />
+            <UiButton label="Tertiary Action" variant="text" />
+          </div>
+        </div>
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: `
+## Palette Adaptation Testing
+
+This story validates that buttons automatically adapt to all 10 palette variations without code changes.
+
+### Test Procedure
+
+1. Open the Palette and Mode controls in Storybook toolbar
+2. Switch between these palettes and observe button color changes:
+   - **Corporate Trust** (Blue tones)
+   - **Creative Energy** (Purple tones)
+   - **Natural Harmony** (Green tones)
+   - **Warm Welcome** (Orange tones)
+   - **Minimalist** (Gray tones)
+3. Toggle between Light and Dark modes for each palette
+4. Verify all buttons adapt instantly
+
+### What Should Change
+
+- **Filled buttons**: Background color changes to palette's primary-500
+- **Outline buttons**: Border and text color adapt to palette's primary-500
+- **Text buttons**: Text color changes to palette's primary-500
+- **All buttons**: Hover states adapt automatically
+
+### Design Tokens Used
+
+- Background: \`--color-primary-500\` → \`--color-primary-600\` (hover) → \`--color-primary-700\` (active)
+- Text: \`--color-text-inverse\` (filled), \`--color-primary-500\` (outline/text)
+- Border: \`--color-primary-500\` (outline)
+
+### Expected Result
+
+✅ All buttons change colors smoothly when palette is switched.
+        `,
+      },
+    },
+  },
+};
+
+/**
+ * Palette Testing Checklist
+ *
+ * Systematic checklist for testing buttons across all 10 palette variations.
+ * Use this to verify all palette combinations work correctly.
+ */
+export const PaletteTestingChecklist: Story = {
+  render: () => ({
+    template: `
+      <div style="max-width: 800px;">
+        <h2 style="margin-bottom: 16px; color: var(--color-text-primary);">10 Palette Variation Testing Checklist</h2>
+        <p style="margin-bottom: 24px; color: var(--color-text-secondary);">
+          Systematically test buttons across all palette combinations. Check off each as you verify.
+        </p>
+
+        <div style="display: grid; gap: 16px;">
+          <!-- Corporate Trust -->
+          <div style="padding: 16px; border: 1px solid var(--color-border-default); border-radius: 8px;">
+            <h3 style="margin: 0 0 8px 0; color: #0066cc;">Corporate Trust (Blue)</h3>
+            <label style="display: block; margin-bottom: 4px; color: var(--color-text-primary);">
+              <input type="checkbox" /> Light mode: Filled button is blue
+            </label>
+            <label style="display: block; color: var(--color-text-primary);">
+              <input type="checkbox" /> Dark mode: Filled button is lighter blue
+            </label>
+          </div>
+
+          <!-- Creative Energy -->
+          <div style="padding: 16px; border: 1px solid var(--color-border-default); border-radius: 8px;">
+            <h3 style="margin: 0 0 8px 0; color: #7c3aed;">Creative Energy (Purple)</h3>
+            <label style="display: block; margin-bottom: 4px; color: var(--color-text-primary);">
+              <input type="checkbox" /> Light mode: Filled button is purple
+            </label>
+            <label style="display: block; color: var(--color-text-primary);">
+              <input type="checkbox" /> Dark mode: Filled button is lighter purple
+            </label>
+          </div>
+
+          <!-- Natural Harmony -->
+          <div style="padding: 16px; border: 1px solid var(--color-border-default); border-radius: 8px;">
+            <h3 style="margin: 0 0 8px 0; color: #059669;">Natural Harmony (Green)</h3>
+            <label style="display: block; margin-bottom: 4px; color: var(--color-text-primary);">
+              <input type="checkbox" /> Light mode: Filled button is green
+            </label>
+            <label style="display: block; color: var(--color-text-primary);">
+              <input type="checkbox" /> Dark mode: Filled button is lighter green
+            </label>
+          </div>
+
+          <!-- Warm Welcome -->
+          <div style="padding: 16px; border: 1px solid var(--color-border-default); border-radius: 8px;">
+            <h3 style="margin: 0 0 8px 0; color: #ea580c;">Warm Welcome (Orange)</h3>
+            <label style="display: block; margin-bottom: 4px; color: var(--color-text-primary);">
+              <input type="checkbox" /> Light mode: Filled button is orange
+            </label>
+            <label style="display: block; color: var(--color-text-primary);">
+              <input type="checkbox" /> Dark mode: Filled button is lighter orange
+            </label>
+          </div>
+
+          <!-- Minimalist -->
+          <div style="padding: 16px; border: 1px solid var(--color-border-default); border-radius: 8px;">
+            <h3 style="margin: 0 0 8px 0; color: #64748b;">Minimalist (Gray)</h3>
+            <label style="display: block; margin-bottom: 4px; color: var(--color-text-primary);">
+              <input type="checkbox" /> Light mode: Filled button is gray
+            </label>
+            <label style="display: block; color: var(--color-text-primary);">
+              <input type="checkbox" /> Dark mode: Filled button is lighter gray
+            </label>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px; padding: 16px; background: #f0fdf4; border-radius: 8px; border-left: 4px solid #059669;">
+          <strong style="color: #065f46;">✅ Success Criteria:</strong>
+          <span style="color: #065f46;"> All 10 checkboxes checked = Feature requirement satisfied</span>
+        </div>
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Interactive checklist for systematic cross-palette validation. Use this to verify all 10 palette variations work correctly.',
+      },
+    },
+  },
+};
+
 // Icon Slot Stories
 /**
  * Button with Left Icon
