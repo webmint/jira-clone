@@ -120,6 +120,7 @@ onMounted(() => {
 .btn-filled {
   background-color: var(--color-primary-500);
   color: var(--color-text-inverse);
+  box-shadow: var(--elevation-1);
 }
 
 .btn-filled::before {
@@ -133,8 +134,16 @@ onMounted(() => {
   pointer-events: none;
 }
 
+.btn-filled:hover:not(:disabled) {
+  box-shadow: var(--elevation-2);
+}
+
 .btn-filled:hover:not(:disabled)::before {
   opacity: 0.08;
+}
+
+.btn-filled:active:not(:disabled) {
+  box-shadow: var(--elevation-1);
 }
 
 .btn-filled:active:not(:disabled)::before {
