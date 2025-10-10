@@ -43,7 +43,12 @@ export const ZIndexScale: Story = {
         { name: 'DROPDOWN', value: 10, token: 'Z_INDEX.DROPDOWN', use: 'Dropdowns' },
         { name: 'STICKY', value: 20, token: 'Z_INDEX.STICKY', use: 'Sticky headers' },
         { name: 'FIXED', value: 30, token: 'Z_INDEX.FIXED', use: 'Fixed elements' },
-        { name: 'MODAL_BACKDROP', value: 40, token: 'Z_INDEX.MODAL_BACKDROP', use: 'Modal overlays' },
+        {
+          name: 'MODAL_BACKDROP',
+          value: 40,
+          token: 'Z_INDEX.MODAL_BACKDROP',
+          use: 'Modal overlays',
+        },
         { name: 'MODAL', value: 50, token: 'Z_INDEX.MODAL', use: 'Modal dialogs' },
         { name: 'POPOVER', value: 60, token: 'Z_INDEX.POPOVER', use: 'Popovers' },
         { name: 'TOOLTIP', value: 70, token: 'Z_INDEX.TOOLTIP', use: 'Tooltips' },
@@ -51,7 +56,11 @@ export const ZIndexScale: Story = {
 
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '1000px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Z-Index Scale'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Z-Index Scale'
+          ),
           h(
             'div',
             { style: { display: 'flex', flexDirection: 'column', gap: '1rem' } },
@@ -70,14 +79,14 @@ export const ZIndexScale: Story = {
                   },
                 },
                 [
-                  h(
-                    'div',
-                    { style: { minWidth: '180px' } },
-                    [
-                      h('div', { style: { fontSize: '0.875rem', fontWeight: '600', color: '#111827' } }, z.name),
-                      h('div', { style: { fontSize: '0.75rem', color: '#6b7280' } }, z.use),
-                    ],
-                  ),
+                  h('div', { style: { minWidth: '180px' } }, [
+                    h(
+                      'div',
+                      { style: { fontSize: '0.875rem', fontWeight: '600', color: '#111827' } },
+                      z.name
+                    ),
+                    h('div', { style: { fontSize: '0.75rem', color: '#6b7280' } }, z.use),
+                  ]),
                   h(
                     'div',
                     {
@@ -90,7 +99,7 @@ export const ZIndexScale: Story = {
                         fontWeight: '500',
                       },
                     },
-                    z.value.toString(),
+                    z.value.toString()
                   ),
                   h(
                     'code',
@@ -102,11 +111,11 @@ export const ZIndexScale: Story = {
                         marginLeft: 'auto',
                       },
                     },
-                    z.token,
+                    z.token
                   ),
-                ],
-              ),
-            ),
+                ]
+              )
+            )
           ),
           h(
             'div',
@@ -122,15 +131,22 @@ export const ZIndexScale: Story = {
             [
               h(
                 'h3',
-                { style: { fontSize: '1rem', fontWeight: '600', color: '#1e40af', marginBottom: '0.75rem' } },
-                'Stacking Order',
+                {
+                  style: {
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    color: '#1e40af',
+                    marginBottom: '0.75rem',
+                  },
+                },
+                'Stacking Order'
               ),
               h(
                 'p',
                 { style: { fontSize: '0.875rem', color: '#1e40af', lineHeight: '1.6' } },
-                'Z-index values are spaced by 10 to allow for intermediate values when needed. Always use defined tokens rather than arbitrary values.',
+                'Z-index values are spaced by 10 to allow for intermediate values when needed. Always use defined tokens rather than arbitrary values.'
               ),
-            ],
+            ]
           ),
         ]);
     },
@@ -147,7 +163,11 @@ export const ZIndexDemo: Story = {
     setup() {
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '800px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Z-Index Stacking'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Z-Index Stacking'
+          ),
           h(
             'div',
             {
@@ -160,61 +180,73 @@ export const ZIndexDemo: Story = {
               },
             },
             [
-              h('div', {
-                style: {
-                  position: 'absolute',
-                  top: '40px',
-                  left: '40px',
-                  width: '180px',
-                  height: '180px',
-                  backgroundColor: '#ef4444',
-                  borderRadius: '0.75rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#ffffff',
-                  fontWeight: '600',
-                  zIndex: 0,
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+              h(
+                'div',
+                {
+                  style: {
+                    position: 'absolute',
+                    top: '40px',
+                    left: '40px',
+                    width: '180px',
+                    height: '180px',
+                    backgroundColor: '#ef4444',
+                    borderRadius: '0.75rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#ffffff',
+                    fontWeight: '600',
+                    zIndex: 0,
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                  },
                 },
-              }, 'z-index: 0'),
-              h('div', {
-                style: {
-                  position: 'absolute',
-                  top: '80px',
-                  left: '100px',
-                  width: '180px',
-                  height: '180px',
-                  backgroundColor: '#3b82f6',
-                  borderRadius: '0.75rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#ffffff',
-                  fontWeight: '600',
-                  zIndex: 10,
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                'z-index: 0'
+              ),
+              h(
+                'div',
+                {
+                  style: {
+                    position: 'absolute',
+                    top: '80px',
+                    left: '100px',
+                    width: '180px',
+                    height: '180px',
+                    backgroundColor: '#3b82f6',
+                    borderRadius: '0.75rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#ffffff',
+                    fontWeight: '600',
+                    zIndex: 10,
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                  },
                 },
-              }, 'z-index: 10'),
-              h('div', {
-                style: {
-                  position: 'absolute',
-                  top: '120px',
-                  left: '160px',
-                  width: '180px',
-                  height: '180px',
-                  backgroundColor: '#10b981',
-                  borderRadius: '0.75rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#ffffff',
-                  fontWeight: '600',
-                  zIndex: 20,
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                'z-index: 10'
+              ),
+              h(
+                'div',
+                {
+                  style: {
+                    position: 'absolute',
+                    top: '120px',
+                    left: '160px',
+                    width: '180px',
+                    height: '180px',
+                    backgroundColor: '#10b981',
+                    borderRadius: '0.75rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#ffffff',
+                    fontWeight: '600',
+                    zIndex: 20,
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                  },
                 },
-              }, 'z-index: 20'),
-            ],
+                'z-index: 20'
+              ),
+            ]
           ),
         ]);
     },
@@ -244,7 +276,11 @@ export const OpacityScale: Story = {
 
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '1000px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Opacity Scale'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Opacity Scale'
+          ),
           h(
             'div',
             {
@@ -277,8 +313,16 @@ export const OpacityScale: Story = {
                       opacity: opacity.value.toString(),
                     },
                   }),
-                  h('div', { style: { fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.25rem' } }, opacity.name),
-                  h('div', { style: { fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.5rem' } }, opacity.use),
+                  h(
+                    'div',
+                    { style: { fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.25rem' } },
+                    opacity.name
+                  ),
+                  h(
+                    'div',
+                    { style: { fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.5rem' } },
+                    opacity.use
+                  ),
                   h(
                     'code',
                     {
@@ -288,11 +332,11 @@ export const OpacityScale: Story = {
                         fontFamily: "'Roboto Mono', monospace",
                       },
                     },
-                    opacity.token,
+                    opacity.token
                   ),
-                ],
-              ),
-            ),
+                ]
+              )
+            )
           ),
         ]);
     },
@@ -317,20 +361,47 @@ export const TransitionTiming: Story = {
 
       const easings = [
         { name: 'LINEAR', value: 'linear', token: 'TRANSITION_TIMING.LINEAR' },
-        { name: 'EASE_IN', value: 'cubic-bezier(0.4, 0, 1, 1)', token: 'TRANSITION_TIMING.EASE_IN' },
-        { name: 'EASE_OUT', value: 'cubic-bezier(0, 0, 0.2, 1)', token: 'TRANSITION_TIMING.EASE_OUT' },
-        { name: 'EASE_IN_OUT', value: 'cubic-bezier(0.4, 0, 0.2, 1)', token: 'TRANSITION_TIMING.EASE_IN_OUT' },
+        {
+          name: 'EASE_IN',
+          value: 'cubic-bezier(0.4, 0, 1, 1)',
+          token: 'TRANSITION_TIMING.EASE_IN',
+        },
+        {
+          name: 'EASE_OUT',
+          value: 'cubic-bezier(0, 0, 0.2, 1)',
+          token: 'TRANSITION_TIMING.EASE_OUT',
+        },
+        {
+          name: 'EASE_IN_OUT',
+          value: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          token: 'TRANSITION_TIMING.EASE_IN_OUT',
+        },
         { name: 'EASE', value: 'ease', token: 'TRANSITION_TIMING.EASE' },
       ];
 
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '1000px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Transition Timing'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Transition Timing'
+          ),
 
-          h('h3', { style: { fontSize: '1.25rem', fontWeight: '600', marginBottom: '1.5rem' } }, 'Duration'),
+          h(
+            'h3',
+            { style: { fontSize: '1.25rem', fontWeight: '600', marginBottom: '1.5rem' } },
+            'Duration'
+          ),
           h(
             'div',
-            { style: { display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3rem' } },
+            {
+              style: {
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+                marginBottom: '3rem',
+              },
+            },
             durations.map((duration) =>
               h(
                 'div',
@@ -354,14 +425,18 @@ export const TransitionTiming: Story = {
                       },
                     },
                     [
-                      h(
-                        'div',
-                        {},
-                        [
-                          h('div', { style: { fontSize: '0.875rem', fontWeight: '600' } }, duration.name),
-                          h('div', { style: { fontSize: '0.75rem', color: '#6b7280' } }, duration.value),
-                        ],
-                      ),
+                      h('div', {}, [
+                        h(
+                          'div',
+                          { style: { fontSize: '0.875rem', fontWeight: '600' } },
+                          duration.name
+                        ),
+                        h(
+                          'div',
+                          { style: { fontSize: '0.75rem', color: '#6b7280' } },
+                          duration.value
+                        ),
+                      ]),
                       h(
                         'code',
                         {
@@ -371,35 +446,36 @@ export const TransitionTiming: Story = {
                             fontFamily: "'Roboto Mono', monospace",
                           },
                         },
-                        duration.token,
+                        duration.token
                       ),
-                    ],
+                    ]
                   ),
-                  h(
-                    'div',
-                    {
-                      style: {
-                        width: '60px',
-                        height: '60px',
-                        backgroundColor: '#3b82f6',
-                        borderRadius: '0.5rem',
-                        transition: `transform ${duration.value} ease-out`,
-                        cursor: 'pointer',
-                      },
-                      onMouseenter: (e: MouseEvent) => {
-                        (e.currentTarget as HTMLElement).style.transform = 'translateX(200px)';
-                      },
-                      onMouseleave: (e: MouseEvent) => {
-                        (e.currentTarget as HTMLElement).style.transform = 'translateX(0)';
-                      },
+                  h('div', {
+                    style: {
+                      width: '60px',
+                      height: '60px',
+                      backgroundColor: '#3b82f6',
+                      borderRadius: '0.5rem',
+                      transition: `transform ${duration.value} ease-out`,
+                      cursor: 'pointer',
                     },
-                  ),
-                ],
-              ),
-            ),
+                    onMouseenter: (e: MouseEvent) => {
+                      (e.currentTarget as HTMLElement).style.transform = 'translateX(200px)';
+                    },
+                    onMouseleave: (e: MouseEvent) => {
+                      (e.currentTarget as HTMLElement).style.transform = 'translateX(0)';
+                    },
+                  }),
+                ]
+              )
+            )
           ),
 
-          h('h3', { style: { fontSize: '1.25rem', fontWeight: '600', marginBottom: '1.5rem' } }, 'Easing Functions'),
+          h(
+            'h3',
+            { style: { fontSize: '1.25rem', fontWeight: '600', marginBottom: '1.5rem' } },
+            'Easing Functions'
+          ),
           h(
             'div',
             { style: { display: 'flex', flexDirection: 'column', gap: '1rem' } },
@@ -436,32 +512,29 @@ export const TransitionTiming: Story = {
                             fontFamily: "'Roboto Mono', monospace",
                           },
                         },
-                        easing.token,
+                        easing.token
                       ),
-                    ],
+                    ]
                   ),
-                  h(
-                    'div',
-                    {
-                      style: {
-                        width: '60px',
-                        height: '60px',
-                        backgroundColor: '#3b82f6',
-                        borderRadius: '0.5rem',
-                        transition: `transform 300ms ${easing.value}`,
-                        cursor: 'pointer',
-                      },
-                      onMouseenter: (e: MouseEvent) => {
-                        (e.currentTarget as HTMLElement).style.transform = 'translateX(200px)';
-                      },
-                      onMouseleave: (e: MouseEvent) => {
-                        (e.currentTarget as HTMLElement).style.transform = 'translateX(0)';
-                      },
+                  h('div', {
+                    style: {
+                      width: '60px',
+                      height: '60px',
+                      backgroundColor: '#3b82f6',
+                      borderRadius: '0.5rem',
+                      transition: `transform 300ms ${easing.value}`,
+                      cursor: 'pointer',
                     },
-                  ),
-                ],
-              ),
-            ),
+                    onMouseenter: (e: MouseEvent) => {
+                      (e.currentTarget as HTMLElement).style.transform = 'translateX(200px)';
+                    },
+                    onMouseleave: (e: MouseEvent) => {
+                      (e.currentTarget as HTMLElement).style.transform = 'translateX(0)';
+                    },
+                  }),
+                ]
+              )
+            )
           ),
         ]);
     },
@@ -478,7 +551,11 @@ export const CombinedEffects: Story = {
     setup() {
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '600px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Combined Effects'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Combined Effects'
+          ),
           h(
             'div',
             {
@@ -495,7 +572,8 @@ export const CombinedEffects: Story = {
               onMouseenter: (e: MouseEvent) => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.transform = 'translateY(-4px)';
-                el.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)';
+                el.style.boxShadow =
+                  '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)';
               },
               onMouseleave: (e: MouseEvent) => {
                 const el = e.currentTarget as HTMLElement;
@@ -504,13 +582,17 @@ export const CombinedEffects: Story = {
               },
             },
             [
-              h('h3', { style: { fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.75rem' } }, 'Interactive Card'),
+              h(
+                'h3',
+                { style: { fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.75rem' } },
+                'Interactive Card'
+              ),
               h(
                 'p',
                 { style: { fontSize: '0.875rem', color: '#6b7280', lineHeight: '1.6' } },
-                'Hover to see shadow elevation, transform, and smooth transitions working together.',
+                'Hover to see shadow elevation, transform, and smooth transitions working together.'
               ),
-            ],
+            ]
           ),
           h(
             'div',
@@ -532,7 +614,7 @@ export const CombinedEffects: Story = {
                 h('li', {}, 'Transition: 200ms ease-out'),
                 h('li', {}, 'Z-Index: DROPDOWN (10)'),
               ]),
-            ],
+            ]
           ),
         ]);
     },

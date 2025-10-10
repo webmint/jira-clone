@@ -43,7 +43,11 @@ export const FontFamilies: Story = {
     setup() {
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '800px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Font Families'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Font Families'
+          ),
           h(
             'div',
             {
@@ -57,33 +61,42 @@ export const FontFamilies: Story = {
             [
               h(
                 'div',
-                { style: { fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem', fontWeight: '500' } },
-                'Primary Font Family',
+                {
+                  style: {
+                    fontSize: '0.875rem',
+                    color: '#6b7280',
+                    marginBottom: '0.5rem',
+                    fontWeight: '500',
+                  },
+                },
+                'Primary Font Family'
               ),
               h(
                 'p',
                 {
                   style: {
-                    fontFamily: "'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    fontFamily:
+                      "'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
                     fontSize: '1.25rem',
                     color: '#111827',
                   },
                 },
-                'Roboto: The quick brown fox jumps over the lazy dog',
+                'Roboto: The quick brown fox jumps over the lazy dog'
               ),
               h(
                 'p',
                 {
                   style: {
-                    fontFamily: "'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    fontFamily:
+                      "'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
                     fontSize: '0.875rem',
                     color: '#6b7280',
                     marginTop: '0.5rem',
                   },
                 },
-                "Font: 'Roboto', sans-serif",
+                "Font: 'Roboto', sans-serif"
               ),
-            ],
+            ]
           ),
           h(
             'div',
@@ -97,8 +110,15 @@ export const FontFamilies: Story = {
             [
               h(
                 'div',
-                { style: { fontSize: '0.875rem', color: '#6b7280', marginBottom: '0.5rem', fontWeight: '500' } },
-                'Monospace Font Family',
+                {
+                  style: {
+                    fontSize: '0.875rem',
+                    color: '#6b7280',
+                    marginBottom: '0.5rem',
+                    fontWeight: '500',
+                  },
+                },
+                'Monospace Font Family'
               ),
               h(
                 'p',
@@ -109,7 +129,7 @@ export const FontFamilies: Story = {
                     color: '#111827',
                   },
                 },
-                'Roboto Mono: const example = "code";',
+                'Roboto Mono: const example = "code";'
               ),
               h(
                 'p',
@@ -121,9 +141,9 @@ export const FontFamilies: Story = {
                     marginTop: '0.5rem',
                   },
                 },
-                "Font: 'Roboto Mono', monospace",
+                "Font: 'Roboto Mono', monospace"
               ),
-            ],
+            ]
           ),
         ]);
     },
@@ -149,7 +169,11 @@ export const FontWeights: Story = {
 
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '800px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Font Weights'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Font Weights'
+          ),
           ...weights.map((weight) =>
             h(
               'div',
@@ -174,7 +198,11 @@ export const FontWeights: Story = {
                     },
                   },
                   [
-                    h('span', { style: { fontSize: '0.875rem', color: '#6b7280', fontWeight: '500' } }, weight.name),
+                    h(
+                      'span',
+                      { style: { fontSize: '0.875rem', color: '#6b7280', fontWeight: '500' } },
+                      weight.name
+                    ),
                     h(
                       'code',
                       {
@@ -187,9 +215,9 @@ export const FontWeights: Story = {
                           fontFamily: "'Roboto Mono', monospace",
                         },
                       },
-                      weight.token,
+                      weight.token
                     ),
-                  ],
+                  ]
                 ),
                 h(
                   'p',
@@ -201,10 +229,10 @@ export const FontWeights: Story = {
                       color: '#111827',
                     },
                   },
-                  `The quick brown fox jumps over the lazy dog (${weight.value})`,
+                  `The quick brown fox jumps over the lazy dog (${weight.value})`
                 ),
-              ],
-            ),
+              ]
+            )
           ),
         ]);
     },
@@ -233,7 +261,11 @@ export const FontSizes: Story = {
 
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '800px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Font Sizes'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Font Sizes'
+          ),
           ...sizes.map((size) =>
             h(
               'div',
@@ -258,14 +290,18 @@ export const FontSizes: Story = {
                     },
                   },
                   [
-                    h(
-                      'div',
-                      { style: { display: 'flex', gap: '0.75rem', alignItems: 'center' } },
-                      [
-                        h('span', { style: { fontSize: '0.875rem', color: '#6b7280', fontWeight: '500' } }, size.name),
-                        h('span', { style: { fontSize: '0.75rem', color: '#9ca3af' } }, `${size.value} / ${size.px}`),
-                      ],
-                    ),
+                    h('div', { style: { display: 'flex', gap: '0.75rem', alignItems: 'center' } }, [
+                      h(
+                        'span',
+                        { style: { fontSize: '0.875rem', color: '#6b7280', fontWeight: '500' } },
+                        size.name
+                      ),
+                      h(
+                        'span',
+                        { style: { fontSize: '0.75rem', color: '#9ca3af' } },
+                        `${size.value} / ${size.px}`
+                      ),
+                    ]),
                     h(
                       'code',
                       {
@@ -278,9 +314,9 @@ export const FontSizes: Story = {
                           fontFamily: "'Roboto Mono', monospace",
                         },
                       },
-                      size.token,
+                      size.token
                     ),
-                  ],
+                  ]
                 ),
                 h(
                   'p',
@@ -291,10 +327,10 @@ export const FontSizes: Story = {
                       color: '#111827',
                     },
                   },
-                  'The quick brown fox jumps',
+                  'The quick brown fox jumps'
                 ),
-              ],
-            ),
+              ]
+            )
           ),
         ]);
     },
@@ -321,7 +357,11 @@ export const LineHeights: Story = {
 
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '800px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Line Heights'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Line Heights'
+          ),
           ...lineHeights.map((lh) =>
             h(
               'div',
@@ -346,14 +386,18 @@ export const LineHeights: Story = {
                     },
                   },
                   [
-                    h(
-                      'div',
-                      {},
-                      [
-                        h('div', { style: { fontSize: '0.875rem', color: '#111827', fontWeight: '500' } }, lh.name),
-                        h('div', { style: { fontSize: '0.75rem', color: '#9ca3af' } }, `${lh.value} • ${lh.use}`),
-                      ],
-                    ),
+                    h('div', {}, [
+                      h(
+                        'div',
+                        { style: { fontSize: '0.875rem', color: '#111827', fontWeight: '500' } },
+                        lh.name
+                      ),
+                      h(
+                        'div',
+                        { style: { fontSize: '0.75rem', color: '#9ca3af' } },
+                        `${lh.value} • ${lh.use}`
+                      ),
+                    ]),
                     h(
                       'code',
                       {
@@ -366,9 +410,9 @@ export const LineHeights: Story = {
                           fontFamily: "'Roboto Mono', monospace",
                         },
                       },
-                      lh.token,
+                      lh.token
                     ),
-                  ],
+                  ]
                 ),
                 h(
                   'p',
@@ -380,10 +424,10 @@ export const LineHeights: Story = {
                       color: '#111827',
                     },
                   },
-                  sampleText,
+                  sampleText
                 ),
-              ],
-            ),
+              ]
+            )
           ),
         ]);
     },
@@ -407,7 +451,11 @@ export const LetterSpacing: Story = {
 
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '800px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Letter Spacing'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Letter Spacing'
+          ),
           ...spacings.map((spacing) =>
             h(
               'div',
@@ -432,22 +480,18 @@ export const LetterSpacing: Story = {
                     },
                   },
                   [
-                    h(
-                      'div',
-                      {},
-                      [
-                        h(
-                          'div',
-                          { style: { fontSize: '0.875rem', color: '#111827', fontWeight: '500' } },
-                          spacing.name,
-                        ),
-                        h(
-                          'div',
-                          { style: { fontSize: '0.75rem', color: '#9ca3af' } },
-                          `${spacing.value} • ${spacing.use}`,
-                        ),
-                      ],
-                    ),
+                    h('div', {}, [
+                      h(
+                        'div',
+                        { style: { fontSize: '0.875rem', color: '#111827', fontWeight: '500' } },
+                        spacing.name
+                      ),
+                      h(
+                        'div',
+                        { style: { fontSize: '0.75rem', color: '#9ca3af' } },
+                        `${spacing.value} • ${spacing.use}`
+                      ),
+                    ]),
                     h(
                       'code',
                       {
@@ -460,9 +504,9 @@ export const LetterSpacing: Story = {
                           fontFamily: "'Roboto Mono', monospace",
                         },
                       },
-                      spacing.token,
+                      spacing.token
                     ),
-                  ],
+                  ]
                 ),
                 h(
                   'p',
@@ -474,10 +518,10 @@ export const LetterSpacing: Story = {
                       color: '#111827',
                     },
                   },
-                  'The quick brown fox jumps over the lazy dog',
+                  'The quick brown fox jumps over the lazy dog'
                 ),
-              ],
-            ),
+              ]
+            )
           ),
         ]);
     },
@@ -494,7 +538,11 @@ export const TypographyScale: Story = {
     setup() {
       return () =>
         h('div', { style: { padding: '2rem', maxWidth: '800px' } }, [
-          h('h2', { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } }, 'Typography Scale'),
+          h(
+            'h2',
+            { style: { fontSize: '1.5rem', fontWeight: '600', marginBottom: '2rem' } },
+            'Typography Scale'
+          ),
           h(
             'div',
             {
@@ -508,23 +556,51 @@ export const TypographyScale: Story = {
             [
               h(
                 'h1',
-                { style: { fontSize: '3rem', fontWeight: '700', lineHeight: '1.25', marginBottom: '1rem' } },
-                'Page Heading (4XL Bold)',
+                {
+                  style: {
+                    fontSize: '3rem',
+                    fontWeight: '700',
+                    lineHeight: '1.25',
+                    marginBottom: '1rem',
+                  },
+                },
+                'Page Heading (4XL Bold)'
               ),
               h(
                 'h2',
-                { style: { fontSize: '2.25rem', fontWeight: '600', lineHeight: '1.25', marginBottom: '1rem' } },
-                'Section Heading (3XL Semibold)',
+                {
+                  style: {
+                    fontSize: '2.25rem',
+                    fontWeight: '600',
+                    lineHeight: '1.25',
+                    marginBottom: '1rem',
+                  },
+                },
+                'Section Heading (3XL Semibold)'
               ),
               h(
                 'h3',
-                { style: { fontSize: '1.875rem', fontWeight: '600', lineHeight: '1.25', marginBottom: '1rem' } },
-                'Subsection Heading (2XL Semibold)',
+                {
+                  style: {
+                    fontSize: '1.875rem',
+                    fontWeight: '600',
+                    lineHeight: '1.25',
+                    marginBottom: '1rem',
+                  },
+                },
+                'Subsection Heading (2XL Semibold)'
               ),
               h(
                 'h4',
-                { style: { fontSize: '1.5rem', fontWeight: '500', lineHeight: '1.25', marginBottom: '1rem' } },
-                'Card Heading (XL Medium)',
+                {
+                  style: {
+                    fontSize: '1.5rem',
+                    fontWeight: '500',
+                    lineHeight: '1.25',
+                    marginBottom: '1rem',
+                  },
+                },
+                'Card Heading (XL Medium)'
               ),
               h(
                 'p',
@@ -537,14 +613,21 @@ export const TypographyScale: Story = {
                     marginBottom: '1rem',
                   },
                 },
-                'Body text (BASE Regular): Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                'Body text (BASE Regular): Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
               ),
               h(
                 'p',
-                { style: { fontSize: '0.875rem', fontWeight: '400', lineHeight: '1.5', color: '#6b7280' } },
-                'Secondary text (SM Regular): Supporting information or metadata goes here.',
+                {
+                  style: {
+                    fontSize: '0.875rem',
+                    fontWeight: '400',
+                    lineHeight: '1.5',
+                    color: '#6b7280',
+                  },
+                },
+                'Secondary text (SM Regular): Supporting information or metadata goes here.'
               ),
-            ],
+            ]
           ),
         ]);
     },

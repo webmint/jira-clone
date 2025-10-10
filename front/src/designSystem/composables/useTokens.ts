@@ -6,8 +6,8 @@
  */
 
 import { computed } from 'vue';
-import * as REF from '../tokens/reference.tokens';
-import { getToken, resolveToken } from '../tokens/utils';
+import * as REF from '../tokens/reference.tokens.ts';
+import { getToken, resolveToken } from '../tokens/utils.ts';
 
 /**
  * Type-safe token access composable
@@ -36,7 +36,7 @@ export function useTokens() {
    */
   function token<T extends keyof typeof REF, K extends keyof (typeof REF)[T]>(
     category: T,
-    key: K,
+    key: K
   ): (typeof REF)[T][K] {
     return getToken(category, key);
   }
