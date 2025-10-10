@@ -247,9 +247,43 @@ onMounted(() => {
   border-radius: 28px; /* M3 scaled for xl size */
 }
 
-/* Disabled state */
-.btn:disabled {
-  opacity: 0.5;
+/* Disabled state - M3 pattern: container 12%, label 38% */
+
+/* Filled button disabled */
+.btn-filled:disabled {
+  background-color: var(--color-neutral-200);
+  opacity: 0.12; /* Container 12% */
+  color: var(--color-text-primary);
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none; /* Remove elevation */
+}
+
+.btn-filled:disabled .btn-content,
+.btn-filled:disabled .btn-icon-left,
+.btn-filled:disabled .btn-icon-right {
+  opacity: 3.17; /* 38% ÷ 12% = 3.17 to achieve final 38% */
+}
+
+/* Outline button disabled */
+.btn-outline:disabled {
+  border-color: var(--color-neutral-300);
+  opacity: 0.12; /* Container 12% */
+  color: var(--color-text-primary);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-outline:disabled .btn-content,
+.btn-outline:disabled .btn-icon-left,
+.btn-outline:disabled .btn-icon-right {
+  opacity: 3.17; /* 38% ÷ 12% = 3.17 to achieve final 38% */
+}
+
+/* Text button disabled */
+.btn-text:disabled {
+  color: var(--color-text-primary);
+  opacity: 0.38; /* Label only */
   cursor: not-allowed;
   pointer-events: none;
 }
