@@ -216,12 +216,12 @@ onMounted(() => {
 /* Icon spacing */
 .btn-icon-left {
   display: inline-flex;
-  margin-right: var(--spacing-2);
+  margin-right: var(--spacing-1);
 }
 
 .btn-icon-right {
   display: inline-flex;
-  margin-left: var(--spacing-2);
+  margin-left: var(--spacing-1);
 }
 
 .btn-content {
