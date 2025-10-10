@@ -313,6 +313,218 @@ export const LoadingOutline: Story = {
   },
 };
 
+/**
+ * Disabled Buttons with Icons
+ *
+ * Shows disabled state across all variants with icon combinations.
+ * Disabled buttons have 50% opacity and are non-interactive.
+ */
+export const DisabledWithIcons: Story = {
+  render: () => ({
+    components: { UiButton },
+    template: `
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+        <UiButton label="Save" variant="filled" disabled>
+          <template #icon-left>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+          </template>
+        </UiButton>
+        <UiButton label="Save" variant="outline" disabled>
+          <template #icon-left>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+          </template>
+        </UiButton>
+        <UiButton label="Save" variant="text" disabled>
+          <template #icon-left>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+              <polyline points="7 3 7 8 15 8"></polyline>
+            </svg>
+          </template>
+        </UiButton>
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Disabled buttons with icons show 50% opacity across all variants. Click events are not emitted.',
+      },
+    },
+  },
+};
+
+/**
+ * Interactive States Guide
+ *
+ * Comprehensive demonstration of all button interactive states.
+ * Use this story to test hover, focus, active, and disabled behaviors.
+ */
+export const InteractiveStates: Story = {
+  render: () => ({
+    components: { UiButton },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <div>
+          <h3 style="margin-bottom: 8px; font-weight: 600; color: var(--color-text-primary);">Hover State</h3>
+          <p style="margin-bottom: 12px; color: var(--color-text-secondary); font-size: 14px;">
+            Hover over buttons to see background color darken. Transition: 150ms ease-in-out.
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <UiButton label="Hover Me (Filled)" variant="filled" />
+            <UiButton label="Hover Me (Outline)" variant="outline" />
+            <UiButton label="Hover Me (Text)" variant="text" />
+          </div>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom: 8px; font-weight: 600; color: var(--color-text-primary);">Focus State</h3>
+          <p style="margin-bottom: 12px; color: var(--color-text-secondary); font-size: 14px;">
+            Press Tab to focus buttons. 2px outline with 2px offset for keyboard visibility.
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <UiButton label="Tab to Focus (Filled)" variant="filled" />
+            <UiButton label="Tab to Focus (Outline)" variant="outline" />
+            <UiButton label="Tab to Focus (Text)" variant="text" />
+          </div>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom: 8px; font-weight: 600; color: var(--color-text-primary);">Active State</h3>
+          <p style="margin-bottom: 12px; color: var(--color-text-secondary); font-size: 14px;">
+            Click and hold to see active state (darker background than hover).
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <UiButton label="Click & Hold (Filled)" variant="filled" />
+            <UiButton label="Click & Hold (Outline)" variant="outline" />
+            <UiButton label="Click & Hold (Text)" variant="text" />
+          </div>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom: 8px; font-weight: 600; color: var(--color-text-primary);">Disabled State</h3>
+          <p style="margin-bottom: 12px; color: var(--color-text-secondary); font-size: 14px;">
+            Disabled buttons have 50% opacity and no hover/focus/click effects.
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <UiButton label="Disabled (Filled)" variant="filled" disabled />
+            <UiButton label="Disabled (Outline)" variant="outline" disabled />
+            <UiButton label="Disabled (Text)" variant="text" disabled />
+          </div>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom: 8px; font-weight: 600; color: var(--color-text-primary);">Loading State</h3>
+          <p style="margin-bottom: 12px; color: var(--color-text-secondary); font-size: 14px;">
+            Loading buttons show spinner animation and are disabled (no interaction).
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <UiButton label="Loading..." variant="filled" loading />
+            <UiButton label="Loading..." variant="outline" loading />
+            <UiButton label="Loading..." variant="text" loading />
+          </div>
+        </div>
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: `
+## Interactive State Testing Guide
+
+This story demonstrates all button states. Test each one:
+
+### Hover State (\`:hover\`)
+- **Filled**: Background darkens (primary-500 → primary-600)
+- **Outline**: Background fills with primary-50, border darkens
+- **Text**: Background adds primary-50 tint
+- **Transition**: 150ms ease-in-out
+
+### Focus State (\`:focus-visible\`)
+- **All variants**: 2px outline with 2px offset
+- **Keyboard only**: Press Tab to test (no outline on mouse click)
+- **Color**: Uses --color-border-focus token
+
+### Active State (\`:active\`)
+- **Filled**: Background darkens further (primary-500 → primary-700)
+- **Outline**: Background uses primary-100, border darkens to primary-700
+- **Text**: Background uses primary-100
+- **Test**: Click and hold button to see active state
+
+### Disabled State (\`:disabled\`)
+- **Opacity**: 50%
+- **Cursor**: not-allowed
+- **Pointer events**: none (no hover/focus/click)
+- **Test**: Try hovering/clicking - nothing happens
+
+### Loading State
+- **Spinner**: Replaces left icon, animates continuously
+- **Disabled**: Button is disabled during loading
+- **Test**: Button shows spinner and cannot be clicked
+        `,
+      },
+    },
+  },
+};
+
+/**
+ * State Comparison Matrix
+ *
+ * Side-by-side comparison of default vs disabled states across all variants.
+ * Helps visualize state differences clearly.
+ */
+export const StateMatrix: Story = {
+  render: () => ({
+    components: { UiButton },
+    template: `
+      <div style="display: grid; grid-template-columns: auto repeat(3, 1fr); gap: 16px; align-items: center;">
+        <!-- Headers -->
+        <div style="font-weight: 600; color: var(--color-text-primary);">Variant</div>
+        <div style="font-weight: 600; color: var(--color-text-primary);">Default</div>
+        <div style="font-weight: 600; color: var(--color-text-primary);">Disabled</div>
+        <div style="font-weight: 600; color: var(--color-text-primary);">Loading</div>
+
+        <!-- Filled -->
+        <div style="display: flex; align-items: center; color: var(--color-text-primary);">Filled</div>
+        <UiButton label="Default" variant="filled" size="small" />
+        <UiButton label="Disabled" variant="filled" size="small" disabled />
+        <UiButton label="Loading" variant="filled" size="small" loading />
+
+        <!-- Outline -->
+        <div style="display: flex; align-items: center; color: var(--color-text-primary);">Outline</div>
+        <UiButton label="Default" variant="outline" size="small" />
+        <UiButton label="Disabled" variant="outline" size="small" disabled />
+        <UiButton label="Loading" variant="outline" size="small" loading />
+
+        <!-- Text -->
+        <div style="display: flex; align-items: center; color: var(--color-text-primary);">Text</div>
+        <UiButton label="Default" variant="text" size="small" />
+        <UiButton label="Disabled" variant="text" size="small" disabled />
+        <UiButton label="Loading" variant="text" size="small" loading />
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Grid comparison of default, disabled, and loading states across all variants. Hover over default buttons to see hover state.',
+      },
+    },
+  },
+};
+
 // Use Case Stories
 export const SubmitForm: Story = {
   args: {
