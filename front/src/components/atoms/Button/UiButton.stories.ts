@@ -641,6 +641,130 @@ export const LoadingNoClick: Story = {
   },
 };
 
+/**
+ * Accessibility Attributes Test
+ *
+ * Verifies ARIA attributes and button type attributes are correctly applied.
+ * Tests button type and aria-label accessibility features.
+ */
+export const AccessibilityAttributes: Story = {
+  render: () => ({
+    components: { UiButton },
+    template: `
+      <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+        <UiButton label="Submit Form" type="submit" variant="filled" />
+        <UiButton aria-label="Close dialog" variant="text">
+          <template #icon-left>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </template>
+        </UiButton>
+      </div>
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Test submit button has correct type
+    const submitButton = canvas.getByRole('button', { name: /submit form/i });
+    await expect(submitButton).toHaveAttribute('type', 'submit');
+
+    // Test icon-only button has aria-label
+    const iconButton = canvas.getByRole('button', { name: /close dialog/i });
+    await expect(iconButton).toHaveAttribute('aria-label', 'Close dialog');
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Verifies ARIA attributes and button type attributes are correctly applied for accessibility.',
+      },
+    },
+  },
+};
+
+/**
+ * CSS Classes Validation Test
+ *
+ * Validates that CSS class names are correctly applied based on props.
+ * Tests variant and size class application.
+ */
+export const CSSClassesValidation: Story = {
+  render: () => ({
+    components: { UiButton },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <UiButton label="Filled" variant="filled" size="medium" />
+        <UiButton label="Outline" variant="outline" size="small" />
+        <UiButton label="Text" variant="text" size="large" />
+      </div>
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Test filled variant classes
+    const filledButton = canvas.getByRole('button', { name: /^filled$/i });
+    await expect(filledButton).toHaveClass('btn');
+    await expect(filledButton).toHaveClass('btn-filled');
+    await expect(filledButton).toHaveClass('btn-medium');
+
+    // Test outline variant classes
+    const outlineButton = canvas.getByRole('button', { name: /^outline$/i });
+    await expect(outlineButton).toHaveClass('btn-outline');
+    await expect(outlineButton).toHaveClass('btn-small');
+
+    // Test text variant classes
+    const textButton = canvas.getByRole('button', { name: /^text$/i });
+    await expect(textButton).toHaveClass('btn-text');
+    await expect(textButton).toHaveClass('btn-large');
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Validates CSS class names are correctly applied based on variant and size props.',
+      },
+    },
+  },
+};
+
+/**
+ * Hover State Test
+ *
+ * Tests hover interaction using userEvent.hover().
+ * Visual verification of hover state requires manual inspection.
+ */
+export const HoverStateTest: Story = {
+  args: {
+    label: 'Hover Over Me',
+    variant: 'filled',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button', { name: /hover over me/i });
+
+    // Hover over button
+    await userEvent.hover(button);
+
+    // Visual verification (manual) - hover state should be visible
+    // Automated visual regression would require additional tooling
+    await expect(button).toBeInTheDocument();
+
+    // Unhover
+    await userEvent.unhover(button);
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Tests hover interaction. Visual verification of hover state requires manual inspection or visual regression testing.',
+      },
+    },
+  },
+};
+
 // Palette Switching Examples
 /**
  * Palette Switching Demonstration
