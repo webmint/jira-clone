@@ -220,31 +220,31 @@ onMounted(() => {
 .btn-xs {
   padding: var(--spacing-1) var(--spacing-2);
   font-size: var(--font-size-xs);
-  border-radius: var(--border-radius-sm);
+  border-radius: 16px; /* M3 scaled for compact size */
 }
 
 .btn-small {
   padding: var(--spacing-1_5) var(--spacing-3);
   font-size: var(--font-size-sm);
-  border-radius: var(--border-radius-md);
+  border-radius: 20px; /* M3 standard */
 }
 
 .btn-medium {
   padding: var(--spacing-2) var(--spacing-3);
   font-size: var(--font-size-base);
-  border-radius: var(--border-radius-lg);
+  border-radius: 20px; /* M3 standard */
 }
 
 .btn-large {
   padding: var(--spacing-3) var(--spacing-6);
   font-size: var(--font-size-lg);
-  border-radius: var(--border-radius-lg);
+  border-radius: 24px; /* M3 scaled for large size */
 }
 
 .btn-xl {
   padding: var(--spacing-4) var(--spacing-8);
   font-size: var(--font-size-xl);
-  border-radius: var(--border-radius-xl);
+  border-radius: 28px; /* M3 scaled for xl size */
 }
 
 /* Disabled state */
