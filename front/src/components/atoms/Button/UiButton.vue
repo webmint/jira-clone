@@ -113,6 +113,7 @@ onMounted(() => {
   cursor: pointer;
   border: none;
   outline: none;
+  position: relative;
 }
 
 /* Variant: Filled */
@@ -121,12 +122,23 @@ onMounted(() => {
   color: var(--color-text-inverse);
 }
 
-.btn-filled:hover:not(:disabled) {
-  background-color: var(--color-primary-600);
+.btn-filled::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity var(--transition-duration-base);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
-.btn-filled:active:not(:disabled) {
-  background-color: var(--color-primary-700);
+.btn-filled:hover:not(:disabled)::before {
+  opacity: 0.08;
+}
+
+.btn-filled:active:not(:disabled)::before {
+  opacity: 0.1;
 }
 
 .btn-filled:focus-visible {
@@ -141,14 +153,23 @@ onMounted(() => {
   border: 1px solid var(--color-primary-500);
 }
 
-.btn-outline:hover:not(:disabled) {
-  background-color: var(--color-primary-50);
-  border-color: var(--color-primary-600);
+.btn-outline::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-primary-500);
+  opacity: 0;
+  transition: opacity var(--transition-duration-base);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
-.btn-outline:active:not(:disabled) {
-  background-color: var(--color-primary-100);
-  border-color: var(--color-primary-700);
+.btn-outline:hover:not(:disabled)::before {
+  opacity: 0.08;
+}
+
+.btn-outline:active:not(:disabled)::before {
+  opacity: 0.1;
 }
 
 .btn-outline:focus-visible {
@@ -162,12 +183,23 @@ onMounted(() => {
   color: var(--color-primary-500);
 }
 
-.btn-text:hover:not(:disabled) {
-  background-color: var(--color-primary-50);
+.btn-text::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-primary-500);
+  opacity: 0;
+  transition: opacity var(--transition-duration-base);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
-.btn-text:active:not(:disabled) {
-  background-color: var(--color-primary-100);
+.btn-text:hover:not(:disabled)::before {
+  opacity: 0.08;
+}
+
+.btn-text:active:not(:disabled)::before {
+  opacity: 0.1;
 }
 
 .btn-text:focus-visible {
