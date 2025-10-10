@@ -189,7 +189,7 @@ onMounted(() => {
 }
 
 .btn-medium {
-  padding: var(--spacing-2) var(--spacing-4);
+  padding: var(--spacing-2) var(--spacing-3);
   font-size: var(--font-size-base);
   border-radius: var(--border-radius-lg);
 }
