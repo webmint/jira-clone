@@ -109,6 +109,8 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   font-weight: var(--font-weight-medium);
+  line-height: 1.25; /* M3 typography - ~20px at 16px base */
+  letter-spacing: 0.00625em; /* 0.1px - M3 Label Large */
   transition: all var(--transition-duration-base) var(--transition-timing-ease-in-out);
   cursor: pointer;
   border: none;
@@ -219,31 +221,31 @@ onMounted(() => {
 /* Sizes */
 .btn-xs {
   padding: var(--spacing-1) var(--spacing-2);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-xs); /* 12px - Custom compact */
   border-radius: 16px; /* M3 scaled for compact size */
 }
 
 .btn-small {
   padding: var(--spacing-1_5) var(--spacing-3);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-sm); /* 14px - M3 Label Large ✅ */
   border-radius: 20px; /* M3 standard */
 }
 
 .btn-medium {
   padding: var(--spacing-2) var(--spacing-3);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-base); /* 16px - Slightly larger for readability */
   border-radius: 20px; /* M3 standard */
 }
 
 .btn-large {
   padding: var(--spacing-3) var(--spacing-6);
-  font-size: var(--font-size-lg);
+  font-size: 18px; /* Reduced from 20px for better M3 alignment */
   border-radius: 24px; /* M3 scaled for large size */
 }
 
 .btn-xl {
   padding: var(--spacing-4) var(--spacing-8);
-  font-size: var(--font-size-xl);
+  font-size: 20px; /* Reduced from 24px for better M3 alignment */
   border-radius: 28px; /* M3 scaled for xl size */
 }
 
