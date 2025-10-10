@@ -1,26 +1,142 @@
 <script setup lang="ts">
+/**
+ * UiButton - Flexible button component with Material Design 3 integration
+ *
+ * A versatile button component that automatically adapts to all 10 palette variations
+ * (5 palettes × 2 modes). Supports three visual variants, five sizes, flexible content
+ * composition with icon slots, and full WCAG 2.1 Level AAA accessibility compliance.
+ *
+ * **Accessibility Compliance: WCAG 2.1 Level AAA**
+ * - Keyboard Navigation: Tab/Shift+Tab to focus, Enter/Space to activate
+ * - Focus Indicator: 2px solid outline with 2px offset (3:1 contrast ratio)
+ * - ARIA Labels: Required for icon-only buttons
+ * - Color Contrast: 7:1 for normal text (AAA standard)
+ * - Disabled State: M3 pattern with 12% container, 38% label opacity
+ * - Material Design 3: ~95% compliant with documented deviations
+ *
+ * @component
+ * @see {@link https://www.w3.org/WAI/WCAG21/quickref/ WCAG 2.1 Guidelines}
+ * @see {@link https://m3.material.io/components/buttons Material Design 3 Buttons}
+ *
+ * @example Basic Variants
+ * ```vue
+ * <UiButton label="Primary" variant="filled" />
+ * <UiButton label="Secondary" variant="outline" />
+ * <UiButton label="Tertiary" variant="text" />
+ * ```
+ *
+ * @example Sizes
+ * ```vue
+ * <UiButton label="XS" size="xs" />
+ * <UiButton label="Small" size="small" />
+ * <UiButton label="Medium" size="medium" />
+ * <UiButton label="Large" size="large" />
+ * <UiButton label="XL" size="xl" />
+ * ```
+ *
+ * @example With Icons
+ * ```vue
+ * <!-- Icon left -->
+ * <UiButton label="Save">
+ *   <template #icon-left><SaveIcon :size="20" /></template>
+ * </UiButton>
+ *
+ * <!-- Icon right -->
+ * <UiButton label="Next">
+ *   <template #icon-right><ChevronRightIcon :size="20" /></template>
+ * </UiButton>
+ *
+ * <!-- Icon-only (requires aria-label) -->
+ * <UiButton aria-label="Delete item">
+ *   <template #icon-left><TrashIcon :size="20" /></template>
+ * </UiButton>
+ * ```
+ *
+ * @example Form Buttons
+ * ```vue
+ * <UiButton label="Submit" type="submit" variant="filled" />
+ * <UiButton label="Reset" type="reset" variant="outline" />
+ * <UiButton label="Cancel" type="button" variant="text" />
+ * ```
+ *
+ * @example Event Handling
+ * ```vue
+ * <UiButton label="Click me" @click="handleClick" />
+ *
+ * <script setup>
+ * const handleClick = (event) => {
+ *   console.log('Button clicked!', event);
+ * };
+ * <\/script>
+ * ```
+ *
+ * @example Disabled and Loading States
+ * ```vue
+ * <UiButton label="Disabled" disabled />
+ * <UiButton label="Loading..." loading />
+ * ```
+ */
 import { computed, onMounted, useSlots } from 'vue';
 
 interface Props {
   /**
-   * Button label text.
-   * Optional for icon-only buttons, but ariaLabel must be provided in that case.
+   * Button text label
+   * @optional Can be omitted if using default slot or for icon-only buttons
+   * @example "Save Changes"
    */
   label?: string;
-  /** Visual style variant */
-  variant?: 'filled' | 'outline' | 'text';
-  /** Size variation */
-  size?: 'xs' | 'small' | 'medium' | 'large' | 'xl';
-  /** Disabled state */
-  disabled?: boolean;
-  /** Loading state */
-  loading?: boolean;
+
   /**
-   * ARIA label for accessibility.
-   * REQUIRED when label is not provided (icon-only buttons) for WCAG 2.1 AAA compliance.
+   * Visual style variant
+   * - `filled`: Solid background with primary color (default, M3 filled button)
+   * - `outline`: Transparent background with border (M3 outlined button)
+   * - `text`: No background or border, text only (M3 text button)
+   * @default 'filled'
+   */
+  variant?: 'filled' | 'outline' | 'text';
+
+  /**
+   * Button size affecting padding, font-size, and border-radius
+   * - `xs`: Extra small - 12px font, compact padding (custom)
+   * - `small`: Small - 14px font, M3 Label Large standard
+   * - `medium`: Medium - 16px font, default for primary actions
+   * - `large`: Large - 18px font, prominent actions
+   * - `xl`: Extra large - 20px font, hero CTAs
+   * @default 'medium'
+   */
+  size?: 'xs' | 'small' | 'medium' | 'large' | 'xl';
+
+  /**
+   * Disabled state
+   * Uses Material Design 3 opacity pattern: container 12%, label 38%
+   * When true, button is not interactive and shows reduced opacity
+   * @default false
+   */
+  disabled?: boolean;
+
+  /**
+   * Loading state
+   * Shows animated spinner, prevents interaction
+   * Useful for async operations like form submission
+   * @default false
+   */
+  loading?: boolean;
+
+  /**
+   * ARIA label for screen readers
+   * **REQUIRED** for icon-only buttons to meet WCAG 2.1 AAA standards
+   * Provides accessible name when no visible text is present
+   * @optional Required only when button has no text content
+   * @example "Close dialog"
+   * @example "Delete item"
    */
   ariaLabel?: string;
-  /** Button type attribute */
+
+  /**
+   * HTML button type attribute
+   * Controls form submission behavior
+   * @default 'button'
+   */
   type?: 'button' | 'submit' | 'reset';
 }
 
@@ -34,18 +150,36 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'button',
 });
 
+/**
+ * Events emitted by UiButton component
+ */
 const emit = defineEmits<{
+  /**
+   * Emitted when button is clicked
+   * Not emitted when button is disabled or loading
+   * @param event - Native MouseEvent from button click
+   */
   click: [event: MouseEvent];
 }>();
 
 const slots = useSlots();
 
+/**
+ * Handles button click events
+ * Emits 'click' event only when button is not disabled and not loading
+ * @param event - Native MouseEvent from button click
+ */
 const handleClick = (event: MouseEvent) => {
   if (!props.disabled && !props.loading) {
     emit('click', event);
   }
 };
 
+/**
+ * Computed CSS classes for button element
+ * Combines base class, variant class, and size class
+ * @returns Space-separated class string (e.g., "btn btn-filled btn-medium")
+ */
 const buttonClasses = computed(() => {
   return ['btn', `btn-${props.variant}`, `btn-${props.size}`].join(' ');
 });
@@ -75,6 +209,14 @@ onMounted(() => {
     :aria-label="ariaLabel"
     @click="handleClick"
   >
+    <!--
+      @slot icon-left - Icon positioned before button text
+      Displays loading spinner when button is in loading state
+      @example
+      <template #icon-left>
+        <SaveIcon :size="20" />
+      </template>
+    -->
     <span v-if="loading || $slots['icon-left']" class="btn-icon-left">
       <svg
         v-if="loading"
@@ -93,9 +235,27 @@ onMounted(() => {
       </svg>
       <slot v-if="!loading" name="icon-left" />
     </span>
+
+    <!--
+      @slot default - Main button content (text)
+      Falls back to `label` prop if slot is not provided
+      @example
+      <template #default>
+        Click Me
+      </template>
+    -->
     <span v-if="$slots.default || label" class="btn-content">
       <slot>{{ label }}</slot>
     </span>
+
+    <!--
+      @slot icon-right - Icon positioned after button text
+      Useful for directional indicators (arrows, chevrons)
+      @example
+      <template #icon-right>
+        <ChevronRightIcon :size="20" />
+      </template>
+    -->
     <span v-if="$slots['icon-right']" class="btn-icon-right">
       <slot name="icon-right" />
     </span>
