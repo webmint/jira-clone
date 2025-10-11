@@ -23,7 +23,12 @@ tests/
 
 ## Commands
 
-npm test [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLOGIES] npm run lint
+- `npm test` - Run tests in all workspaces
+- `npm run lint` - Run ESLint in all workspaces
+- `npm run format` - Format code with Prettier across all workspaces
+- `npm run build` - Build all workspaces
+- `npm run dev` - Run development servers for all workspaces
+- `npm run storybook --workspace=front` - Run Storybook dev server (frontend only)
 
 ## Code Style
 
