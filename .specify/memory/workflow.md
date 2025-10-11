@@ -1,9 +1,9 @@
 # Development Workflow
 
-**Constitution Version**: 2.9.4
-**Last Updated**: 2025-10-07
+**Constitution Version**: 2.10.4
+**Last Updated**: 2025-10-11
 
-This document describes the complete development workflow from feature idea to production merge, including GitHub integration, individual task files, git commit workflow with Husky pre-commit hooks, **strict sequential task enforcement**, **pr-reviewer agent integration**, **documentation-writer agent integration**, agent assignment, GitHub project board, and **7 MANDATORY user approval gates**.
+This document describes the complete development workflow from feature idea to production merge, including GitHub integration, individual task files, git commit workflow, **strict sequential task enforcement**, **pr-reviewer agent integration**, **documentation-writer agent integration**, agent assignment, GitHub project board, GitHub issue URL linking, and **7 MANDATORY user approval gates**.
 
 **GitHub Issue Structure**:
 
@@ -39,10 +39,8 @@ Push spec branch (spec + plan + tasks)
     ├─ Create Task Branch from Spec Branch
     ├─ Implement Task (TDD)
     ├─ ⚠️ APPROVAL GATE 4a: User Approves Implementation (MANDATORY - BEFORE COMMIT)
-    ├─ Commit (with Husky pre-commit hooks)
-    │   ├─ If hooks FAIL → get user approval for fixes (MANDATORY)
-    │   └─ If hooks PASS → commit succeeds
-    ├─ Create PR (Task Branch → Spec Branch, follow .github/pull_request_template.md)
+    ├─ Commit changes
+    ├─ Create PR (Task Branch → Spec Branch, closes task issue with "Closes #[task-issue]")
     ├─ Code Review with pr-reviewer Agent
     ├─ ⚠️ APPROVAL GATE 4b: User Approves PR (MANDATORY)
     ├─ Merge PR
@@ -515,35 +513,17 @@ Waiting for approval to commit these changes.
 
 **MANDATORY**: Cannot commit until user explicitly approves!
 
-#### Step 5: Commit with Husky Pre-commit Hooks
+#### Step 5: Commit Changes
 
 **After receiving user approval to commit**:
 
 ```bash
-# Attempt commit
+# Commit changes
 git add .
-git commit -m "feat: implement auth controller endpoints"
+git commit -m "feat: implement auth controller endpoints
+
+Refs #14"
 ```
-
-**If Husky pre-commit hooks FAIL**:
-
-1. **STOP immediately** - display error output
-2. Ask user for approval:
-
-   ```
-   Pre-commit hooks failed with errors:
-   - ESLint: 3 errors in auth.controller.ts
-   - Prettier: 2 files need formatting
-
-   Approve fixes for these errors?
-   ```
-
-3. **WAIT FOR USER APPROVAL** (MANDATORY)
-4. After approval, fix errors
-5. Retry commit
-6. Repeat if hooks fail again
-
-**If hooks PASS**: Commit succeeds, proceed to next step
 
 **After successful commit, move issue to "Testing"**:
 
@@ -1254,8 +1234,8 @@ main (protected)
 ### Branch Naming
 
 ```
-feature/###-feature-name                      # Feature branch
-feature/###-feature-name/T###-task-name       # Task sub-branch
+spec/###-feature-name                      # Spec/Feature branch
+spec/###-feature-name/T###-task-name       # Task sub-branch
 ```
 
 ### Commit Messages
@@ -1274,13 +1254,36 @@ Types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
 
 ## Constitution Reference
 
-This workflow is mandated by Constitution v2.9.4:
+This workflow is mandated by Constitution v2.10.4:
 
 - Article III, Section 3.1: Specification-First Process (with git workflow + spec size evaluation + 7 approval gates + documentation step + branch cleanup + spec issue status update + sub-issue cleanup)
 - Article III, Section 3.4: GitHub Integration & Branch Strategy
 - Article III, Section 3.5: Issue and PR Protocol
 - Article IV, Section 4.4: Git Standards
 - Article XII: GitHub Project Board (5 status columns)
+- Article XIV, Section 14.4: workflow.md Synchronization (MANDATORY)
+
+**Key Changes in v2.10.2**:
+
+- **Husky Removed**: Removed all Husky pre-commit hook handling from workflow
+  - Simplified Step 5: "Commit with Husky Pre-commit Hooks" → "Commit Changes"
+  - Removed Pre-commit Hook Failure Protocol (user approval gates for hook failures)
+  - Removed Husky from documentation description
+  - Workflow now focuses on direct git commits without hook complexity
+- **GitHub Issue URL Linking** (MANDATORY): Added bidirectional linking requirements
+  - **Spec.md**: MUST store GitHub parent issue URL in spec.md header after issue created
+  - **Task files**: MUST store GitHub sub-issue URLs in task files after sub-issues created
+  - Ensures traceability between spec/task files and GitHub issues
+- **`Closes #[issue]` Keyword** (MANDATORY): Explicitly required in all PR descriptions
+  - Task PRs (sub-branch → spec branch): MUST include `Closes #[task-issue]`
+  - Final PRs (spec branch → main): MUST include `Closes #[spec-issue]`
+  - Automatic issue closing when PR merges with Closes keyword
+  - Updated overview diagram and Step 6 to show `Closes` requirement
+- **workflow.md Sync Requirement**: Added to constitution Article XIV, Section 14.4
+  - workflow.md MUST be updated when constitution is amended
+  - Version numbers MUST match between constitution.md and workflow.md
+  - Both documents co-located in `.specify/memory/` for consistency
+  - Ensures operational procedures stay synchronized with constitutional principles
 
 **Key Changes in v2.9.4**:
 
@@ -1348,7 +1351,6 @@ This workflow is mandated by Constitution v2.9.4:
 
 - **Single spec branch workflow**: Spec, plan, and tasks all on same `spec/###-name` branch
 - **Sequential task execution**: MANDATORY - cannot start new task until previous merged
-- **Husky pre-commit hook handling**: MANDATORY user approval before fixing hook failures
 - **Task branches from spec branch**: All task sub-branches created from and merged to spec branch
 - **Final PR only after all tasks**: Spec branch merged to main only when feature complete
 

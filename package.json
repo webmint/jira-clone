@@ -3,18 +3,39 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "front",
-    "back",
-    "common"
+    "packages/*"
   ],
   "scripts": {
-    "dev": "concurrently \"npm:dev:*\"",
-    "dev:front": "npm run dev --workspace=front",
-    "dev:back": "npm run dev --workspace=back",
-    "build": "npm run build --workspace=common && npm run build --workspaces --if-present",
+    "dev": "concurrently \"npm:dev:front\" \"npm:dev:back\"",
+    "dev:front": "npm run dev --workspace=packages/front",
+    "dev:back": "npm run start:dev --workspace=packages/back",
+    "build": "npm run build:common && npm run build:front && npm run build:back",
+    "build:front": "npm run build --workspace=packages/front",
+    "build:back": "npm run build --workspace=packages/back",
+    "build:common": "npm run build --workspace=packages/common --if-present",
+    "preview:front": "npm run preview --workspace=packages/front",
+    "start:back": "npm run start --workspace=packages/back",
+    "start:back:prod": "npm run start:prod --workspace=packages/back",
+    "start:back:debug": "npm run start:debug --workspace=packages/back",
     "test": "npm run test --workspaces --if-present",
+    "test:front": "npm run test --workspace=packages/front",
+    "test:back": "npm run test --workspace=packages/back",
+    "test:front:ui": "npm run test:ui --workspace=packages/front",
+    "test:front:run": "npm run test:run --workspace=packages/front",
+    "test:back:watch": "npm run test:watch --workspace=packages/back",
+    "test:back:cov": "npm run test:cov --workspace=packages/back",
+    "test:back:debug": "npm run test:debug --workspace=packages/back",
+    "test:back:e2e": "npm run test:e2e --workspace=packages/back",
+    "storybook": "npm run storybook --workspace=packages/front",
+    "storybook:build": "npm run build-storybook --workspace=packages/front",
+    "storybook:test": "npm run test-storybook --workspace=packages/front",
     "lint": "npm run lint --workspaces --if-present",
-    "format": "prettier --write \"**/*.{ts,vue,json,md}\""
+    "lint:front": "npm run lint --workspace=packages/front",
+    "lint:back": "npm run lint --workspace=packages/back",
+    "type-check": "npm run type-check:front",
+    "type-check:front": "npm run type-check --workspace=packages/front",
+    "format": "prettier --write \"**/*.{ts,vue,json,md}\"",
+    "format:back": "npm run format --workspace=packages/back"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.21.0",
@@ -27,8 +48,5 @@
     "lint-staged": "^15.0.0",
     "prettier": "^3.0.0",
     "typescript": "^5.2.0"
-  },
-  "dependencies": {
-    "fresh": "^2.0.0"
   }
 }

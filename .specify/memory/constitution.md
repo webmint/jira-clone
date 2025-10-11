@@ -1,29 +1,51 @@
 <!--
 Sync Impact Report:
-Version: 2.9.4 → 2.10.0 (MINOR - mandatory branch naming convention)
-Modified Principles:
-  - Article IV, Section 4.4: Git Standards (MANDATORY) - Branch naming made absolute requirement
-  - Changed prefix from "feature/" to "spec/" matching WORKFLOW.md
-  - Added explicit hierarchical structure requirement: spec/<feature-id>/<task-id>
-  - Made violation = constitution violation = PR rejection
-Added Sections:
-  - Mandatory branch naming requirements with examples
-  - Explicit consequences for non-compliance
-  - Multiple examples including current feature 004
-Removed Sections:
-  - Old "feature/" prefix examples
+Version: 2.11.1 → 2.11.2 (PATCH - Root package.json scripts consolidation)
+Modified Files:
+  - package.json - Comprehensive script updates
+    - Updated workspaces: ["front", "back", "common"] → ["packages/*"]
+    - Added all workspace scripts as convenience commands in root
+    - Organized with naming pattern: script:workspace (e.g., test:front, dev:back)
+New Scripts Added (32 total):
+  Development:
+    - dev (runs front + back concurrently)
+    - dev:front, dev:back
+  Building:
+    - build (sequential: common → front → back)
+    - build:front, build:back, build:common
+  Testing:
+    - test (all workspaces), test:front, test:back
+    - test:front:ui, test:front:run
+    - test:back:watch, test:back:cov, test:back:debug, test:back:e2e
+  Storybook:
+    - storybook, storybook:build, storybook:test
+  Backend Start:
+    - start:back, start:back:prod, start:back:debug
+  Linting & Type Checking:
+    - lint (all), lint:front, lint:back
+    - type-check, type-check:front
+  Formatting:
+    - format (all), format:back
+  Preview:
+    - preview:front
+Rationale:
+  - Developers can run any workspace command from root without cd
+  - Clear naming pattern: script:workspace
+  - "All workspace" commands use plain names (test, lint, build)
+  - Easier onboarding - all commands visible in root package.json
+  - Consistent with modern monorepo best practices
 Templates Status:
-  ✅ WORKFLOW.md - Already uses spec/ prefix (no changes needed)
-  ⚠️  All agents must follow spec/ prefix for branches
+  ✅ package.json - All scripts consolidated with workspace targeting
 Follow-up TODOs:
-  - Fix current task branch from T001-write-component-unit-tests to spec/004-uibutton-component-you/T001-write-component-unit-tests
+  - Update docs/CONTRIBUTING.md to show both root and workspace command options
+  - Developers can now run `npm run dev` from root to start everything
 -->
 
 # Jira Clone Project Constitution
 
-**Version**: 2.10.0
+**Version**: 2.11.2
 **Ratified**: 2025-10-04
-**Last Amended**: 2025-10-08
+**Last Amended**: 2025-10-11
 **Status**: Active
 
 ---
@@ -95,8 +117,8 @@ This constitution establishes the foundational principles, standards, and govern
 
 1. **ESLint Compliance**
    - ZERO ESLint errors permitted in any PR
-   - Airbnb TypeScript style guide is law
-   - Vue 3 recommended rules are mandatory
+   - Airbnb TypeScript style guide (@vue/eslint-config-airbnb)
+   - Vue 3 recommended rules (eslint-plugin-vue 9.32)
    - Prettier formatting enforced via pre-commit hooks
 
 2. **TypeScript Strict Mode**
@@ -117,14 +139,19 @@ This constitution establishes the foundational principles, standards, and govern
 
 **ABSOLUTE REQUIREMENTS:**
 
-1. **NestJS Best Practices**
+1. **ESLint Compliance**
+   - ZERO ESLint errors permitted in any PR
+   - NestJS/TypeScript ESLint configuration (eslint-config-prettier + typescript-eslint 8.20)
+   - Prettier formatting enforced via pre-commit hooks
+
+2. **NestJS Best Practices**
    - Dependency injection everywhere
    - Proper module organization
    - DTOs (Data Transfer Objects) for all endpoints
    - Validation pipes required
    - Service layer abstracts data access
 
-2. **Firebase Integration**
+3. **Firebase Integration**
    - No direct Firestore calls in controllers
    - Service layer abstracts Firebase
    - Transactions for multi-document operations
@@ -168,7 +195,7 @@ This constitution establishes the foundational principles, standards, and govern
 
 **⚠️ ABSOLUTE REQUIREMENT:**
 
-ALL agents and developers MUST follow the detailed workflow specified in `docs/WORKFLOW.md` (Development Workflow document). This document provides comprehensive, step-by-step instructions for:
+ALL agents and developers MUST follow the detailed workflow specified in `.specify/memory/workflow.md` (Development Workflow document). This document provides comprehensive, step-by-step instructions for:
 
 - Specification creation and approval (Phase 1)
 - Implementation planning and approval (Phase 2)
@@ -183,13 +210,12 @@ ALL agents and developers MUST follow the detailed workflow specified in `docs/W
 3. **Task Branch Workflow**: Each task gets sub-branch from spec branch
 4. **PR Review with pr-reviewer Agent**: ALL PRs reviewed by pr-reviewer agent before user approval
 5. **Documentation Step**: documentation-writer agent MUST be called after all tasks complete
-6. **Husky Pre-commit Hooks**: User approval required before fixing hook failures
-7. **Branch Cleanup**: User approval required before deleting remote task branches
-8. **Sub-issue Cleanup**: User approval required before deleting sub-issues from project board
+6. **Branch Cleanup**: User approval required before deleting remote task branches
+7. **Sub-issue Cleanup**: User approval required before deleting sub-issues from project board
 
-**Violation of WORKFLOW.md is a constitution violation and will result in rejected PRs.**
+**Violation of workflow.md is a constitution violation and will result in rejected PRs.**
 
-**Reference**: `docs/WORKFLOW.md` for complete detailed workflow.
+**Reference**: `.specify/memory/workflow.md` for complete detailed workflow.
 
 ### Section 3.1: Specification-First Process
 
@@ -213,6 +239,7 @@ Feature Branch → Task Sub-branches → Implementation → User Approval → PR
    - Assign to: Architecture Agent
    - Labels: `feature`, `spec`, priority (P1/P2/P3)
    - Add to project board with status: "Backlog"
+   - **MANDATORY**: Store GitHub issue URL in spec.md metadata (add header: `GitHub Issue: #<issue-number>`)
 4. **⚠️ MANDATORY SPEC SIZE EVALUATION** (immediately after spec creation):
    - Evaluate spec complexity and estimate implementation size
    - **Size indicators** (any 2+ means "too large"):
@@ -282,6 +309,7 @@ Feature Branch → Task Sub-branches → Implementation → User Approval → PR
       - Labels: `feature`, `spec`, agent label, priority
       - **Parent issue**: Link as sub-issue to parent spec issue
       - Add to project board with status: "Backlog"
+      - **MANDATORY**: Store GitHub sub-issue URL in task file (add header: `GitHub Issue: #<issue-number>`)
     - Push spec branch to origin (with spec + plan + tasks)
     - **Do NOT create PR to main yet**
     - Proceed to `/implement` (implementation starts from spec branch)
@@ -293,20 +321,13 @@ Feature Branch → Task Sub-branches → Implementation → User Approval → PR
    - Create task branch: `spec/[###-name]/T###-task-name` from spec branch
    - Implement task following TDD workflow
    - Run all quality gates (tests, linting, build)
-3. **Git commit with Husky pre-commit hooks**:
-   - Attempt commit to task branch
-   - If pre-commit hooks FAIL:
-     - **MANDATORY**: Report failure to user with error details
-     - **MANDATORY**: Wait for user approval before fixing
-     - Fix issues based on hook errors (ESLint, Prettier, tests, etc.)
-     - Retry commit
-     - Repeat until hooks pass
-   - If pre-commit hooks PASS: Commit succeeds
+3. **Git commit**: Commit changes to task branch
 4. ⚠️ **MANDATORY APPROVAL GATE**: User must approve completed task before PR
 5. **After task approval**:
    - Push task branch to origin
-   - Create PR: `spec/[###-name]/T###-task-name` → `spec/[###-name]`
+   - Create PR: `spec/[###-name]/T###-task-name` → `spec/[###-name]` with `Closes #[task-issue]` in description
    - Wait for PR merge
+   - **After PR merged**: Close task sub-issue and move to "Done" status on project board
    - After merge, switch to spec branch
    - Pull latest from spec branch
    - **ONLY THEN** can next task begin
@@ -315,24 +336,12 @@ Feature Branch → Task Sub-branches → Implementation → User Approval → PR
    - Run full test suite on spec branch
    - **MANDATORY**: Call documentation-writer agent to document new features and update changed documentation
    - ⚠️ **MANDATORY APPROVAL GATE**: User must approve entire feature (including documentation)
-   - Create final PR: `spec/[###-name]` → `main`
+   - Create final PR: `spec/[###-name]` → `main` with `Closes #[spec-issue]` in description
    - **After final PR review complete**: Request user approval to delete all remote task branches (cleanup)
    - Merge PR to main
-   - **After merge confirmed**: Move parent spec issue to "Done" status on project board
+   - **After PR merged**: Parent spec issue automatically closed and moved to "Done" status on project board
    - **After spec issue moved to Done**: Request user approval to delete all sub-issues from project board (cleanup)
    - Feature completion
-
-**Pre-commit Hook Failure Protocol:**
-
-When git commit fails due to Husky pre-commit hooks:
-
-1. **STOP immediately** - do not attempt auto-fix without approval
-2. Display error output to user
-3. Ask: "Pre-commit hooks failed. Approve fixes for: [list of errors]?"
-4. **Wait for explicit user approval** (MANDATORY)
-5. After approval, fix errors
-6. Retry commit
-7. If hooks fail again, repeat protocol
 
 ### Section 3.2: Agent Responsibilities
 
@@ -541,12 +550,19 @@ Direct work is ONLY allowed for:
 
 **Approved Technologies:**
 
-- **Frontend**: Vue 3, TypeScript, Vite, Pinia, Tailwind CSS
-- **Backend**: NestJS, TypeScript, Firebase (Auth, Firestore)
-- **Common**: TypeScript, Zod
-- **Testing**: Vitest (frontend), Jest (backend), Vue Test Utils, Playwright (E2E)
-- **Tooling**: ESLint, Prettier, Husky (git hooks)
+- **Frontend**: Vue 3.5, TypeScript 5.9, Vite 6.x, Tailwind CSS 4.0, @vueuse/core 13.x
+- **Backend**: NestJS 11.x, TypeScript 5.7, Firebase Admin SDK 13.x (Auth, Firestore), Express 5.x
+- **Common**: TypeScript 5.9, Zod 4.x
+- **Testing**: Vitest 3.x (frontend), Jest 30.x (backend), Vue Test Utils 2.4, happy-dom 19.x (test environment)
+- **Component Development**: Storybook 8.6 (CSF3, accessibility testing, interaction testing, design tokens)
+- **Tooling**: ESLint 8.57/9.18 (workspace-specific), Prettier 3.x
 - **CI/CD**: GitHub Actions
+
+**Note on State Management**: Pinia is documented but not yet installed. When implementing state management, install with `npm install pinia --workspace=front`.
+
+**Note on E2E Testing**: Playwright is documented for E2E testing but not yet installed. When implementing E2E tests, install with `npm install -D @playwright/test`.
+
+**Version Variance Policy**: Different workspaces may use different versions of shared tools (TypeScript, ESLint) due to compatibility requirements. This is acceptable as long as all code passes quality gates in its respective workspace.
 
 **Changes to this stack require constitution amendment (Article XIV).**
 
@@ -554,42 +570,105 @@ Direct work is ONLY allowed for:
 
 ```
 jira-clone/
-├── front/          # Vue 3 application
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── stores/
-│   │   └── services/
-│   └── tests/
-├── back/           # NestJS API
-│   ├── src/
-│   │   ├── modules/
-│   │   ├── models/
-│   │   └── services/
-│   └── tests/
-├── common/         # Shared types
-│   └── src/
-│       └── types/
-├── .specify/       # Specifications and templates
+├── packages/           # Monorepo packages
+│   ├── front/          # Vue 3 application
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   ├── pages/
+│   │   │   ├── stores/
+│   │   │   └── services/
+│   │   └── tests/
+│   ├── back/           # NestJS API
+│   │   ├── src/
+│   │   │   ├── modules/
+│   │   │   ├── models/
+│   │   │   └── services/
+│   │   └── tests/
+│   └── common/         # Shared types
+│       └── src/
+│           └── types/
+├── .specify/           # Specifications and templates
 │   ├── specs/
 │   ├── templates/
 │   └── memory/
-└── docs/           # Documentation
-    ├── design/
-    └── adr/
+└── docs/               # Project documentation
+    ├── adr/            # Architecture Decision Records
+    ├── integrations/   # Third-party integration guides
+    ├── ARCHITECTURE.md
+    ├── CONTRIBUTING.md
+    ├── DEPLOYMENT.md
+    └── TESTING.md
 ```
 
 **No additional top-level directories without Architecture Agent approval.**
 
 ### Section 4.3: Naming Conventions (ENFORCED)
 
-- **Files**: kebab-case (`user-card.vue`, `auth-service.ts`)
-- **Components**: PascalCase (`UserCard`, `IssueList`)
-- **Functions/Variables**: camelCase (`getUserData`, `isLoggedIn`)
+**General Rule**: camelCase for all files and folders unless specified otherwise
+
+**File Naming:**
+
+- **Non-Vue Files**: camelCase (`userService.ts`, `authHelpers.ts`, `tokenValidation.ts`)
+- **Vue Component Files**: PascalCase (`UserCard.vue`, `LoginForm.vue`, `DashboardLayout.vue`)
+- **Test Files**: Match source file naming
+  - `userService.ts` → `userService.spec.ts`
+  - `UserCard.vue` → `UserCard.spec.ts`
+- **Storybook Stories**: PascalCase.stories.(ts|mdx)
+  - `UserCard.vue` → `UserCard.stories.ts`
+  - For documentation: `Colors.stories.mdx`
+- **Type Definition Files**: camelCase with `.d.ts` extension (`types.d.ts`, `global.d.ts`, `environment.d.ts`)
+- **Configuration Files**: Any standard naming (`vite.config.ts`, `tsconfig.json`, `package.json`, `.eslintrc.cjs`)
+
+**Folder Naming:**
+
+- **General**: camelCase (`designSystem/`, `storybook/`, `userManagement/`)
+
+**Code Naming:**
+
+- **Component Classes**: PascalCase (`UserCard`, `IssueList`, `DashboardLayout`)
+- **Functions/Variables**: camelCase (`getUserData`, `isLoggedIn`, `userId`)
 - **Constants**: UPPER_SNAKE_CASE (`MAX_RETRY_COUNT`, `API_BASE_URL`)
-- **Types/Interfaces**: PascalCase (`UserProfile`, `ApiResponse`)
-- **Enums**: PascalCase with UPPER_CASE values (`Status.IN_PROGRESS`)
-- **Database Collections**: snake_case (`user_profiles`, `issue_comments`)
+- **Types/Interfaces**: PascalCase (`UserProfile`, `ApiResponse`, `UserData`)
+- **Enums**: PascalCase with UPPER_CASE values
+  - Enum name: PascalCase (`UserRole`, `Status`)
+  - Enum values: UPPER_CASE (`UserRole.ADMIN`, `Status.IN_PROGRESS`)
+
+**Vue-Specific:**
+
+- **Component Names**: PascalCase in both script and template (`<UserCard />`)
+- **Props**: camelCase (`userId`, `isActive`)
+- **Events**: camelCase with verb prefix (`updateUser`, `deleteUser`)
+
+**Database:**
+
+- **Collections/Tables**: camelCase (`userProfiles`, `issueComments`, `projectMembers`)
+
+**CSS Naming:**
+
+- **Tailwind Utility Classes**: kebab-case (built-in: `bg-primary-500`, `text-gray-900`)
+- **Custom CSS Classes**: camelCase (`.userCard`, `.userCardTitle`)
+
+**Examples:**
+
+✅ **Correct:**
+```
+designSystem/               # folder
+  colors.stories.mdx        # Storybook documentation
+  Button.stories.ts         # Storybook component story
+userService.ts             # service file
+authHelpers.ts             # helper file
+UserCard.vue               # Vue component
+UserCard.spec.ts           # test file
+types.d.ts                 # type definitions
+```
+
+❌ **Incorrect:**
+```
+design-system/             # kebab-case folder
+user_service.ts            # snake_case file
+userCard.vue               # camelCase component (should be PascalCase)
+auth-helpers.ts            # kebab-case file
+```
 
 ### Section 4.4: Git Standards (MANDATORY)
 
@@ -745,6 +824,11 @@ The Design System documented in `docs/design/DESIGN_SYSTEM.md` is **authoritativ
 - **Frontend**: 80% line coverage
 - **Common**: 90% line coverage
 - **Critical paths**: 100% coverage (authentication, data mutations, payments)
+
+**⚠️ Configuration Status**: Coverage thresholds are NOT currently enforced in test runner configs. This is a P2 issue that should be addressed:
+- Backend: Add coverage thresholds to `jest` config in `back/package.json`
+- Frontend: Configure coverage thresholds in `vitest.config.ts`
+- Common: Add Vitest config with 90% threshold requirement
 
 ### Section 6.3: Test Categories (ALL REQUIRED)
 
@@ -919,32 +1003,103 @@ The Design System documented in `docs/design/DESIGN_SYSTEM.md` is **authoritativ
 
 **Code Documentation (MANDATORY):**
 
-1. JSDoc/TSDoc for all public functions and classes
-2. README in each workspace (`front/`, `back/`, `common/`)
-3. API documentation (OpenAPI/Swagger for backend)
-4. Component documentation (props, events, slots, usage examples)
+1. **JSDoc/TSDoc**: For all public functions and classes in source code
+2. **Workspace READMEs**: In each workspace root (`packages/front/README.md`, `packages/back/README.md`, `packages/common/README.md`)
+3. **API Documentation**: OpenAPI/Swagger for backend endpoints (JSDoc in controllers)
+4. **Component Documentation**:
+   - **Props, events, slots**: JSDoc in Vue component files
+   - **Visual documentation**: Storybook stories (`.stories.ts` files)
+   - **Component usage examples**: In Storybook
 
 **Project Documentation (MANDATORY):**
 
-1. **Architecture Decision Records (ADRs)**: Document all major decisions in `docs/adr/`
-2. **Feature Specifications**: In `.specify/specs/[###-feature-name]/spec.md`
-3. **Design Specifications**: In `docs/design/` (design system, components)
-4. **Deployment Guides**: In `docs/deployment/`
-5. **Onboarding Guide**: For new contributors
+Documentation lives in `docs/` folder:
+
+1. **Architecture Decision Records (ADRs)**: `docs/adr/`
+   - All major technical decisions
+   - Technology choices and rationale
+   - Architectural patterns
+   - Use template: `docs/adr/template.md`
+
+2. **System Architecture**: `docs/ARCHITECTURE.md`
+   - High-level system overview
+   - Technology stack description
+   - Data flow diagrams
+   - Monorepo structure explanation
+
+3. **Contributing Guide**: `docs/CONTRIBUTING.md`
+   - Developer onboarding instructions
+   - Setup procedures (Node.js, npm, Firebase config)
+   - Development workflow summary
+   - Common commands reference
+
+4. **Deployment Guide**: `docs/DEPLOYMENT.md`
+   - Deployment procedures and environments
+   - Environment variable configuration
+   - CI/CD pipeline documentation
+   - Rollback procedures
+
+5. **Testing Guide**: `docs/TESTING.md`
+   - Testing strategy and philosophy (TDD)
+   - Test categories and examples
+   - Running tests locally
+   - Best practices and common patterns
+
+6. **Integration Guides**: `docs/integrations/`
+   - Third-party service integrations
+   - External API documentation
+   - Tool configuration guides
+
+**What Does NOT Go in docs/:**
+
+- ❌ **Design System Documentation**: Use Storybook (not `docs/design/`)
+- ❌ **Component API Documentation**: Use JSDoc in code + Storybook
+- ❌ **Governance Documents**: Use `.specify/memory/` (constitution, workflow)
+- ❌ **Feature Specifications**: Use `.specify/specs/###-feature-name/`
 
 ### Section 10.2: Documentation Updates
 
 **Documentation MUST be updated when:**
 
-- APIs change (update OpenAPI spec)
-- Features are added (update README, specs)
-- Architectural decisions are made (create ADR)
-- Deployment process changes (update deployment guide)
-- Dependencies change (update README)
+- **APIs change**: Update OpenAPI spec, JSDoc in controllers
+- **Features added**: Update README, create/update feature spec
+- **Architectural decisions made**: Create ADR in `docs/adr/`
+- **Deployment process changes**: Update `docs/DEPLOYMENT.md`
+- **Dependencies change**: Update workspace README, `docs/CONTRIBUTING.md`
+- **Testing strategy changes**: Update `docs/TESTING.md`
+- **System architecture changes**: Update `docs/ARCHITECTURE.md`
+- **Component created/modified**: Update JSDoc, Storybook stories
 
 **Outdated documentation is a bug (P2 severity).**
 
-### Section 10.3: ADR Format
+### Section 10.3: documentation-writer Agent Usage (MANDATORY)
+
+**The documentation-writer agent MUST be called:**
+
+1. **After all tasks complete** (before final PR to main)
+   - Reviews all code changes in spec branch
+   - Identifies what needs documentation
+   - Creates/updates:
+     - Workspace READMEs for new features
+     - JSDoc for new APIs and functions
+     - `docs/ARCHITECTURE.md` if architecture changed
+     - ADRs for architectural decisions made
+     - `docs/DEPLOYMENT.md` if deployment changed
+     - Integration guides for new third-party services
+
+2. **Required documentation by agent**:
+   - **Backend changes** → Update API documentation, JSDoc
+   - **Frontend changes** → Update component JSDoc, Storybook examples
+   - **Architecture changes** → Create ADR, update ARCHITECTURE.md
+   - **New dependencies** → Update CONTRIBUTING.md setup instructions
+   - **Deployment changes** → Update DEPLOYMENT.md
+
+**Agent deliverables**:
+- List of documentation created/updated
+- Commit documentation changes to spec branch
+- Summary of what was documented
+
+### Section 10.4: ADR Format
 
 **Architecture Decision Records must include:**
 
@@ -954,6 +1109,8 @@ The Design System documented in `docs/design/DESIGN_SYSTEM.md` is **authoritativ
 4. **Decision**: What was decided
 5. **Consequences**: Trade-offs and implications
 6. **Alternatives Considered**: What else was evaluated
+
+**Template**: Use `docs/adr/template.md` for consistent format
 
 ---
 
@@ -1190,6 +1347,19 @@ This constitution is a **living document**. It should be reviewed and updated as
 - **After Major Milestones**: Retrospective and lessons learned
 - **When Problems Arise**: Immediate review of relevant sections
 
+### Section 14.4: workflow.md Synchronization (MANDATORY)
+
+**When constitution is amended:**
+
+1. **workflow.md MUST be updated** to reflect constitutional changes
+2. **Version numbers MUST match** between constitution.md and workflow.md
+3. **Sync is MANDATORY** before amendment is considered complete
+4. **Violation**: Constitution amendment without workflow.md sync is incomplete and invalid
+
+**Location**: Both governance documents co-located in `.specify/memory/` for consistency
+
+**Rationale**: workflow.md is the operational implementation of constitutional principles. When the constitution changes, the workflow must change to maintain consistency and prevent conflicting guidance.
+
 ---
 
 ## Article XV: Enforcement & Authority
@@ -1278,15 +1448,26 @@ Before merge, ALL must be ✅:
 
 ### 🔧 Technology Stack (Immutable)
 
-- **Frontend**: Vue 3 + TypeScript + Vite + Pinia + Tailwind CSS
-- **Backend**: NestJS + TypeScript + Firebase
-- **Testing**: Vitest (FE), Jest (BE), Playwright (E2E)
-- **Tooling**: ESLint + Prettier + Husky
+- **Frontend**: Vue 3.5 + TypeScript 5.9 + Vite 6.x + Tailwind CSS 4.0 + @vueuse/core
+- **Backend**: NestJS 11.x + TypeScript 5.7 + Firebase Admin SDK + Express 5.x
+- **Common**: TypeScript 5.9 + Zod 4.x
+- **Testing**: Vitest 3.x (FE), Jest 30.x (BE), Vue Test Utils 2.4
+- **Component Development**: Storybook 8.6 (CSF3)
+- **Tooling**: ESLint 8.57/9.18 + Prettier 3.x
+
+**Note**: Pinia (state management) and Playwright (E2E testing) documented but not yet installed.
 
 ---
 
 ## Appendix B: Version History
 
+- **v2.11.2** (2025-10-11) - **Root package.json scripts consolidation**: Added all 32 workspace scripts as convenience commands in root package.json with clear naming pattern (script:workspace); updated workspaces config to packages/*; developers can now run any workspace command from root (npm run test:front, npm run dev, etc.)
+- **v2.11.1** (2025-10-11) - **Monorepo structure reorganization**: Moved all workspaces (back/, common/, front/) into packages/ directory for standard monorepo pattern; updated Article IV Section 4.2 project structure diagram; updated all workspace paths in Constitution and documentation (ARCHITECTURE.md, CONTRIBUTING.md, README.md)
+- **v2.11.0** (2025-10-11) - **Documentation structure reorganization**: Completely revised Article X to define docs/ structure with ARCHITECTURE.md, CONTRIBUTING.md, DEPLOYMENT.md, TESTING.md; added Section 10.3 for MANDATORY documentation-writer agent usage; created docs/adr/ with template for ADRs; created docs/integrations/ for third-party guides; reorganized docs/ folder eliminating design/ (use Storybook) and decisions/ (renamed to adr/)
+- **v2.10.4** (2025-10-11) - **Governance document consolidation**: Moved workflow.md from `docs/` to `.specify/memory/` to co-locate with constitution.md, updated all references in Article III Section 3.0 and Article XIV Section 14.4, deleted NAMING_CONVENTIONS.md (naming conventions now single source of truth in Constitution Article IV, Section 4.3)
+- **v2.10.3** (2025-10-10) - **Naming conventions alignment**: Completely revised Article IV, Section 4.3 to match NAMING_CONVENTIONS.md, changed files from kebab-case to camelCase (`authService.ts`), Vue components to PascalCase (`UserCard.vue`), database collections to camelCase (`userProfiles`), added comprehensive naming rules for folders, test files, Storybook stories, type definitions, Vue props/events, and CSS classes
+- **v2.10.2** (2025-10-10) - **Husky removal, GitHub issue management, workflow.md sync**: Removed Husky from tech stack and all pre-commit hook protocols, added MANDATORY GitHub issue URL linking in spec.md and task files, added MANDATORY `Closes #[issue]` keyword in PR descriptions for automatic issue closing, added MANDATORY workflow.md synchronization requirement to Article XIV
+- **v2.10.1** (2025-10-10) - **Documentation sync with package.json**: Updated all technology versions to match actual implementation, added Storybook 8.6 to official stack, documented ESLint configurations per workspace, added P2 issue for coverage threshold enforcement, cleaned up root package.json
 - **v2.10.0** (2025-10-08) - **MANDATORY branch naming convention**: Changed prefix from "feature/" to "spec/", made hierarchical structure absolute requirement, violation = PR rejection (Article IV, Section 4.4)
 - **v2.9.4** (2025-10-07) - Clarified workflow: Explicitly move parent spec issue to "Done" status after PR merge confirmed (Article III, Section 3.1, step 6)
 - **v2.9.3** (2025-10-07) - Added MANDATORY documentation step: Call documentation-writer agent after all tasks complete, before final PR (Article III, Section 3.1, step 6)
